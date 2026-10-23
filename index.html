@@ -306,6 +306,18 @@ button.link{background:none;border:0;color:var(--muted);text-decoration:underlin
 .ai-link:hover{background:var(--green-soft)}
 .ai-link:focus-visible{outline:2px solid var(--green);outline-offset:2px}
 .ai-link.strong{background:var(--green);color:#fff}
+#inText{height:560px;min-height:280px;max-height:1400px}
+#out{height:520px;min-height:240px;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
+#out::-webkit-scrollbar,#inText::-webkit-scrollbar{width:10px}
+#out::-webkit-scrollbar-thumb,#inText::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--green) 45%,transparent);border-radius:6px}
+.grid{align-items:start}
+@media (max-width:900px){#inText{height:360px}#out{height:auto;max-height:70vh}}
+.pane.in-pane{border:2px solid var(--green)}
+.in-pane .pane-h,.out-pane .pane-h{background:var(--green);color:var(--green-ink);border-bottom:0;min-height:52px}
+.in-pane .step{background:var(--green-ink);color:var(--green)}
+.in-count{font-family:var(--f-mono);font-size:12.5px;font-weight:700;background:rgba(255,255,255,.18);color:var(--green-ink);border:1px solid rgba(255,255,255,.55);border-radius:4px;padding:3px 10px;font-variant-numeric:tabular-nums}
+.in-pane .legend,.out-pane .legend{min-height:38px;align-items:center}
+.lg-k{display:inline-block;font-size:11px;color:var(--green);border:1px solid var(--green);border-radius:3px;padding:0 5px;margin-right:4px}
 </style>
 
 <div class="util gut">
@@ -383,8 +395,9 @@ button.link{background:none;border:0;color:var(--muted);text-decoration:underlin
   </div>
 
   <div class="grid">
-    <div class="pane" id="inPane">
-      <div class="pane-h"><h3><span class="step">1</span>입력 · 원문</h3><span class="meta" id="inCount">0자</span></div>
+    <div class="pane in-pane" id="inPane">
+      <div class="pane-h"><h3><span class="step">1</span>입력 · 원문</h3><span class="in-count" id="inCount">0자</span></div>
+      <div class="legend"><span><b class="lg-k">표</b> 붙여 넣으면 | 칸 | 형식</span><span><b class="lg-k">스크린샷</b> Ctrl+V</span><span><b class="lg-k">③</b> 줄바꿈·공백 자동 정리</span></div>
       <textarea id="inText" spellcheck="false" placeholder="검토할 공문서 내용을 붙여 넣으세요. 한글·워드·엑셀의 표도 그대로 붙여 넣으면 ‘| 칸 | 칸 |’ 텍스트 표로 바뀝니다."></textarea>
       <p class="in-msg" id="inMsg"></p>
       <div class="actions">
@@ -1519,12 +1532,21 @@ $("copyTblBtn").onclick=()=>copyTables(segs(state.result?.corrected||"").filter(
 $("applyBtn").onclick=()=>{if(!state.result)return;$("inText").value=state.result.corrected;count();renderLayout();toast("수정본을 입력란에 넣었습니다.");};
 $("inText").addEventListener("input",()=>{count();try{localStorage.setItem("kku-draft",$("inText").value)}catch{}});
 
+/* 입력칸 높이에 맞춰 출력칸 높이를 맞추고 각자 스크롤 */
+function syncPaneHeight(){
+ if(matchMedia("(max-width:900px)").matches){$("out").style.height="";return;}
+ const out=$("out"),op=document.querySelector(".out-pane"),ip=$("inPane");
+ const extra=op.offsetHeight-out.offsetHeight;
+ out.style.height=Math.max(240,ip.offsetHeight-extra)+"px";
+}
+try{const ro=new ResizeObserver(()=>requestAnimationFrame(syncPaneHeight));ro.observe($("inText"));ro.observe($("inPane"));}catch{}
+window.addEventListener("resize",syncPaneHeight);
 (function init(){
  let draft="",scope="in";try{draft=localStorage.getItem("kku-draft")||"";scope=localStorage.getItem("kku-scope")||"in";}catch{}
  state.scope=scope==="out"?"out":"in";
  $("inText").value=draft||SAMPLE_IN;count();
  if(draft&&draft!==SAMPLE_IN)state={...state,result:null,source:draft,isExample:false};
- render();renderCompare();renderDiffs();route();renderLayout();setAi("wait");
+ render();renderCompare();renderDiffs();route();renderLayout();setAi("wait");requestAnimationFrame(syncPaneHeight);
  if(window.claude?.use){
   claude.use("sample").then(async s=>{sample=s;
    if(s){setAi("ready");return;}
