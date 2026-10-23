@@ -302,6 +302,10 @@ button.link{background:none;border:0;color:var(--muted);text-decoration:underlin
 .blk-copy{position:absolute;top:3px;right:6px;font-size:11.5px;padding:1px 9px;border-radius:3px;border:1px solid var(--line);background:var(--paper);color:var(--muted);opacity:.85}
 .blk:hover .blk-copy,.blk-copy:focus-visible{opacity:1;border-color:var(--green);color:var(--green)}
 .blk-tb .blk-copy{color:var(--src-man);border-color:color-mix(in srgb,var(--src-man) 40%,var(--line))}
+.ai-link{font-size:13px;font-weight:700;color:var(--green);text-decoration:none;border:1px solid var(--green);border-radius:4px;padding:3px 10px;white-space:nowrap}
+.ai-link:hover{background:var(--green-soft)}
+.ai-link:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+.ai-link.strong{background:var(--green);color:#fff}
 </style>
 
 <div class="util gut">
@@ -360,6 +364,9 @@ button.link{background:none;border:0;color:var(--muted);text-decoration:underlin
       <button id="selfBtn">본인 계정 허용</button>
     </span>
     <button id="aiOffBtn" class="link" hidden>AI 끄기</button>
+    <button id="aiFixBtn" hidden>권한 설정 열기</button>
+    <a id="aiLogin" class="ai-link" href="https://claude.ai/login" target="_blank" rel="noopener" title="claude.ai에 로그인한 뒤 이 페이지를 새로 고침하세요">claude.ai 로그인</a>
+    <a id="aiOpenLink" class="ai-link strong" href="https://claude.ai/artifact/6m6wyQ3JLk84vFzx3Qysxw" target="_blank" rel="noopener" hidden title="claude.ai에서 이 검토기를 엽니다">검토기 링크로 열기</a>
     <span class="ai-tip" id="aiTip"></span>
     <details class="ai-help">
       <summary title="도움말">?</summary>
@@ -1134,22 +1141,36 @@ $("inText").addEventListener("input",()=>{clearTimeout(layTimer);layTimer=setTim
 
 /* ================= AI 잠금 (팀 암호 또는 본인 계정 허용) ================= */
 const PW_HASH="f0c757cb19ca90e8ee1b37abe21834986a38b6470fbd6255ef11527d85a83e0e";
-let aiMode=null,aiAvail=null; // aiMode: null | "pw" | "self";  aiAvail: null(확인 중) | true | false
+let aiMode=null,aiAvail=null,aiWhy=null; // aiMode: null | "pw" | "self";  aiAvail: null(확인 중) | true | false
 try{const m=localStorage.getItem("kku-ai");if(m==="pw"||m==="self")aiMode=m;}catch{}
 async function sha256(t){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(t));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("");}
 function setAi(st){
  if(st==="ready"||st==="granted")aiAvail=true;else if(st==="off")aiAvail=false;
- if(st==="denied"){aiAvail=false;}
+ if(st==="denied"||st==="nofile"||st==="unavail"){aiAvail=false;aiWhy=st;}else if(st==="off"&&!aiWhy)aiWhy="off";
+ $("aiFixBtn").hidden=!(aiAvail===false&&aiWhy!=="nofile"&&window.claude);
+ $("aiLogin").hidden=!!(aiAvail&&aiMode);
+ $("aiOpenLink").hidden=aiWhy!=="nofile";
  const el=$("aiState"),tip=$("aiTip");
  const on=aiAvail&&aiMode;
  $("aiUnlock").hidden=!!on||aiAvail===false;
  $("aiOffBtn").hidden=!aiMode;
  if(aiAvail===null){el.textContent="확인 중";el.className="ai-pill";tip.textContent="";}
- else if(aiAvail===false){el.textContent="사용 불가";el.className="ai-pill off";tip.textContent=st==="denied"?"Claude 사용을 허용하지 않아 기본 점검만 동작합니다. 다시 허용하려면 페이지를 새로 고침하세요.":"이 화면에서는 Claude를 쓸 수 없어 기본 규칙과 ③ 점검만 동작합니다.";}
+ else if(aiAvail===false){el.textContent="사용 불가";el.className="ai-pill off";tip.textContent=({
+  nofile:"내려받은 HTML 파일로 열려 Claude를 쓸 수 없습니다. claude.ai에 로그인한 상태에서 이 페이지 링크(아티팩트)로 여세요.",
+  denied:"이 페이지의 Claude 사용이 거부되어 있습니다. ‘권한 설정’에서 Claude 사용을 켜세요.",
+  unavail:"Claude를 쓸 수 없습니다. ‘claude.ai 로그인’으로 로그인한 뒤 새로 고침하세요. 로그인했는데도 안 되면 조직(관리자) 설정을 확인하세요."
+ })[aiWhy]||"이 화면에서는 Claude를 쓸 수 없습니다. claude.ai에 로그인해 링크로 열었는지 확인하세요.";}
  else if(!aiMode){el.textContent="잠김";el.className="ai-pill off";tip.textContent="팀 암호를 입력하거나 본인 Claude 계정 사용을 허용하면 문장 단위 AI 검토가 켜집니다.";}
  else{el.textContent=aiMode==="pw"?"켜짐 · 팀 암호":"켜짐 · 본인 계정 허용";el.className="ai-pill on";tip.textContent=st==="granted"?"문장 구조까지 검토하는 AI 검토가 동작 중입니다.":(aiMode==="pw"?"처음 검토할 때 본인 Claude 계정 사용 확인 창이 한 번 뜹니다.":"AI 검토가 켜져 있습니다.");}
  $("imgTableBtn").title=on?"":"AI 검토를 켜면 사용할 수 있습니다";try{renderShots()}catch{}$("imgDocBtn").title=on?"문서·표를 캡처한 이미지를 읽어 입력란에 옮겨 적습니다. 입력란에 끌어다 놓아도 됩니다.":"AI 검토를 켜면 사용할 수 있습니다";
 }
+$("aiFixBtn").onclick=async()=>{
+ let pm=null;try{pm=await claude.use("permissions");}catch{}
+ if(!pm){toast("이 화면에서는 권한 설정을 열 수 없습니다. 페이지 오른쪽 위 메뉴의 ‘권한(Permissions)’을 확인하세요.");return;}
+ try{await pm.manage();}catch{toast("권한 창을 열지 못했습니다. 페이지 메뉴의 ‘권한(Permissions)’에서 Claude 사용을 켜세요.");return;}
+ const st=await pm.state("sample").catch(()=>null);
+ if(st==="granted"||st==="prompt"){toast("권한이 바뀌었습니다. 페이지를 새로 고침하면 AI 검토를 쓸 수 있습니다.");}
+};
 function saveMode(m){setTimeout(()=>{try{renderShots()}catch{}},0);aiMode=m;try{m?localStorage.setItem("kku-ai",m):localStorage.removeItem("kku-ai")}catch{}setAi("refresh");}
 $("pwBtn").onclick=async()=>{
  const v=$("pwIn").value.trim();if(!v){$("pwIn").focus();return;}
@@ -1504,7 +1525,12 @@ $("inText").addEventListener("input",()=>{count();try{localStorage.setItem("kku-
  $("inText").value=draft||SAMPLE_IN;count();
  if(draft&&draft!==SAMPLE_IN)state={...state,result:null,source:draft,isExample:false};
  render();renderCompare();renderDiffs();route();renderLayout();setAi("wait");
- if(window.claude?.use)claude.use("sample").then(s=>{sample=s;setAi(s?"ready":"off");}).catch(()=>setAi("off"));
- else setAi("off");
+ if(window.claude?.use){
+  claude.use("sample").then(async s=>{sample=s;
+   if(s){setAi("ready");return;}
+   let st=null;try{const pm=await claude.use("permissions");st=pm?await pm.state("sample"):null;}catch{}
+   setAi(st==="denied"?"denied":"unavail");
+  }).catch(()=>setAi("unavail"));
+ }else setAi("nofile");
 })();
 </script>
