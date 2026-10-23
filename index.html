@@ -28,6 +28,7 @@
   --ins-bg:#174a2e; --ins-fg:#a8f0c5; --del-bg:#4a201a; --del-fg:#ffb3a6;
   --warn:#f2c66b; --warn-bg:#3a2e12; --diff:#ff9a5c; --diff-bg:#3b2414; color-scheme:dark}
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6;margin:0}
 .gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .wrap{max-width:1280px;margin:0 auto}
@@ -191,6 +192,116 @@ footer{background:var(--paper);border-top:1px solid var(--line);font-size:12.5px
 footer .wrap{padding-block:18px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--green-deep);color:#fff;padding:9px 18px;border-radius:4px;font-size:14px;z-index:20}
 @media (prefers-reduced-motion:no-preference){.spin{display:inline-block;animation:pulse 1.2s ease-in-out infinite}@keyframes pulse{50%{opacity:.35}}}
+textarea{word-break:keep-all;overflow-wrap:anywhere;tab-size:2}
+.out .ln{min-height:1.85em}
+.doc-t{border-collapse:collapse;margin:6px 0;font-size:14px;max-width:100%}
+.doc-t td{border:1px solid var(--ink);padding:3px 8px;word-break:keep-all;vertical-align:top}
+.ai-box{display:flex;gap:10px 14px;align-items:flex-start;flex-wrap:wrap;background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:4px;padding:10px 14px;margin-bottom:14px;font-size:13.5px}
+.ai-box details{flex:1 1 420px;min-width:0}
+.ai-box summary{cursor:pointer;font-weight:700;color:var(--green)}
+.ai-box ul{margin:6px 0 0;padding-left:18px;color:var(--ink)}
+.ai-box li{margin-bottom:3px}
+.ai-pill{font-size:12px;font-weight:700;padding:2px 10px;border-radius:12px;background:var(--bg);color:var(--muted);border:1px solid var(--line);white-space:nowrap}
+.ai-pill.on{background:var(--green);color:#fff;border-color:var(--green)}
+.ai-pill.off{background:var(--warn-bg);color:var(--warn);border-color:var(--warn)}
+.lay{margin-top:18px;border:2px solid var(--green-mid)}
+.lay-h{display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap;margin-bottom:10px}
+.lay-h h3{margin:0;font-size:15px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.lay-h h3 small{font-weight:400;color:var(--muted);font-size:12.5px}
+.lay-h .chips{flex:1}
+.lay-list{list-style:none;margin:0;padding:0;max-height:300px;overflow:auto;border-top:1px solid var(--line)}
+.lay-list li{display:grid;grid-template-columns:52px auto 1fr auto;gap:10px;align-items:baseline;padding:7px 4px;border-bottom:1px solid var(--line);font-size:13.5px}
+.lay-list li.meta{display:block}
+.lay-list .ln{font-family:var(--f-mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.lay-list .msg{min-width:0;overflow-wrap:anywhere}
+.lay-list .auto{font-size:11px;color:var(--green);border:1px solid var(--green);border-radius:3px;padding:0 6px;white-space:nowrap}
+@media (max-width:620px){.lay-list li{grid-template-columns:44px 1fr}.lay-list .msg{grid-column:1/-1}.lay-list .auto{display:none}}
+.chip.lay-0{background:var(--diff-bg);color:var(--diff)}
+.chip.lay-1{background:var(--warn-bg);color:var(--warn)}
+.cnt{display:inline-block;font-size:11px;font-weight:700;color:var(--green);border:1px solid var(--green);border-radius:10px;padding:0 7px;margin-left:6px;vertical-align:middle}
+.ai-box{flex-direction:column;gap:6px}
+.ai-row{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center}
+.ai-lb{font-weight:700}
+.ai-unlock{display:inline-flex;flex-wrap:wrap;gap:6px;align-items:center}
+.ai-unlock[hidden]{display:none}
+.ai-unlock input{font:inherit;font-size:14px;padding:6px 10px;border:1px solid var(--line);border-radius:4px;background:var(--paper);color:var(--ink);width:140px}
+.ai-unlock input:focus-visible{outline:2px solid var(--green);outline-offset:1px}
+button.link{background:none;border:0;color:var(--muted);text-decoration:underline;padding:4px 6px;font-size:13px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.sep{flex-basis:100%;height:0}
+.te-wrap{position:fixed;inset:0;background:rgba(10,30,20,.45);display:grid;place-items:center;z-index:30;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.te{background:var(--paper);color:var(--ink);border-radius:6px;border-top:5px solid var(--green);width:min(960px,100%);max-height:100%;display:flex;flex-direction:column;padding:16px 18px;gap:10px;min-width:0}
+.te-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.te-h h3{margin:0;font-size:18px;font-weight:900}
+.te-tip{margin:0;font-size:13px;color:var(--muted)}
+.te-tools{display:flex;flex-wrap:wrap;gap:6px}
+.te-tools button{font-size:13px;padding:5px 10px}
+.te-scroll{overflow:auto;min-height:120px;border:1px solid var(--line);border-radius:4px}
+.te-grid{border-collapse:collapse;min-width:100%}
+.te-grid td{border:1px solid var(--line);min-width:110px;padding:6px 8px;white-space:pre-wrap;word-break:keep-all;vertical-align:top;font-size:14px;outline:none}
+.te-grid tr:first-child td{background:var(--green-soft);font-weight:700}
+.te-grid td:focus{box-shadow:inset 0 0 0 2px var(--green);background:var(--paper)}
+.te-msg{margin:0;font-size:13.5px;min-height:1.3em;color:var(--green)}
+.te-f{display:flex;gap:8px;justify-content:flex-end}
+.ai-box{flex-direction:row!important;flex-wrap:wrap;align-items:center;gap:6px 10px!important;padding:7px 12px!important;font-size:13px;position:relative;margin-bottom:12px}
+.ai-box .ai-pill{font-size:11.5px;padding:1px 9px}
+.ai-unlock input{width:110px!important;padding:4px 8px!important;font-size:13px!important}
+.ai-box button{padding:4px 10px;font-size:13px}
+.ai-tip{flex:1 1 220px;min-width:0;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ai-help{flex:none!important}
+.ai-help summary{list-style:none;width:22px;height:22px;border-radius:50%;border:1px solid var(--green);color:var(--green);display:grid;place-items:center;font-size:12px;font-weight:700}
+.ai-help summary::-webkit-details-marker{display:none}
+.ai-pop{position:absolute;right:8px;top:calc(100% + 6px);z-index:15;width:min(460px,calc(100vw - 40px));background:var(--paper);border:1px solid var(--line);border-top:3px solid var(--green);border-radius:4px;box-shadow:0 8px 24px rgba(0,0,0,.15);padding:10px 14px}
+.ai-pop ul{margin:0;padding-left:18px}
+#inPane.drop{outline:3px dashed var(--green);outline-offset:-6px;background:var(--green-soft)}
+.in-msg{margin:0;padding:0 14px 10px;font-size:13px;color:var(--green);min-height:0}
+.in-msg:empty{display:none}
+.out-blocks{white-space:normal!important}
+.blk{position:relative;border:1px solid var(--line);border-left:4px solid var(--line);border-radius:3px;padding:24px 12px 10px;margin-bottom:10px;background:var(--paper)}
+.blk:last-child{margin-bottom:0}
+.blk-p{border-left-color:var(--green-mid)}
+.blk-tb{border-left-color:var(--src-man);background:color-mix(in srgb,var(--src-man) 5%,var(--paper))}
+.blk.is-ch{border-left-width:6px}
+.blk-tag{position:absolute;top:4px;left:10px;font-size:11px;font-weight:700;letter-spacing:.03em;color:var(--muted);white-space:nowrap}
+.blk-p .blk-tag{color:var(--green)}
+.blk-tb .blk-tag{color:var(--src-man)}
+.blk-ch{font-size:10.5px;color:#fff;background:var(--diff);border-radius:2px;padding:0 5px;margin-left:4px}
+.blk-body{white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere;overflow-x:auto}
+.blk-tb .blk-body{white-space:normal}
+.blk-side{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.blk-side>div{min-width:0;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere;overflow-x:auto;font-size:14.5px;padding-right:10px}
+.blk-side>div+div{border-left:1px dashed var(--line);padding:0 0 0 10px}
+.blk-tb .blk-side>div{white-space:normal}
+@media (max-width:520px){.blk-side{grid-template-columns:1fr}.blk-side>div+div{border-left:0;border-top:1px dashed var(--line);padding:8px 0 0}}
+.doc-t th,.doc-t td{border:1px solid var(--ink);padding:3px 8px;word-break:keep-all;vertical-align:top;text-align:left}
+.doc-t th{background:color-mix(in srgb,var(--src-man) 12%,var(--paper));font-weight:700}
+.doc-t tr.row-ins td{background:var(--ins-bg)}
+.doc-t tr.row-del td{background:var(--del-bg)}
+.side-cap{display:grid;grid-template-columns:1fr 1fr;font-size:11.5px;font-weight:700;color:var(--muted);margin-bottom:6px}
+.doc-t{margin:2px 0 4px!important}
+.doc-t tr:last-child td,.doc-t tr:last-child th{border-bottom:1px solid var(--ink)}
+.te-grid tr:last-child td{border-bottom:1px solid var(--line)}
+.doc-t th,.doc-t td{overflow-wrap:normal!important;min-width:4.5em}
+.blk-body,.blk-side>div{padding-bottom:3px}
+.legend .sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:-1px}
+.shot{display:inline-flex;align-items:center;gap:6px;border:2px dashed var(--green-mid);border-radius:4px;background:var(--green-soft);color:var(--green);font-weight:700;font-size:13.5px;padding:6px 12px;cursor:pointer;outline:none;white-space:nowrap}
+.shot:hover{border-color:var(--green)}
+.shot.focus{border-style:solid;border-color:var(--green);box-shadow:0 0 0 3px color-mix(in srgb,var(--green) 25%,transparent)}
+.shot.focus::after{content:"지금 Ctrl+V";font-size:11px;font-weight:700;color:#fff;background:var(--green);border-radius:3px;padding:0 6px}
+.shot-ic{font-size:15px;line-height:1}
+.shot kbd{font-family:var(--f-mono);font-size:11px;font-weight:500;color:var(--ink);border:1px solid var(--line);border-bottom-width:2px;border-radius:3px;padding:0 4px;background:var(--paper)}
+.shot.has{border-style:solid}
+.shot-tray{margin:0 14px 12px;border:1px solid var(--green-mid);border-radius:4px;background:var(--green-soft);padding:10px}
+.shot-list{display:flex;gap:8px;flex-wrap:wrap}
+.shot-th{position:relative;width:120px;height:84px;border:1px solid var(--line);border-radius:4px;overflow:hidden;background:var(--paper)}
+.shot-th img{width:100%;height:100%;object-fit:cover;display:block}
+.shot-th .no{position:absolute;left:4px;top:4px;background:var(--green);color:#fff;font-size:11px;font-weight:700;border-radius:3px;padding:0 5px}
+.shot-th button{position:absolute;right:3px;top:3px;width:22px;height:22px;padding:0;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;border:0;font-size:13px;line-height:22px}
+.shot-act{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:8px}
+.shot-act button{font-size:13px;padding:6px 12px}
+.blk-copy{position:absolute;top:3px;right:6px;font-size:11.5px;padding:1px 9px;border-radius:3px;border:1px solid var(--line);background:var(--paper);color:var(--muted);opacity:.85}
+.blk:hover .blk-copy,.blk-copy:focus-visible{opacity:1;border-color:var(--green);color:var(--green)}
+.blk-tb .blk-copy{color:var(--src-man);border-color:color-mix(in srgb,var(--src-man) 40%,var(--line))}
 </style>
 
 <div class="util gut">
@@ -239,15 +350,55 @@ footer .wrap{padding-block:18px;display:flex;justify-content:space-between;gap:1
     <label class="chk"><input type="checkbox" id="deep"> 정밀 검토(느림)</label>
   </div>
 
+  <div class="ai-box">
+    <span class="ai-lb">AI 검토</span><span id="aiState" class="ai-pill">확인 중</span>
+    <span id="aiUnlock" class="ai-unlock">
+      <label for="pwIn" class="sr">팀 암호</label>
+      <input id="pwIn" type="password" placeholder="팀 암호" autocomplete="off">
+      <button id="pwBtn">켜기</button>
+      <span class="meta">또는</span>
+      <button id="selfBtn">본인 계정 허용</button>
+    </span>
+    <button id="aiOffBtn" class="link" hidden>AI 끄기</button>
+    <span class="ai-tip" id="aiTip"></span>
+    <details class="ai-help">
+      <summary title="도움말">?</summary>
+      <div class="ai-pop">
+        <ul>
+          <li><b>팀 암호</b>: 앵커사업단 암호를 넣으면 AI 검토가 켜집니다. 이 브라우저는 기억합니다.</li>
+          <li><b>본인 계정 허용</b>: 암호 없이 확인 창에서 허용하면 켜집니다.</li>
+          <li>어느 쪽이든 검토는 <b>보고 있는 사람 본인의 Claude 계정</b>으로 이루어지고 사용량도 본인 한도에서 차감됩니다. 암호는 가벼운 잠금일 뿐 보안 장치가 아닙니다.</li>
+          <li>켜지면 문장 구조까지 고치고, 캡처 이미지에서 글자와 표를 읽을 수 있습니다. 꺼져 있으면 기본 규칙과 ③ 점검만 동작합니다.</li>
+          <li>입력 내용은 페이지에 저장되지 않고 다른 사람에게 보이지 않습니다.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
   <div class="grid">
-    <div class="pane">
+    <div class="pane" id="inPane">
       <div class="pane-h"><h3><span class="step">1</span>입력 · 원문</h3><span class="meta" id="inCount">0자</span></div>
-      <textarea id="inText" spellcheck="false" placeholder="검토할 공문서 내용을 붙여 넣으세요."></textarea>
+      <textarea id="inText" spellcheck="false" placeholder="검토할 공문서 내용을 붙여 넣으세요. 한글·워드·엑셀의 표도 그대로 붙여 넣으면 ‘| 칸 | 칸 |’ 텍스트 표로 바뀝니다."></textarea>
+      <p class="in-msg" id="inMsg"></p>
       <div class="actions">
         <button class="primary big" id="runBtn">검토하기</button>
         <button id="stopBtn" hidden>중지</button>
         <button id="sampleBtn">예시 불러오기</button>
         <button id="clearBtn">지우기</button>
+        <span class="sep"></span>
+        <button id="teBtn" title="빈 표를 만들거나, 커서가 있는 표를 편집합니다">표 입력·편집</button>
+        <button id="imgDocBtn" title="문서·표를 캡처한 이미지를 읽어 입력란에 옮겨 적습니다(AI 필요). 이미지를 입력란에 끌어다 놓아도 됩니다.">캡처 이미지 업로드</button>
+        <input type="file" id="imgDocFile" accept="image/png,image/jpeg,image/webp,image/gif" multiple hidden>
+        <span class="shot" id="shotZone" tabindex="0" role="button" title="Windows: Win+Shift+S로 캡처 · Mac: ⌘+Ctrl+Shift+4로 캡처 → 여기를 누르고 붙여넣기" aria-label="스크린샷 붙여넣기. 누른 뒤 Ctrl+V로 붙여 넣으세요."><span class="shot-ic" aria-hidden="true">⧉</span>스크린샷 붙여넣기 <kbd>Ctrl</kbd>+<kbd>V</kbd></span>
+      </div>
+      <div class="shot-tray" id="shotTray" hidden>
+        <div class="shot-list" id="shotList"></div>
+        <div class="shot-act" id="shotAct">
+          <button class="primary" id="shotRead">글자·표 읽어 입력란에 넣기</button>
+          <button id="shotTable">표 편집기로 읽기</button>
+          <button id="shotClear">모두 지우기</button>
+          <span class="meta" id="shotInfo"></span>
+        </div>
       </div>
     </div>
     <div class="pane out-pane">
@@ -259,14 +410,25 @@ footer .wrap{padding-block:18px;display:flex;justify-content:space-between;gap:1
           <button data-v="clean" aria-pressed="false">수정본만</button>
         </div>
       </div>
-      <div class="legend"><span><ins>추가·수정</ins></span><span><del>삭제</del></span><span><ins class="ws"></ins> 띄어쓰기 추가</span></div>
+      <div class="legend"><span><ins>추가·수정</ins></span><span><del>삭제</del></span><span><ins class="ws"></ins> 띄어쓰기 추가</span><span><i class="sw" style="background:var(--green-mid)"></i>문단 영역</span><span><i class="sw" style="background:var(--src-man)"></i>표 영역</span></div>
       <div id="out" class="out" aria-live="polite"></div>
       <div class="actions">
-        <button class="primary big" id="copyBtn">수정본 복사</button>
+        <button class="primary big" id="copyBtn" title="문단과 표를 모두 복사합니다">전체 복사</button>
+        <button id="copyParaBtn" title="표를 빼고 문단 글자만 복사합니다">문단만 복사</button>
+        <button id="copyTblBtn" title="표만 복사합니다. 한글·워드에는 표로, 엑셀에는 칸별로 들어갑니다">표만 복사</button>
         <button id="applyBtn">입력란에 반영</button>
         <span class="status" id="status"></span>
       </div>
     </div>
+  </div>
+
+  <div class="card lay" id="layPanel">
+    <div class="lay-h">
+      <h3><span class="step">3</span>문단·항목 기호·표·문장 구조 점검 <span class="cnt" id="layCount">0</span><small>입력 원문 · Claude 없이 바로 점검</small></h3>
+      <div class="chips" id="layKinds"></div>
+      <button id="tidyBtn">줄바꿈·공백 자동 정리</button>
+    </div>
+    <ul class="lay-list" id="layList"></ul>
   </div>
 
   <div class="score">
@@ -315,6 +477,22 @@ footer .wrap{padding-block:18px;display:flex;justify-content:space-between;gap:1
   <span>기준: 건국대학교 문서규정(2025. 10. 1. 개정) · 2025 행정업무운영 편람(행정안전부) · 쉬운 공문서 쓰기 길잡이(국립국어원, 2022)</span>
   <span>앵커사업단 업무 지원용 비공식 도구 · 문의 coolzet@konkuk.ac.kr</span>
 </div></footer>
+<div class="te-wrap" id="teWrap" hidden>
+  <div class="te" role="dialog" aria-modal="true" aria-labelledby="teHead">
+    <div class="te-h"><h3 id="teHead">표 입력</h3><span class="meta" id="teSize"></span></div>
+    <p class="te-tip">칸을 눌러 입력하세요. <b>Tab</b>으로 다음 칸, 마지막 칸에서 Tab을 누르면 행이 늘어납니다. 엑셀·한글·워드에서 여러 칸을 복사해 칸에 붙여 넣으면 그 위치부터 채워지고, 표 캡처 이미지를 붙여 넣으면 AI가 읽어 채웁니다.</p>
+    <div class="te-tools">
+      <button id="teAddRow">행 추가</button><button id="teAddCol">열 추가</button>
+      <button id="teDelRow">마지막 행 삭제</button><button id="teDelCol">마지막 열 삭제</button>
+      <button id="imgTableBtn">이미지에서 표 읽기</button>
+      <input type="file" id="imgFile" accept="image/png,image/jpeg,image/webp,image/gif" hidden>
+    </div>
+    <div class="te-scroll"><table class="te-grid" id="teGrid"></table></div>
+    <p class="te-msg" id="teMsg"></p>
+    <div class="te-f"><button class="primary" id="teOk">입력란에 넣기</button><button id="teCancel">취소</button></div>
+  </div>
+</div>
+<div id="clipStage" aria-hidden="true" style="position:fixed;left:-9999px;top:0;width:800px;background:#fff;color:#000"></div>
 <div class="toast" id="toast" hidden></div>
 
 <script>
@@ -513,6 +691,34 @@ function buildRules(scope){
 - 개조식 문장은 끝맺음을 한 방식으로 통일.
 어문 규범 일반(한글 맞춤법·표준어 규정·외래어 표기법)에만 근거한 수정은 src="norm".
 
+[표]
+- '| 칸 | 칸 |' 형식의 줄은 한글·워드에서 붙여 넣은 표입니다. 행·열 수와 순서, '|' 구분자를 그대로 유지하고 칸 안의 글자만 교정. 칸 안의 '<br>'은 칸 내부 줄바꿈이므로 그대로 둘 것. 빈 칸은 병합 셀이므로 채우지 말 것.
+- 표로 본문이 끝나면 표 다음 줄 왼쪽에서 '  끝.'(편람 p.61). 표 중간에서 기재가 끝났다면 '이하 빈칸'을 notes로 안내.
+
+[문단·줄바꿈 (편람 p.51~53)]
+- 복사 과정에서 생긴 문장 중간의 강제 줄바꿈은 이어 붙이고, 줄바꿈으로 나뉜 단어·어절(예: '추진 결↵과', '사업↵을')은 바르게 붙이거나 띄울 것.
+- 항목 하나는 한 문단(한 줄)으로. 항목 기호 뒤 1타, 하위 항목은 상위보다 2타 들여쓰기, 같은 수준은 같은 들여쓰기.
+- 공백 두 칸 이상(제목·수신·붙임 뒤 2타와 '  끝.'은 예외), 줄 끝 공백, 특수 공백 정리. 문단 사이 빈 줄은 최대 1줄로 일관되게.
+- 이런 수정은 type "줄바꿈·문단"으로 묶어 한 항목으로 기록.
+
+[문장 구조 (길잡이 1부 1·3장, 편람 p.36~47)]
+- 주어·서술어, 목적어·서술어 호응을 맞추고, 대등 접속은 같은 형식으로(인재 양성과 이웃을 돕기 → 인재 양성과 이웃 돕기).
+- 80자가 넘는 긴 문장은 뜻이 바뀌지 않게 두 문장으로 나눔.
+- 군더더기·번역투(~에 있어서, ~것으로 나타났음, ~에 의해, ~되어지다, ~할 수 있도록 하다), 중복 표현(미리 예약, 과반수 이상) 정리.
+- 개조식(-음/-함)과 서술식(-다/-니다)이 섞이면 문서의 주된 방식으로 통일.
+- 뜻이 모호해 고치기 어려운 문장은 notes에 어느 문장인지와 이유를 적기. 이런 수정은 type "문장 구조".
+
+[항목 기호 · 가나다 점검]
+- 같은 수준의 기호가 순서대로 이어지는지 확인: 1. 2. 3. / 가. 나. 다. 라. 마. 바. 사. 아. 자. 차. 카. 타. 파. 하. 다음은 거. 너. 더. — 빠지거나(가.→다.) 겹친(나.→나.) 기호를 바로잡을 것.
+- 상위 기호 다음에는 바로 아래 단계 기호만 쓸 것(단계 건너뛰기 금지). 기호 뒤 1타(한 칸), 하위 항목은 상위보다 2타(두 칸) 들여쓰기.
+- 이런 수정은 type "항목 기호", where에 "본문 n행"처럼 위치를 적을 것.
+
+[표 안 내용 검토]
+- 표의 모든 칸(머리글 포함)을 본문과 같은 기준(맞춤법·띄어쓰기·외래어·다듬은 말·날짜·시간·숫자·단위·문장 구조)으로 교정할 것. 표라서 건너뛰지 말 것.
+- 칸 안 날짜는 '10. 30.(금)', 기간은 '10. 19.(월)~10. 28.(수)', 수량 단위 오류(예: 40팀 기업 → 40개 기업)와 어색한 표현도 바로잡을 것.
+- 같은 열의 칸 끝맺음(명사형·개조식/서술식)을 통일하고, 칸 안은 짧은 명사형을 권장.
+- 표 안 수정은 where에 "표 1 · 2행 3열"처럼 위치를 적을 것.
+
 [이번 문서에 적용할 선택 사항]
 - ${itemRule}
 
@@ -520,10 +726,10 @@ function buildRules(scope){
 - 원문의 의미·사실·숫자·고유 명사는 절대 바꾸지 말 것. 사실을 추가하거나 지어내지 말 것.
 - 줄바꿈과 문단 구조는 최대한 유지하고 꼭 필요한 곳만 고칠 것.
 - 판단이 필요한 사항(누락된 수신란·발신 명의, 금액 한글 병기 권고, 모호한 문장, 기준 간 차이로 선택이 필요한 부분)은 corrected에 반영하지 말고 notes에 적기.
-- 같은 유형의 반복 수정은 한 항목으로 묶어 '/'로 나열.
+- 같은 유형의 반복 수정은 한 항목으로 묶어 '/'로 나열하고, 완전히 같은 수정(같은 before→after)은 한 번만 기록.
 
 [출력] 오직 아래 형식의 JSON 하나만 출력. 설명 문장·코드 펜스 금지.
-{"corrected":"교정된 전체 문서(줄바꿈은 \\n)","summary":"무엇을 고쳤는지 1~2문장","changes":[{"src":"rule|man|guide|norm","type":"맞춤법|띄어쓰기|오탈자|외래어|쉬운 말|표현|어조|날짜·시간|숫자·금액|항목 기호|끝 표시|붙임·첨부|문장 부호","before":"원문 부분(짧게)","after":"수정 부분(짧게)","reason":"왜 고쳤는지 한 문장","basis":"규정 제12조 / 편람 p.49 / 길잡이 1부 3장 / 한글 맞춤법 제○항 형식"}],"notes":["자동 수정하지 않은 확인 사항"]}
+{"corrected":"교정된 전체 문서(줄바꿈은 \\n)","summary":"무엇을 고쳤는지 1~2문장","changes":[{"src":"rule|man|guide|norm","type":"문장 구조|줄바꿈·문단|표|맞춤법|띄어쓰기|오탈자|외래어|쉬운 말|표현|어조|날짜·시간|숫자·금액|항목 기호|끝 표시|붙임·첨부|문장 부호","before":"원문 부분(짧게)","after":"수정 부분(짧게)","where":"본문 3행 / 표 1 · 2행 3열 등 위치(모르면 빈 문자열)","reason":"왜 고쳤는지 한 문장","basis":"규정 제12조 / 편람 p.49 / 길잡이 1부 3장 / 한글 맞춤법 제○항 형식"}],"notes":["자동 수정하지 않은 확인 사항"]}
 수정할 것이 없으면 changes는 빈 배열.`;
 }
 
@@ -571,11 +777,14 @@ function render(){
  setPressed("view",state.view);setPressed("scope",state.scope);
  const out=$("out");
  if(!r){out.className="out empty";out.textContent="왼쪽에 문서를 입력하고 ‘검토하기’를 누르면 수정본이 여기에 나옵니다.";}
- else if(state.view==="side"){out.className="";out.innerHTML=`<div class="side"><div><span class="cap">원문</span>${renderDiff(state.source,r.corrected,"old")}</div><div><span class="cap">수정본</span>${renderDiff(state.source,r.corrected,"new")}</div></div>`;}
- else{out.className="out";out.innerHTML=state.view==="diff"?renderDiff(state.source,r.corrected):esc(r.corrected);}
- const ch=(r&&Array.isArray(r.changes))?r.changes:[];
+ else{out.className="out out-blocks";out.innerHTML=(state.view==="side"?'<div class="side-cap"><span>원문</span><span>수정본</span></div>':"")+renderDoc(state.source,r.corrected,state.view);}
+ const raw=(r&&Array.isArray(r.changes))?r.changes:[];
+ const uniq=new Map();
+ for(const c of raw){const k=[c.src,c.type,String(c.before||"").replace(/\s+/g," ").trim(),String(c.after||"").replace(/\s+/g," ").trim()].join("\u0001");
+  if(uniq.has(k))uniq.get(k).n+=(c.n||1);else uniq.set(k,{...c,n:c.n||1});}
+ const ch=[...uniq.values()],dup=raw.length-ch.length;
  $("tot").textContent=ch.length;
- $("totSub").textContent=r?(state.isExample?"예시 문서 기준":`원문 ${state.source.length.toLocaleString()}자 검토`):"검토 전";
+ $("totSub").textContent=r?((state.isExample?"예시 문서 기준":`원문 ${state.source.length.toLocaleString()}자 검토`)+(dup?` · 같은 수정 ${dup}건 합침`:"")):"검토 전";
  const sc={rule:0,man:0,guide:0,norm:0};ch.forEach(c=>{sc[c.src in sc?c.src:"norm"]++;});
  const mx=Math.max(1,...Object.values(sc));
  $("srcBars").innerHTML=Object.keys(sc).map(k=>`<div class="bar"><span class="src ${k}">${SRC[k]}</span><div class="tr"><div class="fl" style="width:${sc[k]/mx*100}%;--c:var(--src-${k})"></div></div><span class="v">${sc[k]}</span></div>`).join("");
@@ -583,13 +792,14 @@ function render(){
  $("typeChips").innerHTML=Object.keys(tc).length?Object.entries(tc).sort((a,b)=>b[1]-a[1]).map(([t,n])=>`<span class="chip">${esc(t)} <b>${n}</b></span>`).join(""):`<span class="meta">수정 항목 없음</span>`;
  $("summary").textContent=r?.summary||(r?"수정할 사항이 없습니다.":"검토 결과가 나오면 무엇을 왜 고쳤는지 여기에 정리됩니다.");
  $("chgBody").innerHTML=ch.length?ch.map((c,k)=>{const s=c.src in SRC?c.src:"norm";return`<tr>
-  <td class="no">${k+1}</td><td><span class="src ${s}">${SRC[s]}</span></td><td><span class="chip">${esc(c.type||"수정")}</span></td>
-  <td><div class="ba"><del>${esc(c.before||"")}</del><ins>${esc(c.after||"")}</ins></div></td>
+  <td class="no">${k+1}</td><td><span class="src ${s}">${SRC[s]}</span></td><td><span class="chip">${esc(c.type||"수정")}</span>${c.where?`<div class="meta" style="margin-top:4px;white-space:nowrap">${esc(c.where)}</div>`:""}</td>
+  <td><div class="ba"><del>${esc(c.before||"")}</del><ins>${esc(c.after||"")}</ins></div>${c.n>1?`<span class="cnt">${c.n}곳</span>`:""}</td>
   <td>${esc(c.reason||"")}</td><td class="meta" style="white-space:nowrap">${esc(c.basis||"")}</td></tr>`}).join("")
   :`<tr><td colspan="6" class="meta">${r?"수정할 사항이 없습니다.":"아직 검토한 문서가 없습니다."}</td></tr>`;
  const notes=(r&&Array.isArray(r.notes))?r.notes.filter(Boolean):[];
  $("notes").hidden=!notes.length;$("notesList").innerHTML=notes.map(n=>`<li>${esc(n)}</li>`).join("");
- $("copyBtn").disabled=!r;$("applyBtn").disabled=!r;
+ $("copyBtn").disabled=!r;$("applyBtn").disabled=!r;$("copyParaBtn").disabled=!r;
+ const nT=r?segs(r.corrected).filter(x=>x.t==="tb").length:0;$("copyTblBtn").disabled=!nT;$("copyTblBtn").textContent=nT>1?`표만 복사 (${nT}개)`:"표만 복사";
 }
 
 /* ================= 렌더: 비교·차이 ================= */
@@ -636,12 +846,14 @@ window.addEventListener("hashchange",route);
 
 /* ================= 기본 규칙 점검(AI 불가 시) ================= */
 function basicFix(src){
- const changes=[];let s=src;
+ const changes=[];const td=autoTidy(src);let s=td.text;
+ if(td.count)changes.push({src:"man",type:"줄바꿈·문단",before:`강제 줄바꿈·공백 ${td.count}곳`,after:"이어 붙이고 정리",reason:"문장 중간 줄바꿈, 나뉜 어절, 중복 공백, 빈 줄을 정리했습니다.",basis:"편람 p.51~53"});
  const rep=(re,fn,src2,type,reason,basis)=>{s=s.replace(re,(...m)=>{const after=fn(...m);if(after!==m[0])changes.push({src:src2,type,before:m[0],after,reason,basis});return after;});};
  rep(/(\d{4})[ \t]*(?:년|[.\-\/])[ \t]*(\d{1,2})[ \t]*(?:월|[.\-\/])[ \t]*(\d{1,2})[ \t]*(?:일|\.)?(?!\d)/g,(m,y,mo,d)=>`${y}. ${+mo}. ${+d}.`,"man","날짜·시간","연·월·일 글자를 생략하고 마침표 뒤 한 타 띄웁니다. ‘0’은 쓰지 않습니다.","규정 제12조 · 편람 p.49");
  rep(/(오전|오후)[ \t]*(\d{1,2})시(?:[ \t]*(\d{1,2})분)?/g,(m,ap,h,mi)=>{let H=+h;if(ap==="오후"&&H<12)H+=12;if(ap==="오전"&&H===12)H=0;return`${String(H).padStart(2,"0")}:${String(+(mi||0)).padStart(2,"0")}`;},"man","날짜·시간","시간은 24시각제로 쌍점을 찍어 씁니다.","편람 p.49");
  rep(/(\S)[ \t]+:[ \t]*/g,(m,p)=>`${p}: `,"man","문장 부호","쌍점은 앞말에 붙이고 뒷말과 띄웁니다.","편람 p.44");
- rep(/(\.)[ \t]+~[ \t]+(\d)/g,(m,a,b)=>`${a}~${b}`,"man","문장 부호","물결표는 앞뒤에 붙여 씁니다.","편람 p.44");
+ rep(SHORT_DATE,(m,a,b)=>`${+a}. ${+b}.`,"man","날짜·시간","월·일 뒤 마침표 다음은 한 타 띄웁니다(10.30. → 10. 30.).","편람 p.44, 49");
+ rep(/([.)\d])[ \t]+~[ \t]*(\S)|([.)\d])[ \t]*~[ \t]+(\S)/g,(m,a,b,c,d)=>`${a||c}~${b||d}`,"man","문장 부호","물결표는 앞뒤에 붙여 씁니다.","편람 p.44");
  const words=[["마켓팅","마케팅"],["싸이트","사이트"],["패널티","페널티"],["컨텐츠","콘텐츠"],["워크샵","워크숍"],["메세지","메시지"],["리더쉽","리더십"],["파트너쉽","파트너십"],["컨퍼런스","콘퍼런스"],["서포터즈","서포터스"],["어플리케이션","애플리케이션"],["뱃지","배지"]];
  for(const[a,b]of words)rep(new RegExp(a,"g"),()=>b,"man","외래어","외래어 표기법에 맞춥니다.","편람 p.42");
  for(const[a,b]of[["국내·외","국내외"],["상·하수도","상하수도"],["초·중·고","초중고"],["출·퇴근","출퇴근"],["일사분란","일사불란"],["최소값","최솟값"],["최대값","최댓값"],["갯수","개수"]])rep(new RegExp(a,"g"),()=>b,"man","맞춤법","표준국어대사전 표기에 맞춥니다.","편람 p.41~42");
@@ -653,10 +865,555 @@ function basicFix(src){
  rep(/(집행|자부담|참여|달성)율/g,(m,a)=>a+"률","man","맞춤법","받침 있는 말 뒤에는 ‘률’을 씁니다.","편람 p.41");
  rep(/아니오(?=[\s,.)]|$)/g,()=>"아니요","guide","맞춤법","대답하는 말은 ‘아니요’입니다.","길잡이 1부 3장");
  for(const[a,b]of[["익일","다음 날"],["익월","다음 달"],["금일","오늘"],["금번","이번"],["금회","이번"],["제고하","높이"],["용이하","쉬우"],["상기 ","위 "]])rep(new RegExp(a,"g"),()=>b,"man","쉬운 말","어려운 한자어를 다듬은 말로 바꿉니다.","편람 p.39~41");
- const notes=["기본 규칙 점검 결과입니다. 문장 표현·항목 기호·끝 표시는 직접 확인하세요. Claude 사용을 허용하면 문장 단위 정밀 검토를 받을 수 있습니다."];
+ const st=layoutCheck(s).filter(x=>x.g==="문장 구조");
+ const notes=["Claude를 쓰지 않는 기본 점검 결과입니다. 문장을 바꿔 쓰는 수정은 하지 않았습니다. 팀 암호를 입력하거나 본인 Claude 계정 사용을 허용하면 문장 구조까지 고친 수정본을 받을 수 있습니다."];
+ st.slice(0,12).forEach(x=>notes.push(`${x.line}행 · ${x.kind}: ${x.msg}${x.ex?` (${x.ex})`:""}`));
  if(!/끝\.?\s*$/.test(s.trim()))notes.push("본문 끝에 ‘  끝.’ 표시가 없습니다(규정 제22조 · 편람 p.61).");
  return{corrected:s,summary:"AI 검토를 쓸 수 없어 기본 규칙(날짜·시간, 문장 부호, 외래어, 일부 맞춤법·띄어쓰기, 다듬은 말)만 적용했습니다.",changes,notes};
 }
+
+/* ================= 표 · 붙여넣기 ================= */
+const isTable=l=>/^\s*\|.*\|\s*$/.test(l);
+function htmlToText(html){
+ const doc=new DOMParser().parseFromString(html,"text/html");
+ doc.querySelectorAll("style,script,head,title,meta,link").forEach(n=>n.remove());
+ let tables=0;
+ const BLOCK=/^(P|DIV|LI|H[1-6]|BLOCKQUOTE|SECTION|ARTICLE|UL|OL|PRE|TR)$/;
+ function flat(root){
+  let out="";const nl=()=>{if(out&&!out.endsWith("\n"))out+="\n";};
+  (function walk(n){
+   if(n.nodeType===3){out+=n.nodeValue.replace(/[\r\n]+/g," ");return;}
+   if(n.nodeType!==1)return;
+   const t=n.tagName;
+   if(t==="BR"){out+="\n";return;}
+   if(t==="TABLE"){tables++;nl();out+=tableText(n)+"\n";return;}
+   const b=BLOCK.test(t);if(b)nl();
+   for(const c of n.childNodes)walk(c);
+   if(b)nl();
+  })(root);
+  return out;
+ }
+ function tableText(tb){
+  const grid=[];
+  [...tb.rows].forEach((r,ri)=>{grid[ri]=grid[ri]||[];let ci=0;
+   for(const c of r.cells){while(grid[ri][ci]!==undefined)ci++;
+    const txt=flat(c).replace(/\u00a0/g," ").split("\n").map(x=>x.trim()).filter(Boolean).join("<br>").replace(/\|/g,"｜");
+    const cs=Math.max(1,c.colSpan||1),rs=Math.max(1,c.rowSpan||1);
+    for(let a=0;a<rs;a++){grid[ri+a]=grid[ri+a]||[];for(let k=0;k<cs;k++)grid[ri+a][ci+k]=(a===0&&k===0)?txt:"";}
+    ci+=cs;}
+  });
+  const w=Math.max(...grid.map(r=>r.length));
+  return grid.map(r=>"| "+Array.from({length:w},(_,i)=>r[i]??"").join(" | ")+" |").join("\n");
+ }
+ let text=flat(doc.body).replace(/\u00a0/g," ").split("\n").map(l=>l.replace(/[ \t]+$/,"")).join("\n").replace(/\n{3,}/g,"\n\n").replace(/^\n+|\n+$/g,"");
+ return{text,tables};
+}
+function tsvToPipe(plain){
+ const L=plain.split(/\r?\n/);let n=0;const out=[];
+ for(let i=0;i<L.length;i++){
+  if(L[i].includes("\t")&&(L[i+1]?.includes("\t")||L[i-1]?.includes("\t"))){
+   if(!(L[i-1]?.includes("\t")))n++;
+   out.push("| "+L[i].split("\t").map(c=>c.trim().replace(/\|/g,"｜")).join(" | ")+" |");
+  }else out.push(L[i]);
+ }
+ return{text:out.join("\n"),tables:n};
+}
+function insertText(ta,t){
+ ta.focus();ta.setRangeText(t,ta.selectionStart,ta.selectionEnd,"end");
+ ta.dispatchEvent(new Event("input",{bubbles:true}));
+}
+$("inText").addEventListener("paste",e=>{
+ const cd=e.clipboardData;if(!cd)return;
+ const html=cd.getData("text/html"),plain=cd.getData("text/plain");
+ if(html&&/<table/i.test(html)){
+  e.preventDefault();const r=htmlToText(html);insertText(e.target,r.text);
+  toast(`표 ${r.tables}개를 ‘| 칸 | 칸 |’ 텍스트 표로 붙여 넣었습니다.`);return;
+ }
+ if(plain&&/\t/.test(plain)&&/\n/.test(plain)){
+  const r=tsvToPipe(plain);if(r.tables){e.preventDefault();insertText(e.target,r.text);toast(`표 ${r.tables}개를 텍스트 표로 붙여 넣었습니다.`);return;}
+ }
+ if(!plain&&html){e.preventDefault();insertText(e.target,htmlToText(html).text);return;}
+ if(!plain&&!html&&[...cd.items].some(i=>i.type.startsWith("image/"))){
+  e.preventDefault();const f=[...cd.items].find(i=>i.type.startsWith("image/")).getAsFile();
+  addShots([f]);
+ }
+});
+/* 수정본을 HTML로: 표는 실제 표로 */
+function docToHtml(text,forClip){
+ const L=text.split("\n");let h="";
+ for(let i=0;i<L.length;i++){
+  if(isTable(L[i])){
+   const rows=[];while(i<L.length&&isTable(L[i])){rows.push(L[i]);i++;}i--;
+   const body=rows.filter(r=>!/^\s*\|[\s:\-|]+\|\s*$/.test(r)).map(r=>"<tr>"+r.trim().slice(1,-1).split("|").map(c=>`<td${forClip?' style="border:1px solid #000;padding:2px 6px"':""}>${esc(c.trim()).replace(/&lt;br&gt;/g,"<br>")}</td>`).join("")+"</tr>").join("");
+   h+=`<table class="doc-t"${forClip?' style="border-collapse:collapse"':""}>${body}</table>`;
+  }else{
+   const line=esc(L[i]).replace(/^ +/,m=>"&nbsp;".repeat(m.length)).replace(/ {2}/g," &nbsp;");
+   h+=forClip?`<p style="margin:0">${line||"&nbsp;"}</p>`:`<div class="ln">${line||"&nbsp;"}</div>`;
+  }
+ }
+ return h;
+}
+
+/* ================= 문단·줄바꿈·문장 구조 점검 (Claude 없이 동작) ================= */
+const MARK=/^\s*(\d{1,2}\.(?!\d)|[가-힣]\.(?=\s)|\(\d+\)|\([가-힣]\)|\d{1,2}\)|[가-힣]\)|[①-⑳]|[㉮-㉻]|[□■○●◦ㅇ▶▷※*•·\-–]|붙임|첨부|제목|수신|참조|경유|발신|끝|\|)/;
+const ENDS=/([.!?:;)\]」』"”’>\d]|다|음|함|됨|임|요|까|람|것|기|등|명|원|건|개|회|부|일|월|년|분|시|안|서|표|계획|결과|현황|개요|보고)\s*$/;
+const PART=/^(을|를|이|가|은|는|에|에서|에게|의|와|과|로|으로|도|만|까지|부터|하고|하여|하는|하기|한|할|함|했|하였|합니다|되|된|될|됨|되어|적|적인|적으로|별|당|용|들)(?=[\s.,·)]|$)/;
+function isWrap(cur,nx){
+ const a=cur.trim(),b=(nx||"").trim();
+ if(!a||!b||isTable(cur)||isTable(nx)||MARK.test(nx)||mkInfo(b))return false;
+ if(PART.test(b)&&/[가-힣]$/.test(a))return true;
+ if(splitWord(a,b))return true;
+ return a.length>=12&&!ENDS.test(a);
+}
+const SOLO=/^(및|등|것|수|때|중|위|안|곳|날|해|달|간|시|데|바|뿐|분|명|원|건|개|회|부|일|월|년|차|급|과|팀|실|처|장|단|더|또|각|총|약|본|이|그|저|전|후|외|내|별|당|만)$/;
+function splitWord(a,b){const last=a.split(/\s+/).pop();return /^[가-힣]$/.test(last)&&!SOLO.test(last)&&/^[가-힣]/.test(b)&&!MARK.test(b);}
+const joinWrap=(cur,nx)=>{const a=cur.replace(/\s+$/,""),b=nx.trim();return a+((/[가-힣]$/.test(a)&&(PART.test(b)||splitWord(a,b)))?"":" ")+b;};
+const MCLASS=[["1.",/^\d{1,2}\.\s/],["가.",/^[가-힣]\.\s/],["(1)",/^\(\d+\)/],["(가)",/^\([가-힣]\)/],["1)",/^\d{1,2}\)/],["가)",/^[가-힣]\)/],["①",/^[①-⑳]/],["□",/^[□■]/],["○",/^[○●ㅇ◦]/],["-",/^[-–]\s/]];
+const STRUCT=[
+ [/에\s?있어서/,"‘~에 있어서’는 번역투입니다. ‘~에서’, ‘~할 때’로 줄이세요."],
+ [/것으로\s(나타났|보여지|판단되|사료되|확인되)/,"‘~것으로 나타났음’은 군더더기입니다. 서술어로 바로 끝맺으세요."],
+ [/되어지|되어진|되어져|지게\s?되/,"이중 피동입니다. ‘되다’, ‘-지다’ 하나만 쓰세요."],
+ [/에\s?의해|에\s?의하여/,"‘~에 의해’는 번역투입니다. ‘~(으)로’로 바꿀 수 있는지 보세요."],
+ [/에\s?대하여|에\s?대해서?/,"‘~에 대하여’가 꼭 필요한지 확인하세요(예: ‘~을/를’)."],
+ [/할\s수\s있도록\s하/,"‘~할 수 있도록 하다’는 군더더기입니다. ‘~하게 하다’ 등으로 줄이세요."],
+ [/하도록\s하겠습니다/,"‘~하도록 하겠습니다’ → ‘~하겠습니다’."],
+ [/사료(됨|됩니다|된다)/,"‘사료됨’ → ‘생각함’, ‘판단함’."],
+ [/(고취|진작|향상|개선|발전|감소|증가|활성화|정착)\s?시[키켜]/,"불필요한 사동입니다. ‘~하다’로 쓰세요(고취 시키고 → 고취하고)."],
+ [/미리\s예약|과반수\s이상|남은\s여생|다시\s재|가장\s최선|기간\s동안|약\s?\d+\s?여/,"뜻이 겹치는 중복 표현입니다."],
+ [/([가-힣]+의\s){3,}/,"‘의’가 세 번 이상 이어집니다. 문장을 풀어 쓰세요."],
+ [/(할\s것|바람|엄금|금함)\.?\s*$/,"명령조 끝맺음입니다. 학생·외부 대상 문서라면 ‘~하시기 바랍니다’로 바꾸세요."],
+ [/^[^,]{0,40}?[가-힣](은|는)\s[^,]{0,30}?[가-힣](은|는)\s/,"주제어(은/는)가 두 번 나옵니다. 주어와 서술어의 호응을 확인하세요."]
+];
+/* ---- 항목 기호(가나다) 위계·순서·띄어쓰기 ---- */
+const HSEQ="가나다라마바사아자차카타파하거너더러머버서어저처커터퍼허";
+const MK_RE=/^(\d{1,2}\.(?!\d)|[가-힣]\.(?![가-힣]{2,}\.)|\(\d{1,2}\)|\([가-힣]\)|\d{1,2}\)|[가-힣]\)|[①-⑳]|[㉮-㉻])/;
+function mkInfo(body){
+ const m=body.match(MK_RE);if(!m)return null;const k=m[1];
+ // '가.'·'가)'는 뒤에 공백/글자가 와야 항목으로 봄(일반 문장 첫 글자 오인 방지)
+ if(/^[가-힣][.)]$/.test(k)&&!HSEQ.includes(k[0]))return null;
+ let cls,idx;
+ if(/^\d+\.$/.test(k)){cls="1.";idx=+k.slice(0,-1);}
+ else if(/^[가-힣]\.$/.test(k)){cls="가.";idx=HSEQ.indexOf(k[0])+1;}
+ else if(/^\(\d+\)$/.test(k)){cls="(1)";idx=+k.slice(1,-1);}
+ else if(/^\([가-힣]\)$/.test(k)){cls="(가)";idx=HSEQ.indexOf(k[1])+1;if(!idx)return null;}
+ else if(/^\d+\)$/.test(k)){cls="1)";idx=+k.slice(0,-1);}
+ else if(/^[가-힣]\)$/.test(k)){cls="가)";idx=HSEQ.indexOf(k[0])+1;}
+ else if(/^[①-⑳]$/.test(k)){cls="①";idx=k.charCodeAt(0)-0x2460+1;}
+ else{cls="㉮";idx=k.charCodeAt(0)-0x326E+1;}
+ return{k,cls,idx,rest:body.slice(k.length)};
+}
+const LEVELS={in:["1.","가.","(1)","(가)","1)"],out:["1.","가.","1)","가)","(1)","(가)","①","㉮"]};
+const symOf=(cls,idx)=>({"1.":`${idx}.`,"가.":`${HSEQ[idx-1]||"?"}.`,"(1)":`(${idx})`,"(가)":`(${HSEQ[idx-1]||"?"})`,"1)":`${idx})`,"가)":`${HSEQ[idx-1]||"?"})`,"①":String.fromCharCode(0x2460+idx-1),"㉮":String.fromCharCode(0x326E+idx-1)}[cls]);
+function itemPlan(L,scope){
+ // 각 항목 줄의 위계·기대 들여쓰기·순서 오류를 계산
+ const order=LEVELS[scope==="out"?"out":"in"],plan=[];let base=null,cnt=[],lastLv=0;
+ L.forEach((l,i)=>{
+  if(isTable(l)||!l.trim())return;
+  const lead=l.match(/^\s*/)[0].replace(/\t/g,"  ").length,body=l.trimStart(),mk=mkInfo(body);if(!mk)return;
+  const lv=order.indexOf(mk.cls)+1;
+  const p={i,lead,mk,lv,issues:[]};
+  if(!lv){p.issues.push(["위계",`‘${mk.k}’는 ${scope==="out"?"편람":"학교 규정"} 항목 기호 체계에 없는 기호입니다(${order.join(" → ")}).`]);plan.push(p);return;}
+  if(base===null)base=lv===1?lead:Math.max(0,lead-2*(lv-1));
+  if(lv>lastLv+1&&lastLv>0)p.issues.push(["위계",`‘${order[lastLv-1]}’ 다음 하위 항목은 ‘${order[lastLv]}’입니다. ‘${mk.k}’는 ${lv}번째 항목 기호입니다(${scope==="out"?"편람 p.51":"규정 제21조"}).`]);
+  else if(lastLv===0&&lv>1&&i>0)p.issues.push(["위계",`상위 항목 없이 ${lv}번째 항목 기호 ‘${mk.k}’로 시작합니다. 첫째 항목은 ‘${order[0]}’입니다.`]);
+  cnt.length=lv;const exp=(cnt[lv-1]||0)+1;
+  if(mk.idx!==exp&&mk.idx!==1)p.issues.push(["순서",mk.idx<exp?`‘${mk.k}’가 반복됩니다. ‘${symOf(mk.cls,exp)}’ 차례입니다.`:`‘${symOf(mk.cls,exp)}’ 차례인데 ‘${mk.k}’가 왔습니다(빠진 항목 확인).`]);
+  cnt[lv-1]=mk.idx;lastLv=lv;
+  p.expLead=base+2*(lv-1);
+  plan.push(p);
+ });
+ return plan;
+}
+function fixMarkerSpace(body){
+ const mk=mkInfo(body);if(!mk)return body;
+ const r=mk.rest;
+ if(/^[가-힣A-Za-z0-9(“"'‘□○]/.test(r)&&!/^\d/.test(r))return mk.k+" "+r;
+ if(/^ {2,}\S/.test(r))return mk.k+" "+r.trimStart();
+ return body;
+}
+
+/* ---- 표 칸 점검 ---- */
+const SHORT_DATE=/(?<![\d.])(\d{1,2})\.[ \t]?(\d{1,2})\.(?=[(\s~|]|$)/g;
+function fixCell(c){
+ let v=c.replace(/[\u00a0\u3000\u2002-\u200a]/g," ").replace(/[\u200b\ufeff]/g,"");
+ v=v.replace(/(\S) {2,}(?=\S)/g,"$1 ");
+ v=v.replace(SHORT_DATE,(x,a,b)=>`${+a}. ${+b}.`);
+ v=v.replace(/(\S)[ \t]*~[ \t]*(\S)/g,"$1~$2");
+ return v.trim();
+}
+
+function layoutCheck(text){
+ const L=text.split("\n"),iss=[],scope=(typeof state!=="undefined"&&state.scope)||"in";
+ const add=(i,g,kind,msg,ex,fix)=>iss.push({line:i+1,g,kind,msg,ex:(ex??L[i]).trim().slice(0,60),fix:!!fix});
+ let blank=0;const ends={gae:[],seo:[]};
+ let tno=0,trow=0,colEnds={};
+ const flushCols=(ti)=>{for(const c in colEnds){const e=colEnds[c];if(e.gae.length&&e.seo.length){const few=e.gae.length<e.seo.length?e.gae:e.seo;iss.push({line:few[0][0],g:"표",kind:"표 안 끝맺음",msg:`표 ${ti} ${+c+1}열에 명사형·개조식과 서술식(-다/-니다) 끝맺음이 섞여 있습니다(${few.map(x=>x[1]+"행").join(", ")}).`,ex:"",fix:false});}}colEnds={};};
+ L.forEach((l,i)=>{
+  if(/[\u00a0\u3000\u2002-\u200b\ufeff]/.test(l))add(i,"공백","특수 공백","한글·PDF에서 복사된 특수 공백이 있습니다.",null,1);
+  if(/\t/.test(l)&&!isTable(l))add(i,"공백","탭 문자","탭 대신 공백으로 들여쓰기하세요(2타 단위).",null,0);
+  if(/\S[ \t]+$/.test(l))add(i,"공백","줄 끝 공백","줄 끝에 불필요한 공백이 있습니다.",null,1);
+  if(!l.trim()){blank++;if(blank===2)add(i,"문단","빈 줄 중복","문단 사이 빈 줄은 한 줄이면 충분합니다.","(빈 줄)",1);if(tno&&trow){flushCols(tno);trow=0;}return;}
+  blank=0;
+  if(isTable(l)){
+   if(!(i>0&&isTable(L[i-1]))){tno++;trow=0;colEnds={};}
+   if(/^\s*\|[\s:\-|]+\|\s*$/.test(l))return;
+   trow++;
+   const cells=l.trim().slice(1,-1).split("|"),p=L[i-1];
+   if(p&&isTable(p)&&!/^\s*\|[\s:\-|]+\|\s*$/.test(p)&&p.trim().slice(1,-1).split("|").length!==cells.length)add(i,"표","열 수 불일치",`표 ${tno} ${trow}행의 칸 수가 윗행과 다릅니다. 병합 셀을 확인하세요.`);
+   cells.forEach((raw,ci)=>{
+    const c=raw.trim(),plain=c.replace(/<br>/g," ");if(!plain)return;
+    const at=`표 ${tno} · ${trow}행 ${ci+1}열`;
+    if(fixCell(raw)!==c)add(i,"표","표 안 띄어쓰기",`${at}: 날짜(10. 30.)·물결표(~)·공백 표기를 고칠 곳이 있습니다(편람 p.44, 49).`,c,1);
+    if(trow>1&&plain.replace(/\s/g,"").length>60)add(i,"표","표 안 긴 문구",`${at}: ${plain.replace(/\s/g,"").length}자로 깁니다. 칸 안은 짧은 명사형으로 줄이세요.`,c);
+    for(const[re,msg]of STRUCT){const mm=plain.match(re);if(mm)add(i,"표","표 안 표현",`${at}: ${msg}`,mm[0]);}
+    if(trow>1){const t=plain.replace(/[.\s]+$/,"");const e=colEnds[ci]=colEnds[ci]||{gae:[],seo:[]};if(/(다|니다|요)$/.test(t))e.seo.push([i+1,trow]);else if(/[가-힣]$/.test(t))e.gae.push([i+1,trow]);}
+   });
+   if(!(i+1<L.length&&isTable(L[i+1])))flushCols(tno);
+   return;
+  }
+  const body=l.replace(/^\s+/,"");
+  const m=body.match(/(\S)( {2,})(?=\S)/);
+  const mk=mkInfo(body);
+  if(m&&!(mk&&m.index===mk.k.length-1)&&!/^ {2,}끝/.test(body.slice(m.index+1))&&!/^(제목|수신|붙임|첨부)$/.test(body.slice(0,m.index+1).split(" ").pop()))add(i,"공백","공백 두 칸 이상","단어 사이에 공백이 두 칸 이상입니다.",null,1);
+  if(mk&&fixMarkerSpace(body)!==body)add(i,"항목 기호","기호 뒤 띄어쓰기",`‘${mk.k}’ 뒤에는 한 칸(1타)만 띄웁니다(편람 p.53).`,null,1);
+  const em=l.match(/([.)」』”"])[ \t]*끝\.?$/);if(em&&!/[.)」』”"]  끝\.$/.test(l))add(i,"문단","끝 표시 간격","마지막 글자 뒤 2타 띄우고 ‘끝.’(편람 p.61).",null,1);
+  if(i+1<L.length&&isWrap(l,L[i+1])){
+   const nx=L[i+1].trim();
+   if(PART.test(nx)||splitWord(l.trim(),nx))add(i,"줄바꿈","어절 분리",`어절이 줄바꿈으로 나뉘었습니다(…${l.trim().slice(-6)}↵${nx.slice(0,6)}…).`,null,1);
+   else add(i,"줄바꿈","문장 중간 줄바꿈",`문장이 끝나지 않았는데 줄이 바뀝니다(…${l.trim().slice(-8)}↵${nx.slice(0,8)}…).`,null,1);
+  }
+  for(const[k,re]of MCLASS){if(re.test(body)){const t=body.replace(/[.\s]+$/,"");if(/(다|니다|요)$/.test(t))ends.seo.push(i+1);else if(/(음|함|됨|임|있음|없음|것|필요|예정|계획)$/.test(t))ends.gae.push(i+1);break;}}
+  const plain=body.replace(MARK,"");
+  if(plain.replace(/\s/g,"").length>80)add(i,"문장 구조","긴 문장",`${plain.replace(/\s/g,"").length}자로 깁니다. 두 문장으로 나누면 읽기 쉽습니다(길잡이 1부 1장).`);
+  for(const[re,msg]of STRUCT){const mm=body.match(re);if(mm){add(i,"문장 구조","표현",msg,mm[0]);}}
+ });
+ // 가나다 위계·순서·들여쓰기
+ for(const p of itemPlan(L,scope)){
+  for(const[kind,msg]of p.issues)add(p.i,"항목 기호",kind==="순서"?"가나다 순서":"항목 위계",msg);
+  if(p.expLead!==undefined&&!p.issues.some(x=>x[0]==="위계")&&p.lead!==p.expLead)
+   add(p.i,"항목 기호","들여쓰기",`‘${p.mk.k}’는 ${p.lv}번째 항목이라 ${p.expLead}칸 들여씁니다(현재 ${p.lead}칸, 하위 항목마다 2타 · 편람 p.52).`,null,1);
+ }
+ if(ends.gae.length&&ends.seo.length){const few=ends.gae.length<ends.seo.length?ends.gae:ends.seo;
+  iss.push({line:few[0],g:"문장 구조",kind:"끝맺음 혼용",msg:`개조식(-음/-함)과 서술식(-다/-니다) 끝맺음이 섞여 있습니다(${few.slice(0,5).join(", ")}행). 하나로 통일하세요.`,ex:"",fix:false});}
+ return iss.sort((a,b)=>a.line-b.line);
+}
+function autoTidy(text){
+ let n=0;const scope=(typeof state!=="undefined"&&state.scope)||"in";
+ let t=text.replace(/[\u00a0\u3000\u2002-\u200a]/g,()=>{n++;return" ";}).replace(/[\u200b\ufeff]/g,()=>{n++;return"";});
+ let L=t.split("\n").map(l=>{const r=l.replace(/[ \t]+$/,"");if(r!==l)n++;return r;});
+ L=L.map(l=>{
+  if(isTable(l)){if(/^\s*\|[\s:\-|]+\|\s*$/.test(l))return l;const cells=l.trim().slice(1,-1).split("|");const fx=cells.map(fixCell);
+   const out="| "+fx.join(" | ")+" |";if(fx.some((v,i)=>v!==cells[i].trim()))n++;return out;}
+  const lead=l.match(/^\s*/)[0];let b=l.slice(lead.length);
+  const b0=fixMarkerSpace(b);if(b0!==b){n++;b=b0;}
+  const mk=mkInfo(b),skip=mk?mk.k.length+1:0;
+  b=b.slice(0,skip)+b.slice(skip).replace(/(\S)( {2,})(?=\S)/g,(x,a,sp,off,str)=>{const rest=str.slice(off+x.length);const prev=str.slice(0,off+1).split(" ").pop();if(/^끝/.test(rest)||/^(제목|수신|붙임|첨부)$/.test(prev))return x;n++;return a+" ";});
+  b=b.replace(/([.)」』”"])[ \t]*끝\.?$/,(x,a)=>{const y=a+"  끝.";if(y!==x)n++;return y;});
+  return lead+b;});
+ const out=[];for(let i=0;i<L.length;i++){let cur=L[i];while(i+1<L.length&&isWrap(cur,L[i+1])){cur=joinWrap(cur,L[i+1]);n++;i++;}out.push(cur);}
+ // 가나다 들여쓰기 맞춤(위계가 맞는 항목만)
+ for(const p of itemPlan(out,scope)){if(p.expLead===undefined||p.issues.some(x=>x[0]==="위계")||p.lead===p.expLead)continue;out[p.i]=" ".repeat(p.expLead)+out[p.i].trimStart();n++;}
+ t=out.join("\n").replace(/\n{3,}/g,()=>{n++;return"\n\n";});
+ return{text:t,count:n};
+}
+
+const GROUP_ORDER=["문장 구조","항목 기호","표","줄바꿈","문단","공백"];
+let layTimer=null;
+function renderLayout(){
+ const text=$("inText").value,iss=text.trim()?layoutCheck(text):[];
+ const fixable=iss.filter(x=>x.fix).length;
+ const byG={};iss.forEach(x=>byG[x.g]=(byG[x.g]||0)+1);
+ $("layKinds").innerHTML=iss.length?GROUP_ORDER.filter(g=>byG[g]).map(g=>`<span class="chip lay-${GROUP_ORDER.indexOf(g)}">${g} <b>${byG[g]}</b></span>`).join(""):`<span class="chip">문제 없음</span>`;
+ $("layList").innerHTML=iss.length?iss.slice(0,80).map(x=>`<li><span class="ln">${x.line}행</span><span class="chip lay-${GROUP_ORDER.indexOf(x.g)}">${esc(x.kind)}</span><span class="msg">${esc(x.msg)}${x.ex?` <code>${esc(x.ex)}</code>`:""}</span>${x.fix?'<span class="auto">자동 정리</span>':""}</li>`).join("")+(iss.length>80?`<li class="meta">외 ${iss.length-80}건</li>`:"")
+  :`<li class="meta">${text.trim()?"문단·줄바꿈·문장 구조에서 눈에 띄는 문제가 없습니다.":"입력하면 바로 점검합니다."}</li>`;
+ $("layCount").textContent=iss.length;
+ $("tidyBtn").textContent=`줄바꿈·공백 자동 정리 (${fixable}건)`;$("tidyBtn").disabled=!fixable;
+}
+$("tidyBtn").onclick=()=>{const ta=$("inText");const r=autoTidy(ta.value);if(!r.count){toast("정리할 곳이 없습니다.");return;}ta.value=r.text;ta.dispatchEvent(new Event("input",{bubbles:true}));toast(`줄바꿈·공백 ${r.count}곳을 정리했습니다.`);};
+$("inText").addEventListener("input",()=>{clearTimeout(layTimer);layTimer=setTimeout(renderLayout,250);});
+
+/* ================= AI 잠금 (팀 암호 또는 본인 계정 허용) ================= */
+const PW_HASH="f0c757cb19ca90e8ee1b37abe21834986a38b6470fbd6255ef11527d85a83e0e";
+let aiMode=null,aiAvail=null; // aiMode: null | "pw" | "self";  aiAvail: null(확인 중) | true | false
+try{const m=localStorage.getItem("kku-ai");if(m==="pw"||m==="self")aiMode=m;}catch{}
+async function sha256(t){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(t));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("");}
+function setAi(st){
+ if(st==="ready"||st==="granted")aiAvail=true;else if(st==="off")aiAvail=false;
+ if(st==="denied"){aiAvail=false;}
+ const el=$("aiState"),tip=$("aiTip");
+ const on=aiAvail&&aiMode;
+ $("aiUnlock").hidden=!!on||aiAvail===false;
+ $("aiOffBtn").hidden=!aiMode;
+ if(aiAvail===null){el.textContent="확인 중";el.className="ai-pill";tip.textContent="";}
+ else if(aiAvail===false){el.textContent="사용 불가";el.className="ai-pill off";tip.textContent=st==="denied"?"Claude 사용을 허용하지 않아 기본 점검만 동작합니다. 다시 허용하려면 페이지를 새로 고침하세요.":"이 화면에서는 Claude를 쓸 수 없어 기본 규칙과 ③ 점검만 동작합니다.";}
+ else if(!aiMode){el.textContent="잠김";el.className="ai-pill off";tip.textContent="팀 암호를 입력하거나 본인 Claude 계정 사용을 허용하면 문장 단위 AI 검토가 켜집니다.";}
+ else{el.textContent=aiMode==="pw"?"켜짐 · 팀 암호":"켜짐 · 본인 계정 허용";el.className="ai-pill on";tip.textContent=st==="granted"?"문장 구조까지 검토하는 AI 검토가 동작 중입니다.":(aiMode==="pw"?"처음 검토할 때 본인 Claude 계정 사용 확인 창이 한 번 뜹니다.":"AI 검토가 켜져 있습니다.");}
+ $("imgTableBtn").title=on?"":"AI 검토를 켜면 사용할 수 있습니다";try{renderShots()}catch{}$("imgDocBtn").title=on?"문서·표를 캡처한 이미지를 읽어 입력란에 옮겨 적습니다. 입력란에 끌어다 놓아도 됩니다.":"AI 검토를 켜면 사용할 수 있습니다";
+}
+function saveMode(m){setTimeout(()=>{try{renderShots()}catch{}},0);aiMode=m;try{m?localStorage.setItem("kku-ai",m):localStorage.removeItem("kku-ai")}catch{}setAi("refresh");}
+$("pwBtn").onclick=async()=>{
+ const v=$("pwIn").value.trim();if(!v){$("pwIn").focus();return;}
+ let h="";try{h=await sha256(v);}catch{toast("이 브라우저에서는 암호를 확인할 수 없습니다. ‘본인 계정 허용’을 이용하세요.");return;}
+ if(h===PW_HASH){$("pwIn").value="";saveMode("pw");toast("팀 암호가 확인되어 AI 검토를 켰습니다.");}
+ else{toast("암호가 맞지 않습니다.");$("pwIn").select();}
+};
+$("pwIn").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();$("pwBtn").click();}});
+$("selfBtn").onclick=async()=>{
+ let perms=null;try{perms=await claude.use("permissions");}catch{}
+ if(perms){const r=await perms.request(["sample"]).catch(()=>({}));
+  if(r.sample==="granted"){saveMode("self");toast("본인 Claude 계정 사용을 허용했습니다.");return;}
+  if(r.sample==="denied"){setAi("denied");return;}
+ }
+ saveMode("self");toast("AI 검토를 켰습니다. 처음 검토할 때 확인 창이 뜹니다.");
+};
+$("aiOffBtn").onclick=()=>{saveMode(null);toast("AI 검토를 껐습니다.");};
+const aiOn=()=>!!(sample&&aiMode);
+
+/* ================= 표 입력기 ================= */
+let te={rows:[],range:null};
+const blankRows=(r,c)=>Array.from({length:r},()=>Array(c).fill(""));
+function pipeToRows(lines){return lines.filter(r=>!/^\s*\|[\s:\-|]+\|\s*$/.test(r)).map(r=>r.trim().slice(1,-1).split("|").map(c=>c.trim().replace(/<br>/g,"\n")));}
+function rowsToPipe(rows){const w=Math.max(1,...rows.map(r=>r.length));return rows.filter(r=>r.some(c=>String(c).trim())).map(r=>"| "+Array.from({length:w},(_,i)=>String(r[i]??"").trim().split("\n").map(x=>x.trim()).filter(Boolean).join("<br>").replace(/\|/g,"｜")).join(" | ")+" |").join("\n");}
+function tableAtCursor(){
+ const ta=$("inText"),v=ta.value,pos=ta.selectionStart,L=v.split("\n");
+ let off=0,li=0;for(;li<L.length;li++){if(pos<=off+L[li].length)break;off+=L[li].length+1;}
+ if(li>=L.length||!isTable(L[li]))return null;
+ let a=li,b=li;while(a>0&&isTable(L[a-1]))a--;while(b<L.length-1&&isTable(L[b+1]))b++;
+ const start=L.slice(0,a).reduce((s,l)=>s+l.length+1,0),end=start+L.slice(a,b+1).join("\n").length;
+ return{rows:pipeToRows(L.slice(a,b+1)),start,end};
+}
+function teRender(){
+ $("teGrid").innerHTML=te.rows.map((r,ri)=>"<tr>"+r.map((c,ci)=>`<td contenteditable="true" data-r="${ri}" data-c="${ci}">${esc(c)}</td>`).join("")+"</tr>").join("");
+ $("teSize").textContent=`${te.rows.length}행 × ${te.rows[0]?.length||0}열`;
+}
+function teRead(){te.rows=[...$("teGrid").rows].map(r=>[...r.cells].map(c=>c.innerText.replace(/\n+$/,"")));}
+function teOpen(){
+ const hit=tableAtCursor();
+ te.rows=hit?hit.rows:blankRows(3,3);te.range=hit?[hit.start,hit.end]:null;te.title="";
+ $("teHead").textContent=hit?"표 편집 (입력란의 표를 고칩니다)":"표 입력";
+ $("teMsg").textContent="";teRender();$("teWrap").hidden=false;
+ setTimeout(()=>$("teGrid").querySelector("td")?.focus(),30);
+}
+function teClose(){$("teWrap").hidden=true;$("inText").focus();}
+function gridFromHtml(html){
+ const doc=new DOMParser().parseFromString(html,"text/html");const tb=doc.querySelector("table");if(!tb)return null;
+ const grid=[];[...tb.rows].forEach((r,ri)=>{grid[ri]=grid[ri]||[];let ci=0;for(const c of r.cells){while(grid[ri][ci]!==undefined)ci++;
+  const t=(c.innerText||c.textContent||"").replace(/\u00a0/g," ").split(/\n/).map(x=>x.trim()).filter(Boolean).join("\n");
+  const cs=Math.max(1,c.colSpan||1),rs=Math.max(1,c.rowSpan||1);
+  for(let a=0;a<rs;a++){grid[ri+a]=grid[ri+a]||[];for(let k=0;k<cs;k++)grid[ri+a][ci+k]=(a===0&&k===0)?t:"";}ci+=cs;}});
+ const w=Math.max(...grid.map(r=>r.length));return grid.map(r=>Array.from({length:w},(_,i)=>r[i]??""));
+}
+function teFill(at,block){
+ teRead();const[r0,c0]=at;
+ block.forEach((row,i)=>row.forEach((v,j)=>{const r=r0+i,c=c0+j;while(te.rows.length<=r)te.rows.push(Array(te.rows[0].length).fill(""));
+  if(c>=te.rows[0].length)te.rows.forEach(x=>{while(x.length<=c)x.push("");});te.rows[r][c]=v;}));
+ teRender();
+}
+$("teGrid").addEventListener("paste",e=>{
+ const td=e.target.closest("td");if(!td)return;const cd=e.clipboardData;if(!cd)return;
+ const html=cd.getData("text/html"),plain=cd.getData("text/plain");
+ let block=null;
+ if(html&&/<table/i.test(html))block=gridFromHtml(html);
+ else if(plain&&/\t|\n.*\S/.test(plain.trim()))block=plain.replace(/\r/g,"").replace(/\n$/,"").split("\n").map(l=>l.split("\t"));
+ if(block&&(block.length>1||block[0].length>1)){e.preventDefault();teFill([+td.dataset.r,+td.dataset.c],block);toast(`${block.length}행 × ${block[0].length}열을 붙여 넣었습니다.`);return;}
+ if(!plain&&[...cd.items].some(i=>i.type.startsWith("image/"))){e.preventDefault();const f=[...cd.items].find(i=>i.type.startsWith("image/")).getAsFile();readImageTable(f);}
+});
+$("teGrid").addEventListener("keydown",e=>{
+ const td=e.target.closest("td");if(!td)return;
+ if(e.key==="Tab"){e.preventDefault();const cells=[...$("teGrid").querySelectorAll("td")];const i=cells.indexOf(td)+(e.shiftKey?-1:1);
+  if(i>=cells.length){teRead();te.rows.push(Array(te.rows[0].length).fill(""));teRender();$("teGrid").querySelectorAll("td")[i]?.focus();}else cells[Math.max(0,i)]?.focus();}
+});
+$("teAddRow").onclick=()=>{teRead();te.rows.push(Array(te.rows[0]?.length||1).fill(""));teRender();};
+$("teAddCol").onclick=()=>{teRead();te.rows.forEach(r=>r.push(""));teRender();};
+$("teDelRow").onclick=()=>{teRead();if(te.rows.length>1)te.rows.pop();teRender();};
+$("teDelCol").onclick=()=>{teRead();if(te.rows[0].length>1)te.rows.forEach(r=>r.pop());teRender();};
+$("teCancel").onclick=teClose;
+$("teWrap").addEventListener("click",e=>{if(e.target===$("teWrap"))teClose();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("teWrap").hidden)teClose();});
+$("teOk").onclick=()=>{
+ teRead();const pipe=rowsToPipe(te.rows);if(!pipe){toast("표에 입력된 내용이 없습니다.");return;}
+ const ta=$("inText");const block=(te.title?te.title+"\n":"")+pipe;
+ if(te.range){ta.setRangeText(pipe,te.range[0],te.range[1],"end");}
+ else{const v=ta.value,p=ta.selectionStart;const pre=(p>0&&v[p-1]!=="\n")?"\n":"",post=(v[ta.selectionEnd]&&v[ta.selectionEnd]!=="\n")?"\n":"";ta.setRangeText(pre+block+post,p,ta.selectionEnd,"end");}
+ ta.dispatchEvent(new Event("input",{bubbles:true}));$("teWrap").hidden=true;toast(te.range?"입력란의 표를 고쳤습니다.":"표를 입력란에 넣었습니다.");
+};
+$("teBtn").onclick=teOpen;
+
+/* 이미지(캡처)에서 표 읽기 — AI 필요 */
+async function readImageTable(file){
+ if(!file)return;
+ if(!aiOn()){toast("이미지에서 표를 읽으려면 AI 검토를 먼저 켜세요(팀 암호 또는 본인 계정 허용).");return;}
+ const lim=await sample.limits().catch(()=>null);
+ if(!lim?.images){toast("이 화면에서는 이미지를 보낼 수 없습니다. 표 입력기에 직접 입력하세요.");return;}
+ if($("teWrap").hidden){te.rows=blankRows(3,3);te.range=null;te.title="";$("teHead").textContent="이미지에서 읽은 표";teRender();$("teWrap").hidden=false;}
+ $("teMsg").innerHTML='<span class="spin">이미지에서 표를 읽고 있습니다…</span>';
+ try{
+  const res=await sample.json(`이 이미지는 한국어 공문서에 들어 있는 표를 캡처한 것입니다. 표의 모든 칸을 보이는 글자 그대로 읽어 JSON 하나로만 답하세요.
+형식: {"title":"표 바로 위의 제목(없으면 빈 문자열)","rows":[["칸","칸"],["칸","칸"]]}
+규칙:
+- 행과 열 구조를 그대로 유지. 모든 행의 칸 수를 같게.
+- 병합된 칸은 맨 왼쪽 위 칸에만 글자를 넣고 나머지는 "".
+- 칸 안의 줄바꿈은 \\n으로 표시하되, 단지 칸 너비 때문에 줄이 바뀐 것이면 한 줄로 이어 쓸 것.
+- 글자를 고치거나 다듬지 말 것(오탈자·띄어쓰기도 보이는 그대로). 교정은 나중에 따로 합니다.
+- 표 아래의 본문 글자는 넣지 말 것.`,{images:[file],modelTier:"default"});
+  if(!res||!Array.isArray(res.rows)||!res.rows.length)throw{code:"invalid_json"};
+  te.rows=res.rows.map(r=>(Array.isArray(r)?r:[r]).map(c=>String(c??"")));
+  const w=Math.max(...te.rows.map(r=>r.length));te.rows=te.rows.map(r=>Array.from({length:w},(_,i)=>r[i]??""));
+  te.title=te.range?"":String(res.title||"").trim();teRender();
+  $("teMsg").textContent=`${te.rows.length}행 × ${w}열을 읽었습니다.${te.title?` 제목 ‘${te.title}’도 함께 넣습니다.`:""} 글자가 맞는지 확인한 뒤 ‘입력란에 넣기’를 누르세요.`;
+ }catch(e){
+  const m={not_granted:"Claude 사용을 허용하지 않아 이미지를 읽지 못했습니다.",image_rejected:"이미지 형식이나 크기를 읽을 수 없습니다. PNG·JPG로 캡처해 주세요.",rate_limited:"요청이 많습니다. 잠시 후 다시 시도하세요.",invalid_json:"표를 알아보지 못했습니다. 표 부분만 다시 캡처해 보세요.",cancelled:"취소했습니다."}[e?.code];
+  if(e?.code==="not_granted")setAi("denied");
+  $("teMsg").textContent=m||"이미지를 읽는 중 오류가 났습니다. 다시 시도하세요.";
+ }
+}
+$("imgTableBtn").onclick=()=>$("imgFile").click();
+$("imgFile").onchange=e=>{const f=e.target.files?.[0];e.target.value="";readImageTable(f);};
+
+/* ================= 문단·표 영역 구분 렌더 ================= */
+function segs(text){
+ const L=text.split("\n"),out=[];let buf=[],tb=[];
+ const flushT=()=>{if(buf.length){const t=buf.join("\n").replace(/^\s*\n|\n\s*$/g,"");if(t.trim())out.push({t:"p",v:t});buf=[];}};
+ for(let i=0;i<L.length;i++){
+  if(isTable(L[i])){flushT();tb=[];while(i<L.length&&isTable(L[i])){tb.push(L[i]);i++;}i--;
+   out.push({t:"tb",rows:tb.filter(r=>!/^\s*\|[\s:\-|]+\|\s*$/.test(r)).map(r=>r.trim().slice(1,-1).split("|").map(c=>c.trim()))});}
+  else buf.push(L[i]);
+ }
+ flushT();
+ // 문단: 빈 줄 기준으로 다시 나눔
+ const res=[];for(const s of out){if(s.t==="p")s.v.split(/\n[ \t]*\n/).forEach(v=>{if(v.trim())res.push({t:"p",v:v.replace(/^\n+|\n+$/g,"")});});else res.push(s);}
+ return res;
+}
+const cellHtml=s=>esc(s).replace(/&lt;br&gt;/g,"<br>");
+function cellDiff(a,b,mode){
+ if(mode==="clean")return cellHtml(b);
+ return diff(a,b).map(o=>piece(o,mode)).join("").replace(/&lt;br&gt;/g,"<br>");
+}
+function tableHtml(ra,rb,mode){
+ const rows=mode==="old"?ra:rb,other=mode==="old"?rb:ra;
+ const n=Math.max(ra.length,rb.length),w=Math.max(1,...ra.map(r=>r.length),...rb.map(r=>r.length));
+ let h='<table class="doc-t">';
+ for(let i=0;i<n;i++){
+  const A=ra[i],B=rb[i];
+  if(mode==="old"&&!A)continue;if((mode==="new"||mode==="clean")&&!B)continue;
+  const rowCls=!A?' class="row-ins"':!B?' class="row-del"':"";
+  h+=`<tr${rowCls}>`;
+  for(let j=0;j<w;j++){const a=A?.[j]??"",b=B?.[j]??"";
+   const tag=i===0?"th":"td";
+   h+=`<${tag}>${!A?(mode==="clean"?cellHtml(b):`<ins>${cellHtml(b)}</ins>`):!B?`<del>${cellHtml(a)}</del>`:cellDiff(a,b,mode==="both"?"both":mode)}</${tag}>`;}
+  h+="</tr>";
+ }
+ return h+"</table>";
+}
+function blockLabel(s,k){return s.t==="tb"?`표 ${k} · ${s.rows.length}행 × ${Math.max(...s.rows.map(r=>r.length))}열`:`문단 ${k}`;}
+function renderDoc(src,cor,view){
+ const A=segs(src),B=segs(cor);
+ const same=A.length===B.length&&A.every((s,i)=>s.t===B[i].t);
+ let np=0,nt=0;
+ const lab=s=>blockLabel(s,s.t==="tb"?++nt:++np);
+ if(!same){
+  // 구조가 달라졌으면(문단 합치기·나누기 등) 표는 짝지어 비교하고 문단은 통째로 비교
+  const ta=A.filter(s=>s.t==="tb"),tb2=B.filter(s=>s.t==="tb");
+  const pa=A.filter(s=>s.t==="p").map(s=>s.v).join("\n\n"),pb=B.filter(s=>s.t==="p").map(s=>s.v).join("\n\n");
+  if(ta.length!==tb2.length||!ta.length){
+   if(view==="side")return`<div class="side"><div><span class="cap">원문</span>${renderDiff(src,cor,"old")}</div><div><span class="cap">수정본</span>${renderDiff(src,cor,"new")}</div></div>`;
+   return`<div class="blk blk-p${src!==cor?" is-ch":""}"><span class="blk-tag">문서 전체</span><div class="blk-body">${view==="clean"?esc(cor):renderDiff(src,cor)}</div></div>`;
+  }
+  const blocks=[];
+  blocks.push({t:"p",a:pa,b:pb,key:"paras",label:"문단 전체 (문단 구성이 바뀌어 한꺼번에 비교)"});
+  ta.forEach((t,i)=>blocks.push({t:"tb",a:t.rows,b:tb2[i].rows,key:"t"+i,label:blockLabel(tb2[i],i+1)}));
+  return blocks.map(bk=>blockHtml(bk,view)).join("");
+ }
+ return A.map((s,i)=>blockHtml({t:s.t,a:s.t==="tb"?s.rows:s.v,b:s.t==="tb"?B[i].rows:B[i].v,key:"b"+i,label:lab(B[i])},view)).join("");
+}
+function blockHtml(bk,view){
+ const cbtn=bk.key?`<button class="blk-copy" data-copy="${bk.key}" title="${bk.t==="tb"?"이 표만 복사(한글·워드·엑셀에 표로 붙음)":"이 문단만 복사"}">복사</button>`:"";
+ const changed=bk.t==="tb"?JSON.stringify(bk.a)!==JSON.stringify(bk.b):bk.a!==bk.b;
+ const tag=`<span class="blk-tag">${esc(bk.label)}${changed&&view!=="clean"?' <b class="blk-ch">수정</b>':""}</span>${cbtn}`;
+ const cls=`blk blk-${bk.t}${changed?" is-ch":""}`;
+ if(view==="side"){
+  const L=bk.t==="tb"?tableHtml(bk.a,bk.b,"old"):renderDiff(bk.a,bk.b,"old");
+  const R=bk.t==="tb"?tableHtml(bk.a,bk.b,"new"):renderDiff(bk.a,bk.b,"new");
+  return`<div class="${cls}">${tag}<div class="blk-side"><div>${L}</div><div>${R}</div></div></div>`;
+ }
+ const body=view==="clean"?(bk.t==="tb"?tableHtml(bk.a,bk.b,"clean"):esc(bk.b)):(bk.t==="tb"?tableHtml(bk.a,bk.b,"both"):renderDiff(bk.a,bk.b));
+ return`<div class="${cls}">${tag}<div class="blk-body">${body}</div></div>`;
+}
+
+/* ================= 캡처 이미지 업로드 (문서 전체 읽기) ================= */
+async function readImageDoc(files){
+ files=[...(files||[])].filter(f=>/^image\//.test(f.type));
+ if(!files.length)return;
+ const msg=$("inMsg");
+ if(!aiOn()){msg.textContent="스크린샷은 담아 두었습니다. 읽으려면 위에서 AI 검토를 먼저 켜세요(팀 암호 또는 본인 계정 허용).";toast("AI 검토가 꺼져 있어 이미지를 읽을 수 없습니다.");return;}
+ const lim=await sample.limits().catch(()=>null);
+ if(!lim?.images){msg.textContent="이 화면에서는 이미지를 보낼 수 없습니다.";return;}
+ const max=lim.images.maxCount||1;
+ if(files.length>max){toast(`한 번에 ${max}장까지 읽습니다. 앞의 ${max}장만 읽습니다.`);files=files.slice(0,max);}
+ msg.innerHTML=`<span class="spin">캡처 이미지 ${files.length}장을 읽고 있습니다…</span>`;
+ $("imgDocBtn").disabled=true;
+ try{
+  const res=await sample.json(`다음 이미지${files.length>1?` ${files.length}장은 한 문서를 순서대로 캡처한 것`:"는 한국어 공문서를 캡처한 것"}입니다. 보이는 글자를 그대로 옮겨 적어 JSON 하나로만 답하세요.
+형식: {"text":"옮겨 적은 전체 내용"}
+규칙:
+- 글자를 고치거나 다듬지 말 것. 오탈자·띄어쓰기·날짜 형식도 보이는 그대로. 교정은 나중에 따로 합니다.
+- 문단과 항목마다 줄을 바꾸고, 문단 사이 빈 줄은 이미지대로. 화면 너비 때문에 생긴 줄바꿈은 이어서 한 줄로.
+- 항목 기호(1. 가. (1) □ ○ - 등)와 들여쓰기는 공백으로 대략 유지.
+- 표는 한 행을 한 줄로 '| 칸 | 칸 |' 형식으로 쓰고, 병합된 칸은 첫 칸에만 글자를 넣고 나머지는 빈칸, 칸 안의 줄바꿈은 <br>. 칸 너비 때문에 생긴 줄바꿈은 이어 쓸 것.
+- 그림·도장·로고는 [그림], [직인]처럼 짧게 표시.`,{images:files,modelTier:"default"});
+  const t=String(res?.text||"").trim();if(!t)throw{code:"invalid_json"};
+  const ta=$("inText"),v=ta.value,p=ta.selectionStart;
+  const pre=v.trim()&&p>0&&v[p-1]!=="\n"?"\n\n":"";ta.setRangeText(pre+t+"\n",p,ta.selectionEnd,"end");
+  ta.dispatchEvent(new Event("input",{bubbles:true}));
+  msg.textContent=`이미지 ${files.length}장에서 ${t.length.toLocaleString()}자를 옮겨 적었습니다. 원문과 다른 글자가 없는지 확인한 뒤 ‘검토하기’를 누르세요.`;
+  return true;
+ }catch(e){
+  if(e?.code==="not_granted")setAi("denied");
+  msg.textContent={not_granted:"Claude 사용을 허용하지 않아 이미지를 읽지 못했습니다.",image_rejected:"이미지 형식이나 크기를 읽을 수 없습니다. PNG·JPG로 캡처해 주세요.",rate_limited:"요청이 많습니다. 잠시 후 다시 시도하세요.",invalid_json:"글자를 알아보지 못했습니다. 글자가 선명하게 보이도록 다시 캡처해 보세요."}[e?.code]||"이미지를 읽는 중 오류가 났습니다. 다시 시도하세요.";
+ }finally{$("imgDocBtn").disabled=false;}
+ return false;
+}
+$("imgDocBtn").onclick=()=>$("imgDocFile").click();
+$("imgDocFile").onchange=e=>{addShots(e.target.files);e.target.value="";};
+(()=>{const pane=$("inPane");let dc=0;
+ pane.addEventListener("dragenter",e=>{if([...e.dataTransfer.items].some(i=>i.kind==="file")){e.preventDefault();dc++;pane.classList.add("drop");}});
+ pane.addEventListener("dragover",e=>{if(pane.classList.contains("drop"))e.preventDefault();});
+ pane.addEventListener("dragleave",()=>{if(--dc<=0){dc=0;pane.classList.remove("drop");}});
+ pane.addEventListener("drop",e=>{dc=0;pane.classList.remove("drop");const fs=[...e.dataTransfer.files].filter(f=>/^image\//.test(f.type));if(fs.length){e.preventDefault();addShots(fs);}});
+})();
+
+/* ================= 스크린샷 붙여넣기 대기열 ================= */
+let shots=[];
+function addShots(fl){
+ const add=[...(fl||[])].filter(f=>f&&/^image\//.test(f.type));if(!add.length)return;
+ shots.push(...add.map(f=>({f,url:URL.createObjectURL(f)})));renderShots();
+ toast(`스크린샷 ${add.length}장을 담았습니다.${aiOn()?" ‘글자·표 읽어 입력란에 넣기’를 누르세요.":" 읽으려면 AI 검토를 켜세요."}`);
+}
+function renderShots(){
+ const has=shots.length>0;$("shotZone").classList.toggle("has",has);
+ $("shotTray").hidden=!has;
+ $("shotList").innerHTML=shots.map((s,i)=>`<div class="shot-th"><img src="${s.url}" alt="스크린샷 ${i+1}"><span class="no">${i+1}</span><button data-del="${i}" aria-label="${i+1}번 지우기">×</button></div>`).join("");
+ $("shotInfo").textContent=has?`${shots.length}장 · 순서대로 이어서 읽습니다${aiOn()?"":" · AI 검토가 꺼져 있음"}`:"";
+ $("shotRead").disabled=$("shotTable").disabled=!aiOn();
+}
+function clearShots(){shots.forEach(s=>URL.revokeObjectURL(s.url));shots=[];renderShots();}
+const shotZone=$("shotZone");
+$("shotTray").addEventListener("click",e=>{const d=e.target.closest("[data-del]");if(!d)return;const i=+d.dataset.del;URL.revokeObjectURL(shots[i].url);shots.splice(i,1);renderShots();});
+shotZone.addEventListener("click",()=>{shotZone.focus();toast("이제 Ctrl+V(Mac ⌘+V)로 스크린샷을 붙여 넣으세요.");});
+shotZone.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();shotZone.focus();}});
+shotZone.addEventListener("focus",()=>shotZone.classList.add("focus"));
+shotZone.addEventListener("blur",()=>shotZone.classList.remove("focus"));
+function clipImages(cd){return[...(cd?.items||[])].filter(i=>i.kind==="file"&&i.type.startsWith("image/")).map(i=>i.getAsFile()).filter(Boolean);}
+shotZone.addEventListener("paste",e=>{const im=clipImages(e.clipboardData);e.preventDefault();if(im.length)addShots(im);else toast("클립보드에 이미지가 없습니다. 화면을 캡처한 뒤 다시 붙여 넣으세요.");});
+// 검토 탭 어디서든(입력칸 밖) Ctrl+V로 스크린샷을 붙이면 담기
+document.addEventListener("paste",e=>{
+ if($("tab-review").hidden||!$("teWrap").hidden)return;
+ const t=e.target;if(t.closest&&(t.closest("#shotZone")||t.closest("textarea,input,[contenteditable]")))return;
+ const im=clipImages(e.clipboardData);if(im.length){e.preventDefault();addShots(im);}
+});
+$("shotRead").onclick=async()=>{if(!shots.length)return;$("shotRead").disabled=true;const ok=await readImageDoc(shots.map(s=>s.f));if(ok)clearShots();else renderShots();};
+$("shotTable").onclick=()=>{if(!shots.length)return;const f=shots[0].f;te.rows=blankRows(3,3);te.range=null;te.title="";$("teHead").textContent="스크린샷에서 읽은 표";teRender();$("teWrap").hidden=false;readImageTable(f);};
+$("shotClear").onclick=clearShots;
 
 /* ================= 실행 ================= */
 async function run(){
@@ -664,7 +1421,7 @@ async function run(){
  if(!src){toast("검토할 내용을 입력하세요.");$("inText").focus();return;}
  if(src.length>20000){toast("한 번에 2만 자까지 검토할 수 있습니다. 나누어 검토하세요.");return;}
  const statusEl=$("status");
- if(!sample){state={...state,result:basicFix(src),source:src,isExample:false};render();statusEl.textContent="기본 규칙 점검 완료";return;}
+ if(!aiOn()){state={...state,result:basicFix(src),source:src,isExample:false};render();statusEl.textContent=sample?"AI 검토가 잠겨 있어 기본 점검으로 처리했습니다.":"기본 규칙 점검 완료";return;}
  ctl=new AbortController();
  $("runBtn").disabled=true;$("stopBtn").hidden=false;
  const t0=Date.now();let got=0;
@@ -673,32 +1430,72 @@ async function run(){
  try{
   const res=await sample.json(buildRules(state.scope)+"\n\n[검토할 문서]\n<<<\n"+src+"\n>>>",{signal:ctl.signal,modelTier:$("deep").checked?"complex":"default",onText:({text})=>{got=text.length;}});
   if(!res||typeof res.corrected!=="string")throw{code:"invalid_json"};
-  state={...state,result:res,source:src,isExample:false};render();
+  state={...state,result:res,source:src,isExample:false};render();setAi("granted");
   statusEl.textContent=`검토 완료 · ${Math.round((Date.now()-t0)/1000)}초`;
  }catch(e){
   const msg={cancelled:"검토를 중지했습니다.",rate_limited:"요청이 많습니다. 잠시 후 다시 시도하세요.",invalid_json:"결과 형식이 올바르지 않습니다. 다시 시도하세요.",refused:"이 내용은 검토할 수 없습니다.",session_expired:"다시 로그인한 뒤 시도하세요.",prompt_too_large:"문서가 너무 깁니다. 나누어 검토하세요."}[e?.code];
   if(["not_granted","sampling_disabled","not_declared","capability_disabled","capability_removed"].includes(e?.code)){
-   sample=null;state={...state,result:basicFix(src),source:src,isExample:false};render();statusEl.textContent="AI 검토를 쓸 수 없어 기본 규칙으로 점검했습니다.";
+   sample=null;setAi(e.code==="not_granted"?"denied":"off");state={...state,result:basicFix(src),source:src,isExample:false};render();statusEl.textContent="Claude를 쓸 수 없어 기본 점검으로 대신했습니다.";
   }else{render();statusEl.textContent=msg||"검토 중 오류가 났습니다. 다시 시도하세요.";}
  }finally{clearInterval(timer);$("runBtn").disabled=false;$("stopBtn").hidden=true;}
 }
-async function copy(){
- const text=state.result?.corrected||"";
- try{await navigator.clipboard.writeText(text);toast("수정본을 복사했습니다.");}
- catch{state.view="clean";render();const r=document.createRange();r.selectNodeContents($("out"));const s=getSelection();s.removeAllRanges();s.addRange(r);toast("수정본을 선택했습니다. Ctrl+C로 복사하세요.");}
+/* ================= 복사: 전체 / 문단만 / 표만 / 영역별 ================= */
+const cellPlain=c=>String(c??"").replace(/<br>/g,"\n");
+const tsvCell=c=>{const v=cellPlain(c);return /[\t\n"]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;};
+function tableClipHtml(rows){
+ const w=Math.max(1,...rows.map(r=>r.length));
+ return'<table border="1" cellspacing="0" cellpadding="4" style="border-collapse:collapse;border:1px solid #000">'+rows.map((r,i)=>"<tr>"+Array.from({length:w},(_,j)=>`<td style="border:1px solid #000;padding:2px 6px;vertical-align:middle${i===0?";font-weight:bold;background:#e8f2ec;text-align:center":""}">${esc(cellPlain(r[j]??"")).replace(/\n/g,"<br>")||"&nbsp;"}</td>`).join("")+"</tr>").join("")+"</table>";
 }
+const tableTsv=rows=>rows.map(r=>r.map(tsvCell).join("\t")).join("\n");
+const parasHtml=t=>t.split("\n").map(l=>`<p style="margin:0">${esc(l).replace(/^ +/,m=>"&nbsp;".repeat(m.length)).replace(/ {2}/g," &nbsp;")||"&nbsp;"}</p>`).join("");
+async function copyRich(html,plain,what){
+ try{
+  if(window.ClipboardItem&&navigator.clipboard?.write){
+   await navigator.clipboard.write([new ClipboardItem({"text/html":new Blob([`<html><body>${html}</body></html>`],{type:"text/html"}),"text/plain":new Blob([plain],{type:"text/plain"})})]);
+   toast(`${what}을 복사했습니다.`);return;
+  }
+  await navigator.clipboard.writeText(plain);toast(`${what}을 복사했습니다(서식 없이).`);
+ }catch{
+  // 클립보드 쓰기가 막힌 화면: 화면 밖에 붙일 내용을 그려 두고 선택 → 사용자가 Ctrl+C
+  const st=$("clipStage");st.innerHTML=html;const r=document.createRange();r.selectNodeContents(st);const sel=getSelection();sel.removeAllRanges();sel.addRange(r);
+  toast(`${what}을 선택해 두었습니다. 지금 Ctrl+C(⌘+C)를 누르세요.`);
+ }
+}
+function copyWhole(){const t=state.result?.corrected||"";if(!t)return;
+ const B=segs(t);const html=B.map(x=>x.t==="tb"?tableClipHtml(x.rows):parasHtml(x.v)).join('<p style="margin:0">&nbsp;</p>');
+ const plain=B.map(x=>x.t==="tb"?tableTsv(x.rows):x.v).join("\n\n");
+ copyRich(html,plain,"수정본 전체");}
+function copyParas(){
+ const B=segs(state.result?.corrected||"").filter(x=>x.t==="p");if(!B.length){toast("복사할 문단이 없습니다.");return;}
+ const t=B.map(x=>x.v).join("\n\n");copyRich(parasHtml(t),t,"문단(표 제외)");
+}
+function copyTables(list,what){
+ if(!list.length){toast("복사할 표가 없습니다.");return;}
+ copyRich(list.map(tb=>tableClipHtml(tb.rows)).join("<p>&nbsp;</p>"),list.map(tb=>tableTsv(tb.rows)).join("\n\n"),what);
+}
+function copyBlock(key){
+ const B=segs(state.result?.corrected||"");
+ if(key==="paras")return copyParas();
+ if(key[0]==="t"){const tbs=B.filter(x=>x.t==="tb");return copyTables([tbs[+key.slice(1)]].filter(Boolean),`표 ${+key.slice(1)+1}`);}
+ const bk=B[+key.slice(1)];if(!bk)return;
+ if(bk.t==="tb"){const k=B.slice(0,+key.slice(1)+1).filter(x=>x.t==="tb").length;return copyTables([bk],`표 ${k}`);}
+ copyRich(parasHtml(bk.v),bk.v,"이 문단");
+}
+$("out").addEventListener("click",e=>{const b=e.target.closest(".blk-copy");if(b){e.preventDefault();copyBlock(b.dataset.copy);}});
 function toast(msg){const t=$("toast");t.textContent=msg;t.hidden=false;clearTimeout(toast._t);toast._t=setTimeout(()=>t.hidden=true,1800);}
 function count(){$("inCount").textContent=$("inText").value.length.toLocaleString()+"자";}
 
 $("runBtn").onclick=run;
 $("stopBtn").onclick=()=>ctl?.abort();
-$("sampleBtn").onclick=()=>{$("inText").value=SAMPLE_IN;count();state={...state,result:SAMPLE_OUT,source:SAMPLE_IN,isExample:true};$("status").textContent="";render();};
-$("clearBtn").onclick=()=>{$("inText").value="";count();state={...state,result:null,source:"",isExample:false};$("status").textContent="";render();$("inText").focus();};
+$("sampleBtn").onclick=()=>{$("inText").value=SAMPLE_IN;count();renderLayout();state={...state,result:SAMPLE_OUT,source:SAMPLE_IN,isExample:true};$("status").textContent="";render();};
+$("clearBtn").onclick=()=>{$("inText").value="";count();renderLayout();state={...state,result:null,source:"",isExample:false};$("status").textContent="";render();$("inText").focus();};
 document.querySelectorAll("#view button").forEach(b=>b.onclick=()=>{state.view=b.dataset.v;render();});
-document.querySelectorAll("#scope button").forEach(b=>b.onclick=()=>{state.scope=b.dataset.v;render();try{localStorage.setItem("kku-scope",state.scope)}catch{}});
+document.querySelectorAll("#scope button").forEach(b=>b.onclick=()=>{state.scope=b.dataset.v;render();renderLayout();try{localStorage.setItem("kku-scope",state.scope)}catch{}});
 document.querySelectorAll("#cmpFilter button").forEach(b=>b.onclick=()=>{cmpFilter=b.dataset.v;renderCompare();});
-$("copyBtn").onclick=copy;
-$("applyBtn").onclick=()=>{if(!state.result)return;$("inText").value=state.result.corrected;count();toast("수정본을 입력란에 넣었습니다.");};
+$("copyBtn").onclick=copyWhole;
+$("copyParaBtn").onclick=copyParas;
+$("copyTblBtn").onclick=()=>copyTables(segs(state.result?.corrected||"").filter(x=>x.t==="tb"),"표");
+$("applyBtn").onclick=()=>{if(!state.result)return;$("inText").value=state.result.corrected;count();renderLayout();toast("수정본을 입력란에 넣었습니다.");};
 $("inText").addEventListener("input",()=>{count();try{localStorage.setItem("kku-draft",$("inText").value)}catch{}});
 
 (function init(){
@@ -706,8 +1503,8 @@ $("inText").addEventListener("input",()=>{count();try{localStorage.setItem("kku-
  state.scope=scope==="out"?"out":"in";
  $("inText").value=draft||SAMPLE_IN;count();
  if(draft&&draft!==SAMPLE_IN)state={...state,result:null,source:draft,isExample:false};
- render();renderCompare();renderDiffs();route();
- if(window.claude?.use)claude.use("sample").then(s=>{sample=s;if(!s)$("status").textContent="기본 규칙 점검 모드";}).catch(()=>{});
- else $("status").textContent="기본 규칙 점검 모드";
+ render();renderCompare();renderDiffs();route();renderLayout();setAi("wait");
+ if(window.claude?.use)claude.use("sample").then(s=>{sample=s;setAi(s?"ready":"off");}).catch(()=>setAi("off"));
+ else setAi("off");
 })();
 </script>
