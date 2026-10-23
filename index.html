@@ -1,0 +1,713 @@
+<title>건국대 공문서 검토기</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: 건국대 홈페이지 서브페이지 구조 — 유틸바 / 헤더+GNB / 서브비주얼(KU Location) / 탭 콘텐츠 / 푸터.
+   헤리티지 그린을 주조색으로, 출처 3종(규정·편람·길잡이)은 녹색 계열 안에서 명도·채도로 구분 */
+:root{
+  --bg:#f3f6f4; --paper:#ffffff; --ink:#14201a; --muted:#56655d; --line:#d5ded8;
+  --green:#00703e; --green-deep:#115029; --btn:#005128; --red:#e84855; --show-g:inline-block; --show-w:none; --green-ink:#ffffff; --green-soft:#e2f1e8; --green-mid:#5aa77c;
+  --src-rule:#036b3f; --src-man:#0f7d82; --src-guide:#7a8f1c; --src-norm:#5b6b63;
+  --ins-bg:#c9efd7; --ins-fg:#04532e; --del-bg:#fde0db; --del-fg:#a12a1a;
+  --warn:#8a5a00; --warn-bg:#fff3d6; --diff:#c2410c; --diff-bg:#fff0e6;
+  --f-body:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1512; --paper:#17201b; --ink:#e3ece6; --muted:#9db0a5; --line:#2b3a32;
+  --green:#3fbf7f; --green-deep:#0e2f1d; --btn:#2f8a5c; --red:#ff6b77; --show-g:none; --show-w:inline-block; --green-ink:#06140c; --green-soft:#1b3326; --green-mid:#2f8a5c;
+  --src-rule:#3fbf7f; --src-man:#3cc2c7; --src-guide:#b6cc4a; --src-norm:#9db0a5;
+  --ins-bg:#174a2e; --ins-fg:#a8f0c5; --del-bg:#4a201a; --del-fg:#ffb3a6;
+  --warn:#f2c66b; --warn-bg:#3a2e12; --diff:#ff9a5c; --diff-bg:#3b2414; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1512; --paper:#17201b; --ink:#e3ece6; --muted:#9db0a5; --line:#2b3a32;
+  --green:#3fbf7f; --green-deep:#0e2f1d; --btn:#2f8a5c; --red:#ff6b77; --show-g:none; --show-w:inline-block; --green-ink:#06140c; --green-soft:#1b3326; --green-mid:#2f8a5c;
+  --src-rule:#3fbf7f; --src-man:#3cc2c7; --src-guide:#b6cc4a; --src-norm:#9db0a5;
+  --ins-bg:#174a2e; --ins-fg:#a8f0c5; --del-bg:#4a201a; --del-fg:#ffb3a6;
+  --warn:#f2c66b; --warn-bg:#3a2e12; --diff:#ff9a5c; --diff-bg:#3b2414; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6;margin:0}
+.gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1280px;margin:0 auto}
+/* utility bar */
+.util{background:var(--green-deep);color:#e6f3ec;font-size:12.5px}
+.util .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-block:7px;flex-wrap:wrap}
+.util .who{display:flex;gap:10px;align-items:center}
+.util .who b{font-weight:700;color:#fff}
+.util .who span{font-family:var(--f-mono);opacity:.85}
+.util .ver{opacity:.8}
+/* header */
+.hd{background:var(--paper);border-bottom:1px solid var(--line)}
+.hd .wrap{display:flex;align-items:center;gap:24px;padding-block:14px;flex-wrap:wrap}
+.mark{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+.mark img{height:38px;width:auto}
+.mark .ku-g{display:var(--show-g)}.mark .ku-w{display:var(--show-w)}
+.mark .nm{border-left:1px solid var(--line);padding-left:12px}
+.mark .nm{display:flex;flex-direction:column;line-height:1.15}
+.mark .nm b{font-size:18px;font-weight:900;letter-spacing:-.02em}
+.mark .nm small{font-size:10.5px;letter-spacing:.14em;color:var(--muted)}
+nav.gnb{display:flex;gap:4px;margin-left:auto;overflow-x:auto;max-width:100%}
+nav.gnb a{white-space:nowrap;text-decoration:none;color:var(--ink);font-weight:700;font-size:15.5px;padding:10px 16px;border-bottom:3px solid transparent}
+nav.gnb a:hover{color:var(--green)}
+nav.gnb a[aria-current="page"]{color:var(--green);border-bottom-color:var(--green)}
+nav.gnb a:focus-visible{outline:2px solid var(--green);outline-offset:-2px}
+/* sub visual */
+.subv{background:linear-gradient(120deg,var(--green) 0%,var(--green-deep) 100%);color:#fff}
+.subv .wrap{padding-block:26px 22px;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.subv .wm{height:58px;width:auto;opacity:.95;flex:none}
+.subv .ttl{display:flex;align-items:center;gap:18px;min-width:0}
+.subv h1{margin:0;font-size:clamp(24px,3.4vw,34px);font-weight:900;letter-spacing:-.03em;text-wrap:balance}
+.subv p{margin:4px 0 0;opacity:.88;font-size:14px}
+.loc{font-size:12.5px;opacity:.9;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.loc em{font-style:normal;font-weight:700;letter-spacing:.06em;margin-right:6px}
+/* basis cards */
+.basis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:-1px;padding-block:16px}
+@media (max-width:760px){.basis{grid-template-columns:1fr}}
+.bc{background:var(--paper);border:1px solid var(--line);border-top:4px solid var(--c);border-radius:4px;padding:10px 14px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.bc .lb{font-size:11.5px;font-weight:700;color:var(--c);letter-spacing:.04em}
+.bc .tt{font-weight:700;font-size:14.5px}
+.bc .dt{font-family:var(--f-mono);font-size:13px;color:var(--muted)}
+.bc .dt b{display:inline-block;font-size:15px;font-weight:700;color:var(--green-ink);background:var(--c);padding:2px 10px;border-radius:3px;margin-left:4px;letter-spacing:.02em}
+.bc .dt{display:flex;align-items:center;gap:2px;margin-top:4px}
+main{padding-block:8px 40px}
+.tabrow{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);background:var(--paper);margin-bottom:6px}
+.tabrow a{text-align:center;padding:12px 8px;font-weight:700;font-size:16px;color:var(--muted);text-decoration:none;border-left:1px solid var(--line)}
+.tabrow a:first-child{border-left:0}
+.tabrow a:hover{color:var(--green)}
+.tabrow a[aria-current="page"]{background:var(--green-deep);color:#fff;box-shadow:inset 0 0 0 1px #fff,0 0 0 1px var(--green-deep)}
+.tabrow a:focus-visible{outline:2px solid var(--green);outline-offset:-3px}
+@media (max-width:520px){.tabrow a{font-size:14px;padding:10px 4px}}
+section.tab[hidden]{display:none}
+h2.sec{font-size:24px;font-weight:900;letter-spacing:-.02em;margin:24px 0 12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+h2.sec::before{content:"";width:6px;height:24px;background:var(--red);border-radius:3px}
+.lead{color:var(--muted);margin:-4px 0 14px;max-width:84ch;font-size:14px}
+/* review */
+.opts{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:10px 14px;margin-bottom:14px;font-size:14px}
+.opts .k{font-weight:700;color:var(--green)}
+.seg{display:inline-flex;border:1px solid var(--green);border-radius:4px;overflow:hidden}
+.seg button{border:0;border-radius:0;padding:5px 12px;font-size:13px;background:var(--paper);color:var(--green);font-weight:500}
+.seg button[aria-pressed="true"]{background:var(--green);color:var(--green-ink);font-weight:700}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+.pane{background:var(--paper);border:1px solid var(--line);border-radius:4px;display:flex;flex-direction:column;min-width:0}
+.pane.out-pane{border:2px solid var(--green)}
+.pane-h{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 14px;border-bottom:1px solid var(--line)}
+.out-pane .pane-h{background:var(--green);color:var(--green-ink);border-bottom:0}
+.pane-h h3{font-size:15px;margin:0;font-weight:700;display:flex;gap:8px;align-items:center}
+.step{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--green);color:var(--green-ink);font-size:12px;font-weight:900}
+.out-pane .step{background:var(--green-ink);color:var(--green)}
+.meta{font-size:12px;color:var(--muted);font-family:var(--f-mono)}
+textarea{width:100%;min-height:400px;resize:vertical;border:0;padding:16px;background:transparent;color:var(--ink);font-family:var(--f-body);font-size:15.5px;line-height:1.8;outline:none}
+textarea:focus-visible{box-shadow:inset 0 0 0 2px var(--green)}
+.out{min-height:400px;padding:16px;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere;line-height:1.85;font-size:15.5px}
+.out.empty{color:var(--muted)}
+.side{display:grid;grid-template-columns:1fr 1fr;min-height:400px}
+.side>div{padding:16px;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere;line-height:1.85;font-size:14.5px;min-width:0}
+.side>div+div{border-left:1px dashed var(--line)}
+.side .cap{display:block;font-size:11.5px;font-weight:700;color:var(--muted);margin-bottom:6px;letter-spacing:.04em}
+@media (max-width:520px){.side{grid-template-columns:1fr}.side>div+div{border-left:0;border-top:1px dashed var(--line)}}
+ins{background:var(--ins-bg);color:var(--ins-fg);text-decoration:none;border-radius:3px;font-weight:700;padding:0 1px;box-shadow:inset 0 -2px 0 var(--green-mid)}
+del{background:var(--del-bg);color:var(--del-fg);text-decoration:line-through 2px;border-radius:3px;padding:0 1px}
+ins.ws,del.ws{display:inline-block;min-width:.6em;text-align:center}
+ins.ws::after{content:"␣";font-weight:400;opacity:.7}
+.actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 14px;border-top:1px solid var(--line)}
+button{font-family:var(--f-body);font-size:14px;border-radius:4px;padding:8px 16px;cursor:pointer;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
+button:hover{border-color:var(--green)}
+button:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+button.primary{background:var(--btn);color:#fff;border-color:var(--btn);font-weight:700;border-radius:24px}
+button.big{padding:10px 22px;font-size:15px}
+button:disabled{opacity:.5;cursor:default}
+label.chk{font-size:13.5px;color:var(--muted);display:inline-flex;gap:6px;align-items:center}
+.status{font-size:13px;color:var(--muted);margin-left:auto}
+.tag-ex{font-size:11px;background:var(--warn-bg);color:var(--warn);padding:1px 8px;border-radius:3px;font-weight:700}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);padding:8px 14px;border-bottom:1px solid var(--line)}
+/* scoreboard */
+.score{display:grid;grid-template-columns:200px 1fr 1fr;gap:14px;margin-top:18px}
+@media (max-width:900px){.score{grid-template-columns:1fr}}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:14px 16px;min-width:0}
+.card h4{margin:0 0 10px;font-size:13px;color:var(--muted);font-weight:700}
+.total{display:flex;flex-direction:column;justify-content:center;background:var(--green);color:var(--green-ink);border-color:var(--green)}
+.total h4{color:inherit;opacity:.85}
+.total .n{font-size:46px;font-weight:900;line-height:1;font-variant-numeric:tabular-nums}
+.total .n small{font-size:16px;font-weight:700;margin-left:4px}
+.total p{margin:8px 0 0;font-size:12.5px;opacity:.9}
+.bars{display:flex;flex-direction:column;gap:8px}
+.bar{display:grid;grid-template-columns:92px 1fr 32px;gap:8px;align-items:center;font-size:13px}
+.bar .tr{height:14px;background:var(--bg);border-radius:2px;overflow:hidden}
+.bar .fl{height:100%;background:var(--c);border-radius:2px}
+.bar .v{font-family:var(--f-mono);text-align:right;font-variant-numeric:tabular-nums}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;gap:6px;align-items:center;font-size:12.5px;padding:3px 10px;border-radius:12px;background:var(--green-soft);color:var(--green);font-weight:700;white-space:nowrap}
+.chip b{font-family:var(--f-mono);font-weight:500}
+.src{display:inline-block;font-size:11.5px;font-weight:700;padding:1px 8px;border-radius:3px;color:#fff;background:var(--c);white-space:nowrap}
+.src.rule{--c:var(--src-rule)}.src.man{--c:var(--src-man)}.src.guide{--c:var(--src-guide)}.src.norm{--c:var(--src-norm)}
+:root .src{color:var(--paper)}
+.summary{font-size:14.5px;margin:14px 0 10px;max-width:90ch;padding:10px 14px;border-left:4px solid var(--green);background:var(--paper)}
+.tbl-wrap{overflow-x:auto;background:var(--paper);border:1px solid var(--line);border-radius:4px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-size:12.5px;font-weight:700;background:var(--green-soft);color:var(--green);border-bottom:2px solid var(--green);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.no{font-family:var(--f-mono);color:var(--muted);width:36px;font-variant-numeric:tabular-nums}
+.ba{display:flex;flex-direction:column;gap:4px}
+.ba del,.ba ins{padding:1px 5px;width:fit-content;max-width:100%}
+.chg-t{min-width:760px}
+.notes{margin-top:14px;background:var(--warn-bg);border-radius:4px;padding:12px 16px;font-size:14px}
+.notes h4{margin:0 0 6px;font-size:13.5px;color:var(--warn)}
+.notes ul{margin:0;padding-left:18px}
+/* compare */
+.filter{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px;font-size:14px}
+.cmp{min-width:980px}
+.cmp td{font-size:13.5px}
+.cmp td.topic{font-weight:700;width:120px}
+.cmp td.topic small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+.cmp th.s-rule{color:var(--src-rule)}.cmp th.s-man{color:var(--src-man)}.cmp th.s-guide{color:var(--src-guide)}
+.cmp td .ref{display:block;margin-top:4px;font-size:11.5px;color:var(--muted);font-family:var(--f-mono)}
+.cmp tr.is-diff td.topic{box-shadow:inset 4px 0 0 var(--diff)}
+.dbadge{display:inline-block;font-size:11px;font-weight:700;padding:1px 7px;border-radius:3px;background:var(--diff-bg);color:var(--diff);margin-top:4px}
+.sbadge{display:inline-block;font-size:11px;font-weight:700;padding:1px 7px;border-radius:3px;background:var(--green-soft);color:var(--green);margin-top:4px}
+.cmp td.apply{background:var(--green-soft);font-size:13px;width:200px}
+.dash{color:var(--muted)}
+/* differences */
+.dcards{display:flex;flex-direction:column;gap:16px}
+.dcard{background:var(--paper);border:1px solid var(--line);border-left:5px solid var(--diff);border-radius:4px;padding:16px 18px}
+.dcard h3{margin:0 0 4px;font-size:17px;font-weight:900;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.dcard h3 .no{font-family:var(--f-mono);color:var(--diff);font-size:14px}
+.dcard .why{margin:4px 0 12px;color:var(--muted);font-size:14px;max-width:90ch}
+.tri{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media (max-width:820px){.tri{grid-template-columns:1fr}}
+.tri>div{border:1px solid var(--line);border-top:3px solid var(--c);border-radius:3px;padding:10px 12px;font-size:13.5px;min-width:0}
+.tri .h{font-size:12px;font-weight:700;color:var(--c);margin-bottom:4px}
+.tri .ex{display:block;margin-top:6px;font-family:var(--f-mono);font-size:12.5px;background:var(--bg);padding:4px 8px;border-radius:3px;white-space:pre-wrap;overflow-wrap:anywhere}
+.verdict{margin-top:12px;display:flex;gap:10px;align-items:flex-start;background:var(--green-soft);border-radius:4px;padding:10px 12px;font-size:14px}
+.verdict b{color:var(--green);white-space:nowrap}
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.toc a{font-size:13px;text-decoration:none;color:var(--green);border:1px solid var(--green);border-radius:14px;padding:3px 12px}
+.toc a:hover{background:var(--green-soft)}
+code{font-family:var(--f-mono);font-size:.92em;background:var(--green-soft);padding:0 4px;border-radius:3px}
+footer{background:var(--paper);border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+footer .wrap{padding-block:18px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--green-deep);color:#fff;padding:9px 18px;border-radius:4px;font-size:14px;z-index:20}
+@media (prefers-reduced-motion:no-preference){.spin{display:inline-block;animation:pulse 1.2s ease-in-out infinite}@keyframes pulse{50%{opacity:.35}}}
+</style>
+
+<div class="util gut">
+  <div class="wrap">
+    <span class="ver">공문서 작성 지원 · 업무용 도구</span>
+    <span class="who"><b>앵커김군</b><span>coolzet@konkuk.ac.kr</span></span>
+  </div>
+</div>
+<header class="hd gut">
+  <div class="wrap">
+    <a class="mark" href="#review"><img class="ku-g" alt="KU" src="data:image/png;base64,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"><img class="ku-w" alt="KU" src="data:image/png;base64,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"><span class="nm"><b>공문서 검토</b><small>KONKUK DOCUMENT CHECK</small></span></a>
+    <nav class="gnb" aria-label="주 메뉴">
+      <a href="#review" data-tab="review">문서 검토</a>
+      <a href="#compare" data-tab="compare">3단 기준 비교</a>
+      <a href="#differences" data-tab="differences">차이점 해설</a>
+    </nav>
+  </div>
+</header>
+<div class="subv gut">
+  <div class="wrap">
+    <div class="ttl"><img class="wm" alt="" src="data:image/png;base64,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"><div>
+      <h1 id="subTitle">문서 검토</h1>
+      <p id="subDesc">문서를 붙여 넣으면 학교 규정·행안부 편람·국립국어원 길잡이 기준으로 고친 수정본과 근거를 보여 줍니다.</p>
+    </div></div>
+    <div class="loc"><em>KU Location.</em> 홈 › 행정 지원 › 공문서 검토 › <span id="locLast">문서 검토</span></div>
+  </div>
+</div>
+
+<div class="gut"><div class="wrap">
+  <div class="basis" aria-label="검토 기준">
+    <div class="bc" style="--c:var(--src-rule)"><span class="lb">① 학교 규정 · 1순위</span><span class="tt">건국대학교 문서규정(3-1-16)</span><span class="dt">개정 <b>2025. 10. 1.</b></span></div>
+    <div class="bc" style="--c:var(--src-man)"><span class="lb">② 행안부 편람 · 2순위</span><span class="tt">2025 행정업무운영 편람 제2장</span><span class="dt">행정안전부 <b>2025. 12. 17.</b></span></div>
+    <div class="bc" style="--c:var(--src-guide)"><span class="lb">③ 국어원 길잡이 · 표현</span><span class="tt">쉬운 공문서 쓰기 길잡이</span><span class="dt">국립국어원 <b>2022. 12.</b></span></div>
+  </div>
+
+<main>
+<nav class="tabrow" aria-label="검토 탭"><a href="#review" data-tab="review">문서 검토</a><a href="#compare" data-tab="compare">3단 기준 비교</a><a href="#differences" data-tab="differences">차이점 해설</a></nav>
+<!-- ============ 문서 검토 ============ -->
+<section class="tab" id="tab-review">
+  <div class="opts" role="group" aria-label="검토 옵션">
+    <span class="k">문서 종류</span>
+    <div class="seg" id="scope">
+      <button data-v="in" aria-pressed="true">교내 문서 (학교 규정 우선)</button>
+      <button data-v="out" aria-pressed="false">대외 기관 발송 (편람 서식)</button>
+    </div>
+    <label class="chk"><input type="checkbox" id="deep"> 정밀 검토(느림)</label>
+  </div>
+
+  <div class="grid">
+    <div class="pane">
+      <div class="pane-h"><h3><span class="step">1</span>입력 · 원문</h3><span class="meta" id="inCount">0자</span></div>
+      <textarea id="inText" spellcheck="false" placeholder="검토할 공문서 내용을 붙여 넣으세요."></textarea>
+      <div class="actions">
+        <button class="primary big" id="runBtn">검토하기</button>
+        <button id="stopBtn" hidden>중지</button>
+        <button id="sampleBtn">예시 불러오기</button>
+        <button id="clearBtn">지우기</button>
+      </div>
+    </div>
+    <div class="pane out-pane">
+      <div class="pane-h">
+        <h3><span class="step">2</span>출력 · 수정본 <span class="tag-ex" id="exTag">예시</span></h3>
+        <div class="seg" id="view" style="border-color:var(--green-ink)">
+          <button data-v="diff" aria-pressed="true">변경 표시</button>
+          <button data-v="side" aria-pressed="false">나란히</button>
+          <button data-v="clean" aria-pressed="false">수정본만</button>
+        </div>
+      </div>
+      <div class="legend"><span><ins>추가·수정</ins></span><span><del>삭제</del></span><span><ins class="ws"></ins> 띄어쓰기 추가</span></div>
+      <div id="out" class="out" aria-live="polite"></div>
+      <div class="actions">
+        <button class="primary big" id="copyBtn">수정본 복사</button>
+        <button id="applyBtn">입력란에 반영</button>
+        <span class="status" id="status"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="score">
+    <div class="card total"><h4>수정한 곳</h4><div class="n"><span id="tot">0</span><small>건</small></div><p id="totSub"></p></div>
+    <div class="card"><h4>근거별</h4><div class="bars" id="srcBars"></div></div>
+    <div class="card"><h4>유형별</h4><div class="chips" id="typeChips"></div></div>
+  </div>
+
+  <h2 class="sec">수정 내역</h2>
+  <p class="summary" id="summary"></p>
+  <div class="tbl-wrap"><table class="chg-t">
+    <thead><tr><th>#</th><th>근거</th><th>유형</th><th>수정 전 → 수정 후</th><th>이유</th><th>조항·쪽</th></tr></thead>
+    <tbody id="chgBody"></tbody>
+  </table></div>
+  <div class="notes" id="notes" hidden><h4>확인이 필요한 사항 (자동 수정하지 않음)</h4><ul id="notesList"></ul></div>
+</section>
+
+<!-- ============ 3단 비교 ============ -->
+<section class="tab" id="tab-compare" hidden>
+  <h2 class="sec">3단 기준 비교</h2>
+  <p class="lead">같은 항목을 세 기준이 각각 어떻게 정하는지 나란히 놓았습니다. 왼쪽 띠가 주황색인 행은 기준끼리 내용이 다른 항목이며, 맨 오른쪽 칸은 이 검토기가 실제로 적용하는 방식입니다.</p>
+  <div class="filter">
+    <div class="seg" id="cmpFilter">
+      <button data-v="all" aria-pressed="true">전체 항목</button>
+      <button data-v="diff" aria-pressed="false">차이 있는 항목만</button>
+    </div>
+    <span class="meta" id="cmpCount"></span>
+  </div>
+  <div class="tbl-wrap"><table class="cmp">
+    <thead><tr><th>항목</th><th class="s-rule">학교 규정 (2025. 10. 1.)</th><th class="s-man">행안부 편람 (2025. 12. 17.)</th><th class="s-guide">국어원 길잡이 (2022. 12.)</th><th>검토기 적용</th></tr></thead>
+    <tbody id="cmpBody"></tbody>
+  </table></div>
+</section>
+
+<!-- ============ 차이점 해설 ============ -->
+<section class="tab" id="tab-differences" hidden>
+  <h2 class="sec">차이점 해설</h2>
+  <p class="lead">세 기준이 서로 다르게 정한 항목만 모아, 무엇이 다르고 건국대 문서에서는 어떻게 쓰면 되는지 정리했습니다. 학교 규정이 정한 것은 학교 규정을, 규정에 없거나 대외 기관으로 보내는 문서는 편람을 따릅니다.</p>
+  <div class="toc" id="dToc"></div>
+  <div class="dcards" id="dCards"></div>
+</section>
+</main>
+</div></div>
+
+<footer class="gut"><div class="wrap">
+  <span>기준: 건국대학교 문서규정(2025. 10. 1. 개정) · 2025 행정업무운영 편람(행정안전부) · 쉬운 공문서 쓰기 길잡이(국립국어원, 2022)</span>
+  <span>앵커사업단 업무 지원용 비공식 도구 · 문의 coolzet@konkuk.ac.kr</span>
+</div></footer>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const SRC={rule:"학교 규정",man:"행안부 편람",guide:"국어원 길잡이",norm:"어문 규범"};
+
+/* ================= 3단 비교 데이터 ================= */
+const CMP=[
+ {id:"lang",topic:"표기 원칙",sub:"한글·가로쓰기",
+  rule:"표준어·한글·띄어쓰기·가로쓰기. 뜻 전달이 어려우면 괄호 안에 한자·외국어. 학칙·규정류·학적 문서는 한자 혼용 가능.",ruleRef:"제10조①",
+  man:"어문규범에 맞게 한글로 쓰고 가로쓰기. 필요하면 괄호 안에 한자·외국어 병기. 줄임말·로마자만 쓰는 것 지양.",manRef:"영 제7조① · p.33, 36",
+  guide:"어문 규범에 맞는 정확한 표기. 외국 글자·한자 노출 지양.",guideRef:"1부 3장",
+  diff:true,apply:"한글 원칙. 학칙·규정류 문서의 한자 혼용은 그대로 둠.",
+  why:"학교 규정만 학칙·규정류·학적 문서의 한자 혼용을 예외로 허용합니다.",
+  verdict:"일반 공문은 한글로 쓰고 한자는 괄호 병기. 학칙·규정 개정안처럼 규정류 문서는 한자 혼용을 오류로 보지 않습니다."},
+ {id:"easy",topic:"쉬운 용어",sub:"다듬은 말",
+  rule:"내용은 쉬운 말로 간략하게, 가능한 한 항목화.",ruleRef:"제20조",
+  man:"일반화되지 않은 약어·전문용어 지양. 다듬은 말 표 제시(익일→다음 날, 차년도→다음 해·다음 연도, 금번→이번, 제고하다→높이다, 상기→위, 용이하다→쉽다).",manRef:"영 제7조② · p.36~41",
+  guide:"어려운 한자어·외국어를 다듬은 말로. 국립국어원 ‘다듬은 말’ 게시판 활용.",guideRef:"1부 1장",
+  diff:false,apply:"편람 다듬은 말 표와 길잡이 기준으로 교체.",},
+ {id:"num",topic:"숫자·금액 단위",sub:"",
+  rule:"아라비아 숫자.",ruleRef:"제11조",
+  man:"아라비아 숫자. ‘천 원’ 단위는 만 단위로 풀어 씀.",manRef:"영 제7조④ · p.37, 49",
+  manEx:"21,345천원 → 2,134만 5천 원",
+  guide:"수와 단위 명사는 띄어 씀.",guideEx:"1천만원 → 1천만 원",guideRef:"1부 3장",
+  diff:true,apply:"아라비아 숫자 + 만 단위 표기, 단위 띄어 쓰기.",
+  why:"학교 규정은 아라비아 숫자만 정하고, ‘천 원’ 단위 풀어쓰기는 편람에만 있습니다.",
+  verdict:"예산표가 아닌 본문에서는 ‘2,134만 5천 원’처럼 만 단위로 씁니다. 표 안의 천 원 단위는 단위 표시가 있으면 그대로 둡니다."},
+ {id:"date",topic:"날짜",sub:"",
+  rule:"연·월·일을 모두 표시하고 글자는 생략, 점으로 구분. 인쇄된 서식은 예외. 띄어쓰기·‘0’ 규정 없음.",ruleRef:"제12조",
+  man:"연·월·일 글자 생략, 마침표. 마침표 뒤 한 타 띄움, 월·일의 ‘0’ 표기 안 함, 요일은 마지막 마침표 뒤 괄호.",manRef:"영 제7조⑤ · p.44, 49",
+  manEx:"2021.12.12. → 2021. 12. 12.\n1985.09.06. → 1985. 9. 6.\n2023. 6. 27(화) → 2023. 6. 27.(화)",
+  guide:"예시에서 ‘2021. 2. 10.’ 형식 사용.",guideRef:"1부 3장",
+  diff:true,apply:"2026. 10. 23.(금) 형식으로 통일.",
+  why:"학교 규정은 ‘점으로 구분’까지만 정하고, 띄어쓰기와 ‘0’ 생략은 편람이 정합니다.",
+  verdict:"학교 규정과 충돌하지 않으므로 편람의 세부 형식(한 타 띄움, 0 생략, 마지막 마침표)을 함께 적용합니다."},
+ {id:"time",topic:"시간",sub:"",
+  rule:"규정 없음.",ruleRef:"—",
+  man:"24시각제, 시·분 글자 생략, 쌍점으로 구분.",manRef:"영 제7조⑤ · p.49",manEx:"오후 3시 20분 → 15:20\n오전 7시 9분 → 07:09",
+  guide:"별도 규정 없음.",guideRef:"—",
+  diff:true,apply:"15:20 형식.",
+  why:"시간 표기는 편람에만 있습니다.",
+  verdict:"학교 규정에 없는 사항이므로 편람에 따라 24시각제 ‘15:20’으로 씁니다. 홍보물·안내문 본문의 ‘오후 3시’는 독자를 고려해 notes로만 안내합니다."},
+ {id:"money",topic:"금액",sub:"계약·회계",
+  rule:"규정 없음.",ruleRef:"—",
+  man:"아라비아 숫자 다음 괄호 안에 한글로 기재.",manRef:"규칙 제2조② · p.49",manEx:"금113,560원(금일십일만삼천오백육십원)",
+  guide:"‘만 원’ 띄어쓰기 등 표기만 다룸.",guideRef:"1부 3장",
+  diff:true,apply:"계약·지출·정산 문서에서 누락 시 notes로 안내.",
+  why:"금액의 한글 병기는 편람(행정업무운영 시행규칙)에만 있습니다.",
+  verdict:"계약서·지출결의·정산 문서처럼 금액이 권리·의무와 관련되면 한글 병기를 권장합니다. 일반 보고 문서에는 강제하지 않습니다."},
+ {id:"item",topic:"항목 기호",sub:"순서·들여쓰기",
+  rule:"1. → 가. → (1) → (가) → 1) 의 5단계.",ruleRef:"제21조",ruleEx:"1.\n  가.\n    (1)\n      (가)\n        1)",
+  man:"1. → 가. → 1) → 가) → (1) → (가) → ① → ㉮ 의 8단계. 하위 항목은 2타씩 들여쓰기, 기호 뒤 1타, 항목이 하나면 기호 생략. □·○ 등 특수 기호 허용.",manRef:"규칙 제2조① · p.51~53",manEx:"1.\n  가.\n    1)\n      가)\n        (1)",
+  guide:"보고서에서는 □ ○ - 체계 활용 예시.",guideRef:"3부 3장",
+  diff:true,apply:"교내 문서: 학교 규정 / 대외 발송: 편람. 상단 ‘문서 종류’로 선택.",
+  why:"셋째 항목부터 순서가 다릅니다. 학교 규정은 (1)→(가)→1), 편람은 1)→가)→(1)입니다.",
+  verdict:"교내 기안·보고는 학교 규정(1. 가. (1) (가) 1))을 따릅니다. 교육부·서울시 등 외부 기관에 보내는 시행문은 받는 기관이 읽는 편람 체계(1. 가. 1) 가))로 맞춥니다."},
+ {id:"end",topic:"‘끝’ 표시",sub:"",
+  rule:"본문 끝 글자에서 한 자 띄우고 ‘끝’. 도표로 끝나면 그 아래, 첨부물이 있으면 첨부 표시 다음.",ruleRef:"제22조",ruleEx:"…바랍니다. 끝",
+  man:"마지막 글자에서 2타 띄우고 ‘끝.’(마침표 포함). 오른쪽 한계선에서 끝나면 다음 줄. 표가 중간에서 끝나면 ‘끝’ 대신 ‘이하 빈칸’.",manRef:"규칙 제4조⑤ · p.61~62",manEx:"…바랍니다.∨∨끝.",
+  guide:"별도 규정 없음.",guideRef:"—",
+  diff:true,apply:"‘  끝.’(2타 + 마침표). 표 중간 종료는 ‘이하 빈칸’.",
+  why:"학교 규정은 마침표 없는 ‘끝’, 편람은 ‘끝.’으로 쓰고 ‘이하 빈칸’ 규정을 추가로 둡니다.",
+  verdict:"학교 규정이 형식을 세밀히 정하지 않았으므로 전자결재에서 통용되는 편람 형식 ‘  끝.’으로 통일합니다."},
+ {id:"attach",topic:"첨부 표시",sub:"",
+  rule:"본문 다음 줄에 ‘첨부’라 쓰고 첨부물 명칭.",ruleRef:"제23조",ruleEx:"첨부  1. ○○ 계획서 1부.\n      2. ○○ 명단 1부.  끝",
+  man:"본문 다음 줄에 ‘붙임’ 표시, 명칭과 수량. 둘 이상이면 항목 구분.",manRef:"규칙 제4조④ · p.59~60",manEx:"붙임∨∨1.∨○○계획서 1부.\n      2.∨○○서류 1부.∨∨끝.",
+  guide:"별도 규정 없음.",guideRef:"—",
+  diff:true,apply:"교내: ‘첨부’ 허용·원문 유지 / 대외: ‘붙임’.",
+  why:"용어가 다릅니다. 학교 규정은 ‘첨부’, 편람은 ‘붙임’입니다.",
+  verdict:"원문에 쓴 용어를 존중하되 한 문서 안에서는 하나로 통일합니다. 외부 기관 발송 문서는 ‘붙임’을 씁니다. 수량(1부.)은 두 기준 모두에 맞습니다."},
+ {id:"struct",topic:"문서 구성",sub:"두문·본문·결문",
+  rule:"두문: 교명·분류기호·시행년월일·수신란 / 본문: 제목·내용 / 결문: 발신자 명의.",ruleRef:"제16~24조",
+  man:"두문: 행정기관명·수신·(경유) / 본문: 제목·내용·붙임 / 결문: 발신명의, 기안·검토·결재자 서명, 생산등록번호(시행일), 주소·연락처, 공개 구분.",manRef:"규칙 제4조 · p.54~65",
+  guide:"보고서·공고문 등 유형별 구성 안내.",guideRef:"3부",
+  diff:true,apply:"구성 요소 누락은 고치지 않고 notes로 안내.",
+  why:"학교 규정은 분류기호·시행일자를 두문에 두고, 편람은 생산등록번호(시행일)를 결문에 두며 공개 구분을 추가합니다.",
+  verdict:"전자결재 시스템 서식이 위치를 자동으로 정하므로, 검토기는 수신·제목·발신 명의가 빠졌는지만 확인합니다."},
+ {id:"recv",topic:"수신란",sub:"",
+  rule:"경유·수신. 수신자가 2인 이상이면 ‘수신처 참조’, 결문에 수신처란. 내부보고는 ‘보고’·‘품의’·‘내부결재’.",ruleRef:"제19·26·29조④",
+  man:"내부결재 문서는 ‘내부결재’. 수신자가 많으면 ‘수신자 참조’, 결문에 수신자란. 기관장 직위(처리 보조기관) 형식.",manRef:"규칙 제4조② · p.57~58",manEx:"수신  행정안전부장관(정보공개과장)",
+  guide:"별도 규정 없음.",guideRef:"—",
+  diff:true,apply:"교내: ‘수신처 참조’ / 대외: ‘수신자 참조’.",
+  why:"학교 규정은 ‘수신처 참조’, 편람은 ‘수신자 참조’로 용어가 다르고, 학교 규정은 ‘보고’·‘품의’도 허용합니다.",
+  verdict:"교내 문서는 학교 규정 용어를 그대로 둡니다. 외부 기관 시행문은 ‘수신자 참조’와 ‘기관장(담당 과장)’ 형식을 권장합니다."},
+ {id:"spell",topic:"맞춤법·띄어쓰기",sub:"",
+  rule:"‘한글로 띄어서’ 쓰는 원칙만 정함. 통제원이 오자·탈자·구문 불비 점검.",ruleRef:"제10조①, 제56조",
+  man:"두음 법칙(년도→연도, 집행율→집행률), 사이시옷(최소값→최솟값), 가운뎃점(국내·외→국내외), 괄호 뒤 조사, 의존 명사·단위 띄어쓰기, 외래어(워크샵→워크숍, 컨퍼런스→콘퍼런스).",manRef:"p.41~45",
+  guide:"년도→연도, 란→난, 여부·위·시·데 띄어쓰기, 마켓팅→마케팅, 오탈자 점검.",guideRef:"1부 3장",
+  diff:false,apply:"어문 규범 + 편람·길잡이 예시로 교정.",},
+ {id:"punct",topic:"문장 부호",sub:"쌍점·물결표",
+  rule:"규정 없음.",ruleRef:"—",
+  man:"쌍점은 앞말에 붙이고 뒤는 띄움. 물결표는 앞뒤 붙임.",manRef:"p.44",manEx:"원장 : 김갑동 → 원장: 김갑동\n4. 23. ~ 6. 15. → 4. 23.~6. 15.",
+  guide:"한글 맞춤법 문장 부호 규정에 따름.",guideRef:"1부 3장",
+  diff:true,apply:"편람 방식으로 교정.",
+  why:"학교 규정에 문장 부호 규정이 없습니다.",
+  verdict:"편람과 한글 맞춤법에 따라 ‘제목: ○○’, ‘9. 1.~10. 20.’로 씁니다."},
+ {id:"tone",topic:"어조·경어",sub:"고압적·차별 표현",
+  rule:"불손한 감을 주지 않는 범위에서 경어 생략 가능.",ruleRef:"제10조②",
+  man:"‘~바람’, ‘~할 것’ 대신 ‘~하기 바랍니다’. 권위적 표현(치하, 영접) 지양. 차별 표현·불필요한 인적 정보 삭제.",manRef:"p.47~48",
+  guide:"국민의 처지에서 표현하기, 권위적·차별적 표현 삼가기.",guideRef:"1부 2장",
+  diff:true,apply:"학생·외부 대상 안내문은 완곡 표현으로, 교내 내부 문서의 개조식 ‘-음’은 유지.",
+  why:"학교 규정은 경어 생략을 허용하지만, 편람·길잡이는 명령조 끝맺음을 고치라고 권합니다.",
+  verdict:"부서 간 내부 문서의 ‘~함’, ‘~바람’은 규정상 허용됩니다. 학생·지역 주민·외부 기관이 읽는 공고·안내문은 ‘~하시기 바랍니다’로 바꿉니다."},
+ {id:"approve",topic:"결재 방식",sub:"전결·대결·후결",
+  rule:"전결·대결 표시 및 긴급 시 ‘후결’ 제도 유지. 중요문서는 결재일자 표시.",ruleRef:"제34·36~38조",
+  man:"전결·대결은 서명란에 표시, 서명하지 않는 사람의 결재란은 설치하지 않음. 결재 서명란에 날짜 표시. ‘후결’은 1984년 폐지, 현재는 ‘사후보고’.",manRef:"규칙 제7조 · p.96~100",
+  guide:"해당 없음.",guideRef:"—",
+  diff:true,apply:"검토 대상 아님(참고).",
+  why:"학교 규정에는 정부 규정에서 사라진 ‘후결’이 남아 있습니다.",
+  verdict:"교내 결재는 학교 규정(후결 가능)을 따르되, 외부 기관과 주고받는 문서에서 ‘후결’ 용어는 쓰지 않는 편이 안전합니다."},
+ {id:"paper",topic:"용지·여백",sub:"",
+  rule:"A4(210×297mm). 여백 위 3cm, 왼쪽 2cm, 오른쪽·아래 1.5cm.",ruleRef:"제8·9조",
+  man:"A4 기본 규격. 표는 셀 병합·표 안의 표 지양, 개방형 문서 형식(hwpx, odt, docx) 권장.",manRef:"영 제7조⑥ · p.34~35, 53",
+  guide:"해당 없음.",guideRef:"—",
+  diff:true,apply:"검토 대상 아님(참고).",
+  why:"여백 수치는 학교 규정에만, 개방형 문서·표 작성 지침은 편람에만 있습니다.",
+  verdict:"여백은 학교 규정을 따르고, 홈페이지 게시용 파일은 편람처럼 hwpx·pdf 등 여러 형식으로 올리는 것을 권장합니다."}
+];
+
+/* ================= 예시 ================= */
+const SAMPLE_IN=`2026.10.23
+제목 : 앵커사업단 캠퍼스타운 사업 결과보고
+
+1) 사업개요
+ - 추진기간 : 2026년 9월1일 ~ 10월 20일
+ - 대상 : 지역 청년창업자 및 재학생 30명 (참가비 1인당 1만원)
+2) 추진결과
+ - 컨설팅을 진행하는데 있어서 참여자의 만족도가 높은 것으로 나타났음.
+ - 마켓팅 워크샵 이수여부와 수료증 발급여부를 확인 하였음.
+ - 익일 오후 3시에 결과를 공유 하고 차년도 사업에 반영 할 예정임`;
+
+const SAMPLE_OUT={
+ corrected:`2026. 10. 23.
+제목: 앵커사업단 캠퍼스타운 사업 결과 보고
+
+1. 사업 개요
+  가. 추진 기간: 2026. 9. 1.~10. 20.
+  나. 대상: 지역 청년 창업자 및 재학생 30명(참가비 1인당 1만 원)
+2. 추진 결과
+  가. 컨설팅 참여자의 만족도가 높게 나타남.
+  나. 마케팅 워크숍 이수 여부와 수료증 발급 여부를 확인함.
+  다. 다음 날 15:00에 결과를 공유하고 다음 연도 사업에 반영할 예정임.  끝.`,
+ summary:"날짜·항목 기호·끝 표시를 학교 규정과 편람 형식에 맞추고, 띄어쓰기·외래어·어려운 한자어를 편람과 길잡이 기준으로 고쳤습니다.",
+ changes:[
+  {src:"man",type:"날짜·시간",before:"2026.10.23",after:"2026. 10. 23.",reason:"연·월·일 뒤에 마침표를 찍고 마침표 뒤는 한 타 띄웁니다.",basis:"규정 제12조 · 편람 p.49"},
+  {src:"man",type:"문장 부호",before:"제목 : / 기간 : / 대상 :",after:"제목: / 기간: / 대상:",reason:"쌍점은 앞말에 붙이고 뒷말과 띄웁니다.",basis:"편람 p.44"},
+  {src:"rule",type:"항목 기호",before:"1) / -",after:"1. / 가.",reason:"첫째 항목은 1., 둘째 항목은 가.를 씁니다.",basis:"규정 제21조"},
+  {src:"rule",type:"날짜·시간",before:"2026년 9월1일 ~ 10월 20일",after:"2026. 9. 1.~10. 20.",reason:"‘년·월·일’ 글자를 생략하고 점으로 구분합니다. 물결표는 앞뒤에 붙입니다.",basis:"규정 제12조 · 편람 p.44"},
+  {src:"guide",type:"띄어쓰기",before:"1만원",after:"1만 원",reason:"단위 명사 ‘원’은 띄어 씁니다.",basis:"길잡이 1부 3장"},
+  {src:"guide",type:"표현",before:"진행하는데 있어서 … 높은 것으로 나타났음",after:"참여자의 만족도가 높게 나타남",reason:"군더더기 표현을 줄이고 개조식 끝맺음을 통일합니다.",basis:"길잡이 1부 1장 · 편람 p.37"},
+  {src:"man",type:"외래어",before:"마켓팅 워크샵",after:"마케팅 워크숍",reason:"외래어 표기법에 맞춥니다.",basis:"편람 p.42"},
+  {src:"guide",type:"띄어쓰기",before:"이수여부 / 발급여부 / 확인 하였음",after:"이수 여부 / 발급 여부 / 확인함",reason:"‘여부’는 띄어 쓰고 ‘확인하다’는 붙여 씁니다.",basis:"길잡이 1부 3장 · 편람 p.43"},
+  {src:"man",type:"쉬운 말",before:"익일 / 차년도",after:"다음 날 / 다음 연도",reason:"어려운 한자어를 다듬은 말로 바꿉니다.",basis:"편람 p.40~41"},
+  {src:"man",type:"날짜·시간",before:"오후 3시",after:"15:00",reason:"시간은 24시각제로 쌍점을 찍어 씁니다.",basis:"편람 p.49"},
+  {src:"norm",type:"띄어쓰기",before:"공유 하고 / 반영 할",after:"공유하고 / 반영할",reason:"‘-하다’ 동사는 붙여 씁니다.",basis:"한글 맞춤법"},
+  {src:"rule",type:"끝 표시",before:"(없음)",after:"…예정임.  끝.",reason:"본문 끝에서 한 자(2타) 띄우고 ‘끝.’을 씁니다.",basis:"규정 제22조 · 편람 p.61"}
+ ],
+ notes:["발신 명의와 수신란이 없습니다. 시행문이라면 두문과 결문을 갖추세요(규정 제17·24조).","교내 문서 기준으로 항목 기호를 적용했습니다. 외부 기관 발송이라면 ‘대외 기관 발송’을 선택해 다시 검토하세요."]
+};
+
+/* ================= 프롬프트 ================= */
+function buildRules(scope){
+ const itemRule = scope==="out"
+  ? "항목 기호는 행안부 편람 체계를 적용: 1. → 가. → 1) → 가) → (1) → (가) → ① → ㉮. 첨부는 '붙임', 수신자가 많으면 '수신자 참조'."
+  : "항목 기호는 건국대 문서규정 제21조 체계를 적용: 1. → 가. → (1) → (가) → 1). 첨부 표시는 원문 용어('첨부' 또는 '붙임')를 존중하되 한 문서 안에서 통일. 수신자가 많으면 '수신처 참조'.";
+ return `당신은 건국대학교 행정 공문서 교정 전문가입니다. 세 기준을 우선순위대로 적용해 문서를 교정하세요.
+문서 종류: ${scope==="out"?"대외 기관 발송 문서(시행문)":"교내 문서(기안·보고·협조)"}
+
+[1순위 · 건국대학교 문서규정(3-1-16, 2025. 10. 1. 개정)] src="rule"
+- 제10조 표준어·한글·띄어쓰기·가로쓰기, 뜻 전달이 어려우면 괄호 안에 한자·외국어. 학칙·규정류·학적 문서는 한자 혼용 허용(고치지 말 것). 제10조② 불손하지 않은 범위에서 경어 생략 가능.
+- 제11조 아라비아 숫자. 제12조 날짜는 연·월·일 글자 생략, 점으로 구분.
+- 제20조 제목은 간단명료, 내용은 쉬운 말로 간략히 항목화.
+- 제21조 항목 기호(교내 문서일 때): 1. 가. (1) (가) 1)
+- 제22조 본문 끝 한 자 띄우고 '끝', 첨부가 있으면 첨부 표시 다음. 제23조 첨부물은 본문 다음 줄 '첨부' + 명칭.
+- 제17·19·24조 두문(교명·분류기호·시행일자·수신), 결문(발신 명의). 누락은 notes로만.
+
+[2순위 · 2025 행정업무운영 편람 제2장(행정안전부)] src="man" — 학교 규정에 없거나 덜 구체적인 부분에 적용
+- 날짜: 2026. 10. 23. (마침표 뒤 한 타, 월·일 '0' 생략, 마지막에도 마침표, 요일은 2026. 10. 23.(금)). (p.44, 49)
+- 시간: 24시각제 15:20, 07:09. (p.49)
+- 금액: 계약·회계 문서에서 금113,560원(금일십일만삼천오백육십원) 형식 — 없으면 notes로 권고. 본문의 '천 원' 단위는 만 단위로(21,345천원→2,134만 5천 원). (p.37, 49)
+- 끝 표시: 마지막 글자 뒤 2타(스페이스 2번) 띄우고 '끝.'. 표가 중간에서 끝나면 '이하 빈칸'. (p.61)
+- 붙임: '붙임  1. ○○계획서 1부.' 형식, 명칭과 수량. (p.59)
+- 항목: 하위 항목은 2타씩 들여쓰기, 기호 뒤 1타 띄움, 항목이 하나뿐이면 기호 생략. (p.51~53)
+- 문장 부호: 쌍점은 앞말에 붙이고 뒤는 띄움(원장: 김갑동), 물결표는 앞뒤 붙임(4. 23.~6. 15.). (p.44)
+- 맞춤법 예: 년도→연도, 집행율→집행률, 최소값→최솟값, 갯수→개수, 국내·외→국내외, 시·도→시도, 19일(토)는→19일(토)은, 일사분란→일사불란. (p.41~42)
+- 외래어: 컨퍼런스→콘퍼런스, 솔루션→설루션, 서포터즈→서포터스, 메세지→메시지, 뱃지→배지, 어플리케이션→애플리케이션, 워크샵→워크숍, 파트너쉽→파트너십. (p.42)
+- 띄어쓰기: 의존 명사·단위(296억 달러, 10만 톤, 지원 시, 기관 간, 폐기하는 데), 조사 붙임(지방공무원뿐만), 접두사·접미사 붙임(비공개, 50여 명, 내일쯤), 호칭 띄움(홍길동 씨), 관형사 띄움(총 300대, 본 제도). (p.43~44)
+- 다듬은 말: 익일→다음 날, 익월→다음 달, 금번·금회→이번, 차년도→다음 연도, 상기→위, 제고하다→높이다, 용이하다→쉽다, 상이한→다른, 당해→그·해당, 제반→여러, 적기→알맞은 시기, 적시→제때, 득하여→받아, 불요→필요 없음, 이첩하다→넘기다, 송달하다→보내다, 수범 사례→모범 사례, 확행 바랍니다→꼭 하시기 바랍니다, 성료→성공적으로 마침, MOU→업무 협약, R&D→연구 개발(R&D), 거버넌스→협치·민관 협력, 니즈→수요, 리스크→위험, 스타트업→새싹 기업·창업 초기 기업, 액션 플랜→실행 계획, 킥오프 회의→첫 회의, 허브→거점, TF→전담팀, 테스트 베드→시험장. 단, 사업명·기관명 등 고유 명칭은 유지. (p.36~41)
+- 우리말다운 표현: 과도한 명사화·피동·사동 지양(변경되어진다→변경된다, 사용 중에 있으나→사용하고 있으나), 문장 성분 호응, 접수/제출 구분, 로서/로써. (p.37, 45~47)
+- 어조: 학생·외부 대상 안내·공고는 '~바람', '~할 것'을 '~하시기 바랍니다'로. 교내 내부 문서의 개조식 '-음/-함'은 학교 규정(제10조②)상 허용되므로 유지. 권위적·차별 표현은 고침. (p.47~48)
+
+[3순위 · 국립국어원 「쉬운 공문서 쓰기 길잡이」(2022. 12.)] src="guide" — 표현의 쉬움·정확성
+- 쉽게 쓰기, 국민의 처지에서 표현하기, 정확하게 쓰기(년도→연도, 란→난, 률/율, 아니오→아니요, 여부·위·시·데·만 원 띄어쓰기, 오탈자, 일체/일절, 유무/여부, 고취 시키고→고취하고, '~에 있어서', '~것으로 나타났음' 같은 군더더기 제거).
+- 개조식 문장은 끝맺음을 한 방식으로 통일.
+어문 규범 일반(한글 맞춤법·표준어 규정·외래어 표기법)에만 근거한 수정은 src="norm".
+
+[이번 문서에 적용할 선택 사항]
+- ${itemRule}
+
+[원칙]
+- 원문의 의미·사실·숫자·고유 명사는 절대 바꾸지 말 것. 사실을 추가하거나 지어내지 말 것.
+- 줄바꿈과 문단 구조는 최대한 유지하고 꼭 필요한 곳만 고칠 것.
+- 판단이 필요한 사항(누락된 수신란·발신 명의, 금액 한글 병기 권고, 모호한 문장, 기준 간 차이로 선택이 필요한 부분)은 corrected에 반영하지 말고 notes에 적기.
+- 같은 유형의 반복 수정은 한 항목으로 묶어 '/'로 나열.
+
+[출력] 오직 아래 형식의 JSON 하나만 출력. 설명 문장·코드 펜스 금지.
+{"corrected":"교정된 전체 문서(줄바꿈은 \\n)","summary":"무엇을 고쳤는지 1~2문장","changes":[{"src":"rule|man|guide|norm","type":"맞춤법|띄어쓰기|오탈자|외래어|쉬운 말|표현|어조|날짜·시간|숫자·금액|항목 기호|끝 표시|붙임·첨부|문장 부호","before":"원문 부분(짧게)","after":"수정 부분(짧게)","reason":"왜 고쳤는지 한 문장","basis":"규정 제12조 / 편람 p.49 / 길잡이 1부 3장 / 한글 맞춤법 제○항 형식"}],"notes":["자동 수정하지 않은 확인 사항"]}
+수정할 것이 없으면 changes는 빈 배열.`;
+}
+
+/* ================= 상태 ================= */
+let state={result:SAMPLE_OUT,source:SAMPLE_IN,isExample:true,view:"diff",scope:"in"};
+let sample=null,ctl=null,timer=null;
+
+/* ================= diff ================= */
+function tokenize(s,mode){return mode==="char"?Array.from(s):(s.match(/\s+|[^\s]+/g)||[]);}
+function diff(a,b){
+ const mode=(a.length*b.length<=4e6)?"char":"word";
+ const A=tokenize(a,mode),B=tokenize(b,mode);
+ if(A.length*B.length>9e6)return[{t:"del",v:a},{t:"ins",v:b}];
+ const n=A.length,m=B.length,W=m+1,dp=new Uint16Array((n+1)*W);
+ for(let i=n-1;i>=0;i--)for(let j=m-1;j>=0;j--)dp[i*W+j]=A[i]===B[j]?dp[(i+1)*W+j+1]+1:Math.max(dp[(i+1)*W+j],dp[i*W+j+1]);
+ const ops=[];let i=0,j=0;
+ const push=(t,v)=>{const l=ops[ops.length-1];if(l&&l.t===t)l.v+=v;else ops.push({t,v});};
+ while(i<n&&j<m){if(A[i]===B[j]){push("eq",A[i]);i++;j++;}else if(dp[(i+1)*W+j]>=dp[i*W+j+1]){push("del",A[i]);i++;}else{push("ins",B[j]);j++;}}
+ while(i<n)push("del",A[i++]);while(j<m)push("ins",B[j++]);
+ // 사이에 낀 한 글자 일치는 변경으로 흡수해 읽기 쉽게
+ const out=[];
+ for(let k=0;k<ops.length;k++){const o=ops[k];
+  if(o.t==="eq"&&o.v.length===1&&!/\s/.test(o.v)&&k>0&&k<ops.length-1&&ops[k-1].t!=="eq"&&ops[k+1].t!=="eq"){out.push({t:"del",v:o.v});out.push({t:"ins",v:o.v});}
+  else out.push({...o});}
+ // del/ins 묶음 정리: 연속 변경 구간 안에서 del끼리, ins끼리 모음
+ const res=[];let d="",s="";
+ const flush=()=>{if(d)res.push({t:"del",v:d});if(s)res.push({t:"ins",v:s});d="";s="";};
+ for(const o of out){if(o.t==="eq"){flush();res.push(o);}else if(o.t==="del")d+=o.v;else s+=o.v;}
+ flush();return res;
+}
+function piece(o,mode){
+ if(o.t==="eq")return esc(o.v);
+ const ws=/^[ \t]+$/.test(o.v);
+ if(o.t==="ins"){if(mode==="old")return"";return ws?`<ins class="ws" title="띄어쓰기 추가">${esc(o.v)}</ins>`:`<ins>${esc(o.v)}</ins>`;}
+ if(mode==="new")return"";
+ return ws?`<del class="ws" title="띄어쓰기 삭제">·</del>`:`<del>${esc(o.v)}</del>`;
+}
+const renderDiff=(a,b,mode="both")=>diff(a,b).map(o=>piece(o,mode)).join("");
+
+/* ================= 렌더: 검토 ================= */
+function setPressed(groupId,v){document.querySelectorAll(`#${groupId} button`).forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===v));}
+function render(){
+ const r=state.result;
+ $("exTag").hidden=!state.isExample;
+ setPressed("view",state.view);setPressed("scope",state.scope);
+ const out=$("out");
+ if(!r){out.className="out empty";out.textContent="왼쪽에 문서를 입력하고 ‘검토하기’를 누르면 수정본이 여기에 나옵니다.";}
+ else if(state.view==="side"){out.className="";out.innerHTML=`<div class="side"><div><span class="cap">원문</span>${renderDiff(state.source,r.corrected,"old")}</div><div><span class="cap">수정본</span>${renderDiff(state.source,r.corrected,"new")}</div></div>`;}
+ else{out.className="out";out.innerHTML=state.view==="diff"?renderDiff(state.source,r.corrected):esc(r.corrected);}
+ const ch=(r&&Array.isArray(r.changes))?r.changes:[];
+ $("tot").textContent=ch.length;
+ $("totSub").textContent=r?(state.isExample?"예시 문서 기준":`원문 ${state.source.length.toLocaleString()}자 검토`):"검토 전";
+ const sc={rule:0,man:0,guide:0,norm:0};ch.forEach(c=>{sc[c.src in sc?c.src:"norm"]++;});
+ const mx=Math.max(1,...Object.values(sc));
+ $("srcBars").innerHTML=Object.keys(sc).map(k=>`<div class="bar"><span class="src ${k}">${SRC[k]}</span><div class="tr"><div class="fl" style="width:${sc[k]/mx*100}%;--c:var(--src-${k})"></div></div><span class="v">${sc[k]}</span></div>`).join("");
+ const tc={};ch.forEach(c=>{const t=c.type||"수정";tc[t]=(tc[t]||0)+1;});
+ $("typeChips").innerHTML=Object.keys(tc).length?Object.entries(tc).sort((a,b)=>b[1]-a[1]).map(([t,n])=>`<span class="chip">${esc(t)} <b>${n}</b></span>`).join(""):`<span class="meta">수정 항목 없음</span>`;
+ $("summary").textContent=r?.summary||(r?"수정할 사항이 없습니다.":"검토 결과가 나오면 무엇을 왜 고쳤는지 여기에 정리됩니다.");
+ $("chgBody").innerHTML=ch.length?ch.map((c,k)=>{const s=c.src in SRC?c.src:"norm";return`<tr>
+  <td class="no">${k+1}</td><td><span class="src ${s}">${SRC[s]}</span></td><td><span class="chip">${esc(c.type||"수정")}</span></td>
+  <td><div class="ba"><del>${esc(c.before||"")}</del><ins>${esc(c.after||"")}</ins></div></td>
+  <td>${esc(c.reason||"")}</td><td class="meta" style="white-space:nowrap">${esc(c.basis||"")}</td></tr>`}).join("")
+  :`<tr><td colspan="6" class="meta">${r?"수정할 사항이 없습니다.":"아직 검토한 문서가 없습니다."}</td></tr>`;
+ const notes=(r&&Array.isArray(r.notes))?r.notes.filter(Boolean):[];
+ $("notes").hidden=!notes.length;$("notesList").innerHTML=notes.map(n=>`<li>${esc(n)}</li>`).join("");
+ $("copyBtn").disabled=!r;$("applyBtn").disabled=!r;
+}
+
+/* ================= 렌더: 비교·차이 ================= */
+let cmpFilter="all";
+function cell(txt,ex,ref){return `${esc(txt)}${ex?`<span class="ref" style="white-space:pre-wrap;font-family:var(--f-mono);color:var(--ink)">${esc(ex)}</span>`:""}<span class="ref">${esc(ref||"")}</span>`;}
+function renderCompare(){
+ setPressed("cmpFilter",cmpFilter);
+ const rows=CMP.filter(c=>cmpFilter==="all"||c.diff);
+ $("cmpCount").textContent=`${rows.length}개 항목 · 차이 ${CMP.filter(c=>c.diff).length}개`;
+ $("cmpBody").innerHTML=rows.map(c=>`<tr class="${c.diff?"is-diff":""}">
+  <td class="topic">${esc(c.topic)}${c.sub?`<small>${esc(c.sub)}</small>`:""}${c.diff?`<a class="dbadge" href="#d-${c.id}" data-jump="${c.id}">차이 있음 ›</a>`:`<span class="sbadge">같은 취지</span>`}</td>
+  <td>${cell(c.rule,c.ruleEx,c.ruleRef)}</td><td>${cell(c.man,c.manEx,c.manRef)}</td><td>${cell(c.guide,c.guideEx,c.guideRef)}</td>
+  <td class="apply">${esc(c.apply)}</td></tr>`).join("");
+}
+function renderDiffs(){
+ const ds=CMP.filter(c=>c.diff);
+ $("dToc").innerHTML=ds.map((c,i)=>`<a href="#d-${c.id}" data-jump="${c.id}">${i+1}. ${esc(c.topic)}</a>`).join("");
+ const box=(cls,label,txt,ex,ref)=>`<div style="--c:var(--src-${cls})"><div class="h">${label}</div>${esc(txt)}${ex?`<span class="ex">${esc(ex)}</span>`:""}<div class="meta" style="margin-top:6px">${esc(ref)}</div></div>`;
+ $("dCards").innerHTML=ds.map((c,i)=>`<article class="dcard" id="d-${c.id}">
+  <h3><span class="no">${String(i+1).padStart(2,"0")}</span>${esc(c.topic)}${c.sub?` <small class="meta">${esc(c.sub)}</small>`:""}</h3>
+  <p class="why">${esc(c.why)}</p>
+  <div class="tri">${box("rule","학교 규정",c.rule,c.ruleEx,c.ruleRef)}${box("man","행안부 편람",c.man,c.manEx,c.manRef)}${box("guide","국어원 길잡이",c.guide,c.guideEx,c.guideRef)}</div>
+  <div class="verdict"><b>건국대 문서에서는</b><span>${esc(c.verdict)}</span></div></article>`).join("");
+}
+
+/* ================= 탭 ================= */
+const TABS={review:["문서 검토","문서를 붙여 넣으면 학교 규정·행안부 편람·국립국어원 길잡이 기준으로 고친 수정본과 근거를 보여 줍니다."],
+ compare:["3단 기준 비교","학교 규정, 행안부 편람, 국어원 길잡이가 같은 항목을 어떻게 정하는지 한 표로 비교합니다."],
+ differences:["차이점 해설","세 기준이 서로 다른 항목과 건국대 문서에서의 적용 방법을 설명합니다."]};
+function showTab(t,anchor){
+ if(!TABS[t])t="review";
+ for(const k in TABS)$("tab-"+k).hidden=k!==t;
+ document.querySelectorAll("[data-tab]").forEach(a=>{if(a.dataset.tab===t)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current");});
+ $("subTitle").textContent=TABS[t][0];$("subDesc").textContent=TABS[t][1];$("locLast").textContent=TABS[t][0];
+ if(anchor){requestAnimationFrame(()=>document.getElementById(anchor)?.scrollIntoView({behavior:"smooth",block:"start"}));}
+}
+function route(){
+ const h=(location.hash||"").slice(1);
+ if(h.startsWith("d-"))showTab("differences",h);else showTab(h||"review");
+}
+document.querySelectorAll("[data-tab]").forEach(a=>a.addEventListener("click",e=>{e.preventDefault();try{history.replaceState(null,"","#"+a.dataset.tab)}catch{}showTab(a.dataset.tab);window.scrollTo({top:0});}));
+document.addEventListener("click",e=>{const j=e.target.closest("[data-jump]");if(!j)return;e.preventDefault();showTab("differences","d-"+j.dataset.jump);});
+window.addEventListener("hashchange",route);
+
+/* ================= 기본 규칙 점검(AI 불가 시) ================= */
+function basicFix(src){
+ const changes=[];let s=src;
+ const rep=(re,fn,src2,type,reason,basis)=>{s=s.replace(re,(...m)=>{const after=fn(...m);if(after!==m[0])changes.push({src:src2,type,before:m[0],after,reason,basis});return after;});};
+ rep(/(\d{4})[ \t]*(?:년|[.\-\/])[ \t]*(\d{1,2})[ \t]*(?:월|[.\-\/])[ \t]*(\d{1,2})[ \t]*(?:일|\.)?(?!\d)/g,(m,y,mo,d)=>`${y}. ${+mo}. ${+d}.`,"man","날짜·시간","연·월·일 글자를 생략하고 마침표 뒤 한 타 띄웁니다. ‘0’은 쓰지 않습니다.","규정 제12조 · 편람 p.49");
+ rep(/(오전|오후)[ \t]*(\d{1,2})시(?:[ \t]*(\d{1,2})분)?/g,(m,ap,h,mi)=>{let H=+h;if(ap==="오후"&&H<12)H+=12;if(ap==="오전"&&H===12)H=0;return`${String(H).padStart(2,"0")}:${String(+(mi||0)).padStart(2,"0")}`;},"man","날짜·시간","시간은 24시각제로 쌍점을 찍어 씁니다.","편람 p.49");
+ rep(/(\S)[ \t]+:[ \t]*/g,(m,p)=>`${p}: `,"man","문장 부호","쌍점은 앞말에 붙이고 뒷말과 띄웁니다.","편람 p.44");
+ rep(/(\.)[ \t]+~[ \t]+(\d)/g,(m,a,b)=>`${a}~${b}`,"man","문장 부호","물결표는 앞뒤에 붙여 씁니다.","편람 p.44");
+ const words=[["마켓팅","마케팅"],["싸이트","사이트"],["패널티","페널티"],["컨텐츠","콘텐츠"],["워크샵","워크숍"],["메세지","메시지"],["리더쉽","리더십"],["파트너쉽","파트너십"],["컨퍼런스","콘퍼런스"],["서포터즈","서포터스"],["어플리케이션","애플리케이션"],["뱃지","배지"]];
+ for(const[a,b]of words)rep(new RegExp(a,"g"),()=>b,"man","외래어","외래어 표기법에 맞춥니다.","편람 p.42");
+ for(const[a,b]of[["국내·외","국내외"],["상·하수도","상하수도"],["초·중·고","초중고"],["출·퇴근","출퇴근"],["일사분란","일사불란"],["최소값","최솟값"],["최대값","최댓값"],["갯수","개수"]])rep(new RegExp(a,"g"),()=>b,"man","맞춤법","표준국어대사전 표기에 맞춥니다.","편람 p.41~42");
+ rep(/([가-힣]+)(여부)/g,(m,p,w)=>`${p} ${w}`,"guide","띄어쓰기","‘여부’는 띄어 씁니다.","길잡이 1부 3장 · 편람 p.43");
+ rep(/(\d만|\d천|\d억)(원|명|달러|톤)/g,(m,a,u)=>`${a} ${u}`,"man","띄어쓰기","수와 단위 명사는 띄어 씁니다.","편람 p.43");
+ rep(/([가-힣]{2,})(?<![을를이가은는에도로와과의서고면며]) (하였|하고|하여|했|합니다|하겠|할(?=\s)|함(?=[\s.]|$))/g,(m,a,b)=>`${a}${b}`,"norm","띄어쓰기","‘-하다’ 동사는 붙여 씁니다.","한글 맞춤법");
+ rep(/차년도/g,()=>"다음 연도","man","쉬운 말","‘차년도’는 ‘다음 연도’로 씁니다.","편람 p.41");
+ rep(/(^|[\s(])년도/gm,(m,p)=>p+"연도","guide","맞춤법","두음 법칙에 따라 ‘연도’로 적습니다.","길잡이 1부 3장 · 편람 p.41");
+ rep(/(집행|자부담|참여|달성)율/g,(m,a)=>a+"률","man","맞춤법","받침 있는 말 뒤에는 ‘률’을 씁니다.","편람 p.41");
+ rep(/아니오(?=[\s,.)]|$)/g,()=>"아니요","guide","맞춤법","대답하는 말은 ‘아니요’입니다.","길잡이 1부 3장");
+ for(const[a,b]of[["익일","다음 날"],["익월","다음 달"],["금일","오늘"],["금번","이번"],["금회","이번"],["제고하","높이"],["용이하","쉬우"],["상기 ","위 "]])rep(new RegExp(a,"g"),()=>b,"man","쉬운 말","어려운 한자어를 다듬은 말로 바꿉니다.","편람 p.39~41");
+ const notes=["기본 규칙 점검 결과입니다. 문장 표현·항목 기호·끝 표시는 직접 확인하세요. Claude 사용을 허용하면 문장 단위 정밀 검토를 받을 수 있습니다."];
+ if(!/끝\.?\s*$/.test(s.trim()))notes.push("본문 끝에 ‘  끝.’ 표시가 없습니다(규정 제22조 · 편람 p.61).");
+ return{corrected:s,summary:"AI 검토를 쓸 수 없어 기본 규칙(날짜·시간, 문장 부호, 외래어, 일부 맞춤법·띄어쓰기, 다듬은 말)만 적용했습니다.",changes,notes};
+}
+
+/* ================= 실행 ================= */
+async function run(){
+ const src=$("inText").value.trim();
+ if(!src){toast("검토할 내용을 입력하세요.");$("inText").focus();return;}
+ if(src.length>20000){toast("한 번에 2만 자까지 검토할 수 있습니다. 나누어 검토하세요.");return;}
+ const statusEl=$("status");
+ if(!sample){state={...state,result:basicFix(src),source:src,isExample:false};render();statusEl.textContent="기본 규칙 점검 완료";return;}
+ ctl=new AbortController();
+ $("runBtn").disabled=true;$("stopBtn").hidden=false;
+ const t0=Date.now();let got=0;
+ const out=$("out");out.className="out empty";out.innerHTML='<span class="spin">세 기준으로 검토하고 있습니다…</span>';
+ timer=setInterval(()=>{statusEl.textContent=`검토 중 ${Math.round((Date.now()-t0)/1000)}초${got?` · ${got.toLocaleString()}자 작성`:""}`;},500);
+ try{
+  const res=await sample.json(buildRules(state.scope)+"\n\n[검토할 문서]\n<<<\n"+src+"\n>>>",{signal:ctl.signal,modelTier:$("deep").checked?"complex":"default",onText:({text})=>{got=text.length;}});
+  if(!res||typeof res.corrected!=="string")throw{code:"invalid_json"};
+  state={...state,result:res,source:src,isExample:false};render();
+  statusEl.textContent=`검토 완료 · ${Math.round((Date.now()-t0)/1000)}초`;
+ }catch(e){
+  const msg={cancelled:"검토를 중지했습니다.",rate_limited:"요청이 많습니다. 잠시 후 다시 시도하세요.",invalid_json:"결과 형식이 올바르지 않습니다. 다시 시도하세요.",refused:"이 내용은 검토할 수 없습니다.",session_expired:"다시 로그인한 뒤 시도하세요.",prompt_too_large:"문서가 너무 깁니다. 나누어 검토하세요."}[e?.code];
+  if(["not_granted","sampling_disabled","not_declared","capability_disabled","capability_removed"].includes(e?.code)){
+   sample=null;state={...state,result:basicFix(src),source:src,isExample:false};render();statusEl.textContent="AI 검토를 쓸 수 없어 기본 규칙으로 점검했습니다.";
+  }else{render();statusEl.textContent=msg||"검토 중 오류가 났습니다. 다시 시도하세요.";}
+ }finally{clearInterval(timer);$("runBtn").disabled=false;$("stopBtn").hidden=true;}
+}
+async function copy(){
+ const text=state.result?.corrected||"";
+ try{await navigator.clipboard.writeText(text);toast("수정본을 복사했습니다.");}
+ catch{state.view="clean";render();const r=document.createRange();r.selectNodeContents($("out"));const s=getSelection();s.removeAllRanges();s.addRange(r);toast("수정본을 선택했습니다. Ctrl+C로 복사하세요.");}
+}
+function toast(msg){const t=$("toast");t.textContent=msg;t.hidden=false;clearTimeout(toast._t);toast._t=setTimeout(()=>t.hidden=true,1800);}
+function count(){$("inCount").textContent=$("inText").value.length.toLocaleString()+"자";}
+
+$("runBtn").onclick=run;
+$("stopBtn").onclick=()=>ctl?.abort();
+$("sampleBtn").onclick=()=>{$("inText").value=SAMPLE_IN;count();state={...state,result:SAMPLE_OUT,source:SAMPLE_IN,isExample:true};$("status").textContent="";render();};
+$("clearBtn").onclick=()=>{$("inText").value="";count();state={...state,result:null,source:"",isExample:false};$("status").textContent="";render();$("inText").focus();};
+document.querySelectorAll("#view button").forEach(b=>b.onclick=()=>{state.view=b.dataset.v;render();});
+document.querySelectorAll("#scope button").forEach(b=>b.onclick=()=>{state.scope=b.dataset.v;render();try{localStorage.setItem("kku-scope",state.scope)}catch{}});
+document.querySelectorAll("#cmpFilter button").forEach(b=>b.onclick=()=>{cmpFilter=b.dataset.v;renderCompare();});
+$("copyBtn").onclick=copy;
+$("applyBtn").onclick=()=>{if(!state.result)return;$("inText").value=state.result.corrected;count();toast("수정본을 입력란에 넣었습니다.");};
+$("inText").addEventListener("input",()=>{count();try{localStorage.setItem("kku-draft",$("inText").value)}catch{}});
+
+(function init(){
+ let draft="",scope="in";try{draft=localStorage.getItem("kku-draft")||"";scope=localStorage.getItem("kku-scope")||"in";}catch{}
+ state.scope=scope==="out"?"out":"in";
+ $("inText").value=draft||SAMPLE_IN;count();
+ if(draft&&draft!==SAMPLE_IN)state={...state,result:null,source:draft,isExample:false};
+ render();renderCompare();renderDiffs();route();
+ if(window.claude?.use)claude.use("sample").then(s=>{sample=s;if(!s)$("status").textContent="기본 규칙 점검 모드";}).catch(()=>{});
+ else $("status").textContent="기본 규칙 점검 모드";
+})();
+</script>
