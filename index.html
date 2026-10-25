@@ -2906,7 +2906,8 @@ function extraRules(){
  const t=DOC_TYPES[state.docType];
  return`[문서 유형] ${t.label}: ${t.rules}
 [팀 용어집 — 공식 명칭이므로 띄어쓰기·표기를 고치지 말 것] ${allTerms().join(", ")}
-${teamRules.length?`[팀 사용자 규칙 — 그대로 적용] ${teamRules.map(r=>`'${r.find}'→'${r.replace}'`).join(", ")}\n`:""}[법령·규정 인용] 법령명은 「」 낫표, 조·항·호는 '제5조제1항'처럼 붙여 쓰기, '동법·동조'는 '같은 법·같은 조'.
+${teamRules.length?`[팀 사용자 규칙 — 그대로 적용] ${teamRules.map(r=>`'${r.find}'→'${r.replace}'`).join(", ")}\n`:""}[사업 명칭] ANCHOR 사업의 정식 명칭은 ‘지역성장 인재양성체계(ANCHOR)’. 문서에서 ANCHOR가 처음 나올 때 풀이가 없으면 ‘지역성장 인재양성체계(ANCHOR)’로 고치고(이후는 ANCHOR), ‘앵커’·‘Anchor’ 등 다른 표기는 ‘ANCHOR’로 통일. 다른 사업명으로 바꾸지 말 것.
+[법령·규정 인용] 법령명은 「」 낫표, 조·항·호는 '제5조제1항'처럼 붙여 쓰기, '동법·동조'는 '같은 법·같은 조'.
 [숫자] 합계·인원·금액·날짜와 요일이 서로 맞지 않으면 고치지 말고 notes에 계산과 함께 적기.
 [기록물] 붙임 파일이 .egg·.alz 압축이거나 .hwp라면 개방형 형식(hwpx·pdf) 권장을 notes에 적기.`+xrPrompt();
 }
@@ -3017,12 +3018,13 @@ function syncPaneHeight(){}
 try{const ro=new ResizeObserver(()=>requestAnimationFrame(syncPaneHeight));ro.observe($("inText"));ro.observe($("inPane"));}catch{}
 window.addEventListener("resize",syncPaneHeight);
 /* ================= 바른 공문 추가 점검 (★★★ 기본 · ★★/★ 선택) ================= */
+const ABBR_DEF={ANCHOR:"지역성장 인재양성체계"};
 const XR=[
  {id:"rel",lv:3,name:"관련 근거 표기",tip:"‘관련: 부서-번호(2026. 10. 1.)’ 형식"},
  {id:"att",lv:3,name:"붙임 개수 일치",tip:"본문의 붙임 언급과 붙임 목록 수·순서"},
  {id:"dord",lv:3,name:"날짜 앞뒤 관계",tip:"기간 역전, 신청 마감 > 행사일, 지난 마감일"},
  {id:"name",lv:3,name:"명칭 일관성",tip:"같은 기관을 다르게 쓴 곳"},
- {id:"abbr",lv:2,name:"약어 첫 등장 풀이",tip:"RISE(지역혁신중심 대학지원체계)"},
+ {id:"abbr",lv:2,name:"약어 첫 등장 풀이",tip:"지역성장 인재양성체계(ANCHOR)"},
  {id:"pub",lv:2,name:"공개 문서 개인정보",tip:"공개 문서에 연락처·주민번호 등"},
  {id:"rel_d",lv:2,name:"상대적 날짜 표현",tip:"내일·다음 주·금주 → 구체 날짜"},
  {id:"unit",lv:2,name:"숫자·단위 일관성",tip:"천원/원 혼용, 쉼표, %p, 시간 표기"},
@@ -3105,7 +3107,10 @@ function docCheck(text){
  }
  /* ★★ 약어 */
  if(xrEnabled("abbr")){
-  const OK=new Set(["KU","PDF","HWP","HWPX","URL","QR","PC","IT","AI","ID","PW","SNS","TF","OK","CEO","USB","TV","PPT","KTX","LH","MOU","FAQ","Q","A","AM","PM","GB","MB","KB","ICT","CCTV","PR","PDF"]);
+  for(const[ab,full]of Object.entries(ABBR_DEF)){const i=text.search(new RegExp("(?<![A-Za-z])"+ab+"(?![A-Za-z])"));if(i<0)continue;
+   const ok=new RegExp(full.replace(/\s+/g,"\\s*")+"\\s*\\(\\s*"+ab+"\\s*\\)").test(text)||new RegExp(ab+"\\s*\\(\\s*"+full.replace(/\s+/g,"\\s*")).test(text);
+   if(!ok)add(lineOf(i),"약어 풀이",`‘${ab}’를 처음 쓸 때 ‘${full}(${ab})’로 풀어 쓰세요. 이후에는 ‘${ab}’만 써도 됩니다.`,ab);}
+  const OK=new Set([...Object.keys(ABBR_DEF),"KU","PDF","HWP","HWPX","URL","QR","PC","IT","AI","ID","PW","SNS","TF","OK","CEO","USB","TV","PPT","KTX","LH","MOU","FAQ","Q","A","AM","PM","GB","MB","KB","ICT","CCTV","PR","PDF"]);
   const done=new Set();let m;const re=/(?<![A-Za-z])([A-Z][A-Z0-9&]{1,9})(?![A-Za-z])/g;
   const gl=(()=>{try{return allTerms().join(" ")}catch{return ""}})();
   while((m=re.exec(text))){const a=m[1];if(done.has(a)||OK.has(a)||gl.includes(a))continue;done.add(a);
