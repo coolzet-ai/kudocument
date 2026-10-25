@@ -904,6 +904,21 @@ body.is-beta .nb{display:none}
 .xr-i span{display:flex;flex-direction:column}.xr-i small{color:var(--muted);font-size:11.5px}
 .xr-n{display:inline-grid;place-items:center;min-width:18px;height:18px;border-radius:9px;background:var(--green);color:#fff;font-size:11px;font-weight:700;padding:0 4px}
 @media (max-width:720px){.xr-pop{position:fixed!important;left:12px!important;right:12px!important;top:56px!important;width:auto!important}}
+
+/* ===== AI 미연결 안내 · Claude 연결 ===== */
+.aibar{display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap;background:color-mix(in srgb,var(--green) 7%,var(--paper));border:1px solid var(--green-mid);border-left:5px solid var(--green);border-radius:8px;padding:9px 12px;margin:-2px 0 10px}
+.aibar.pulse{animation:aibarP 1s ease 2}
+@keyframes aibarP{50%{box-shadow:0 0 0 4px color-mix(in srgb,var(--green) 30%,transparent)}}
+.aibar-ic{font-size:18px;color:var(--green);flex:none}
+.aibar-t{flex:1 1 320px;min-width:0;display:flex;flex-direction:column;font-size:13px;line-height:1.45}
+.aibar-t b{font-size:14px}
+.aibar-t span{color:var(--muted)}
+.aibar-a{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.aibar-a .btn{text-decoration:none;padding:6px 12px;font-size:13px}
+.aibar-x{border:0;background:none;color:var(--muted);font-size:15px;cursor:pointer;padding:4px 6px;border-radius:4px}
+.aibar-x:hover{background:var(--bg)}
+@media (max-width:720px){.aibar-ic{display:none}.aibar{padding:8px 10px}.aibar-t{flex-basis:100%}.aibar-a{width:100%}.aibar-a .btn{flex:1 1 auto;justify-content:center}}
+@media (prefers-reduced-motion:reduce){.aibar.pulse{animation:none}}
 </style>
 
 <header class="hd gut">
@@ -1023,6 +1038,20 @@ body.is-beta .nb{display:none}
     <button class="btn" id="stopBtn" hidden>중지</button>
     <button class="btn" id="xpBtn" title="ChatGPT·Gemini 등 다른 AI에 붙여 넣을 요청문을 만듭니다"><span class="xp-ic" aria-hidden="true">✎</span><span class="xp-lb">다른 AI용 프롬프트</span></button>
     <button class="btn pri" id="runBtn">검토하기</button>
+  </div>
+
+  <div class="aibar" id="aiBar" hidden role="status">
+    <span class="aibar-ic" aria-hidden="true">✦</span>
+    <div class="aibar-t"><b id="aiBarHead">AI가 연결되지 않았습니다</b><span id="aiBarMsg">지금은 기본 규칙(맞춤법·띄어쓰기·날짜·기호)으로만 검토합니다. Claude를 연결하면 문장 구조 검토와 캡처 이미지 읽기까지 쓸 수 있습니다.</span></div>
+    <div class="aibar-a">
+      <button class="btn pri" id="aiConnect" type="button">Claude 연결하기</button>
+      <a class="btn pri" id="aiBarOpen" href="https://claude.ai/artifact/6m6wyQ3JLk84vFzx3Qysxw" target="_blank" rel="noopener" hidden>claude.ai에서 열기</a>
+      <button class="btn" id="aiBarChat" type="button" hidden>Claude 채팅창으로 검토</button>
+      <button class="btn" id="aiBarKey" type="button" hidden>Claude API 키 입력</button>
+      <a class="btn ghost" id="aiBarLogin" href="https://claude.ai/login" target="_blank" rel="noopener" hidden>claude.ai 로그인</a>
+      <button class="btn ghost" id="aiBarBasic" type="button" title="AI 없이 기본 규칙으로만 쓰고 이 안내를 숨깁니다">기본 규칙만 쓰기</button>
+      <button class="aibar-x" id="aiBarX" type="button" aria-label="이번에는 닫기">✕</button>
+    </div>
   </div>
 
   <!-- 모바일 전환 -->
@@ -2149,6 +2178,7 @@ function setAi(st){
  $("meLine").textContent=meName?`현재 이용자: ${meName}`:"";
  $("runBtn").textContent=canReview()?"검토하기":"검토하기 · 이용권 필요";
  $("mRun").textContent=canReview()?"검토하기":"이용권 필요";
+ if(typeof renderAiBar==="function")renderAiBar();
  const on=aiOn();
  $("imgTableBtn").title=on?"":"검토를 쓸 수 있을 때 사용할 수 있습니다";$("imgDocBtn").title=on?"문서·표 캡처 이미지를 읽어 입력란에 옮겨 적습니다":"검토를 쓸 수 있을 때 사용할 수 있습니다";
  $("admTab").hidden=!isAdmin;
@@ -2887,7 +2917,7 @@ async function run(){
  if(!canReview()){toast("무료 체험 1회를 사용했습니다. 팀 암호를 입력하면 계속 검토할 수 있습니다.");setAi("refresh");$("pwIn").scrollIntoView({block:"center",behavior:"smooth"});$("pwIn").focus();return;}
  const statusEl=$("status");
  const done=()=>{useTrial({mode:state.result?.kind||"basic",type:state.docType,chars:src.length,edits:state.result?.edits?.length||0});saveHistory();state.view="mark";curId=-1;render();const f=state.result?.edits.find(x=>!x.dec);if(f)selectEdit(f.id,false);if(isMobile())setM("panel");};
- if(!sample){state={...state,result:basicEdits(src),source:src,isExample:false,finalized:false};render();statusEl.textContent="기본 규칙 점검 완료";done();return;}
+ if(!sample){aiBarClosed=false;renderAiBar();$("aiBar").classList.remove("pulse");void $("aiBar").offsetWidth;$("aiBar").classList.add("pulse");state={...state,result:basicEdits(src),source:src,isExample:false,finalized:false};render();statusEl.textContent="기본 규칙 점검 완료";done();return;}
  ctl=new AbortController();
  $("runBtn").disabled=true;$("mRun").disabled=true;$("stopBtn").hidden=false;
  const t0=Date.now();let got=0,part="";
@@ -3237,7 +3267,7 @@ function applyProvider(quiet){
  else setAi("nokey");
  if(!quiet)toast("AI 연결: "+PROV_NAME[provider]+(sample?"":" (설정 필요)"));
 }
-$("prov").addEventListener("change",e=>{const v=e.target.value;if(!v)return;provider=v;lsSet("kku-prov",v);applyProvider();});
+$("prov").addEventListener("change",e=>{const v=e.target.value;if(!v)return;provider=v;lsSet("kku-prov",v);if(v==="claude"&&IN_ARTIFACT&&!claudeSample){connectClaude();return;}applyProvider();});
 $("keyIn").addEventListener("change",()=>{keySet(provider,$("keyIn").value.trim(),$("keyKeep").checked);applyProvider(true);});
 $("keyKeep").addEventListener("change",()=>{keySet(provider,$("keyIn").value.trim(),$("keyKeep").checked);});
 $("modelIn").addEventListener("change",()=>{lsSet("kku-model-"+provider,$("modelIn").value.trim()||null);applyProvider(true);});
@@ -3312,6 +3342,48 @@ $("xpApply").onclick=()=>{
  const f=state.result.edits.find(x=>!x.dec);if(f)selectEdit(f.id,false);
  xpClose();$("xpAns").value="";if(isMobile())setM("panel");toast("다른 AI의 제안을 불러왔습니다.");
 };
+
+/* ================= AI 미연결 안내 · Claude 연결 ================= */
+let aiBarClosed=ssGet("kku-aibar-x")==="1";
+function renderAiBar(){
+ try{
+  const bar=$("aiBar");if(!bar)return;
+  const chosenNone=lsGet("kku-prov")==="none";
+  const show=!sample&&!chosenNone&&!aiBarClosed&&aiAvail!==null;
+  bar.hidden=!show;if(!show)return;
+  const inA=IN_ARTIFACT;
+  $("aiConnect").hidden=!inA;$("aiBarOpen").hidden=inA;$("aiBarChat").hidden=inA&&!!claudeSample;$("aiBarKey").hidden=inA;
+  $("aiBarLogin").hidden=!(inA&&(aiWhy==="unavail"||aiWhy==="off"));
+  const msg={
+   nofile:"내려받은 HTML 파일이라 Claude 계정에 바로 연결할 수 없습니다. claude.ai에서 열거나, Claude 채팅창·API 키로 연결하세요.",
+   denied:"Claude 사용 권한이 꺼져 있습니다. ‘Claude 연결하기’를 눌러 권한을 허용하세요.",
+   unavail:"Claude에 연결하지 못했습니다. claude.ai에 로그인되어 있는지 확인한 뒤 ‘Claude 연결하기’를 누르세요.",
+   nokey:"Claude API 키가 아직 없습니다. 키를 넣거나 다른 연결 방식을 고르세요."}[aiWhy]
+   ||(inA?"지금은 기본 규칙으로만 검토합니다. ‘Claude 연결하기’를 누르면 본인 Claude 계정으로 문장 구조 검토와 이미지 읽기까지 씁니다.":"지금은 기본 규칙(맞춤법·띄어쓰기·날짜·기호)으로만 검토합니다. Claude를 연결하면 문장 구조 검토와 캡처 이미지 읽기까지 쓸 수 있습니다.");
+  $("aiBarMsg").textContent=msg;
+ }catch{}
+}
+async function connectClaude(){
+ const btn=$("aiConnect");
+ if(!IN_ARTIFACT){$("aiChip").click();return;}
+ provider="claude";lsSet("kku-prov","claude");
+ btn.disabled=true;btn.textContent="연결하는 중…";
+ try{
+  let s=null;try{s=await claude.use("sample");}catch{}
+  if(!s){
+   let pm=null,st=null;try{pm=await claude.use("permissions");st=pm?await pm.state("sample"):null;}catch{}
+   if(pm&&st!=="granted"){try{await pm.manage();}catch{}try{s=await claude.use("sample");}catch{}}
+  }
+  claudeSample=s||null;
+  if(s){applyProvider(true);toast("Claude에 연결했습니다. 이제 AI 검토를 쓸 수 있습니다.");}
+  else{setAi("unavail");renderProv();toast("Claude에 연결하지 못했습니다. claude.ai 로그인과 권한을 확인하세요.");}
+ }finally{btn.disabled=false;btn.textContent="Claude 연결하기";}
+}
+$("aiConnect").onclick=connectClaude;
+$("aiBarChat").onclick=()=>{provider="manual";lsSet("kku-prov","manual");applyProvider();};
+$("aiBarKey").onclick=()=>{provider="anthropic";lsSet("kku-prov","anthropic");applyProvider(true);$("aiChip").click();setTimeout(()=>$("keyIn").focus(),50);};
+$("aiBarBasic").onclick=()=>{provider="none";lsSet("kku-prov","none");applyProvider(true);toast("기본 규칙으로만 검토합니다. 오른쪽 위 메뉴에서 언제든 Claude를 연결할 수 있습니다.");};
+$("aiBarX").onclick=()=>{aiBarClosed=true;ssSet("kku-aibar-x","1");renderAiBar();};
 (function init(){
  if(BETA)document.body.classList.add("is-beta");
  let draft=lsGet("kku-draft")||"",type=lsGet("kku-type")||"inner";
