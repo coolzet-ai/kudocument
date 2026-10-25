@@ -1,4 +1,4 @@
-<title>KU 문서다듬 (Beta)</title>
+<title>KU 공문김군 (Beta)</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -891,11 +891,24 @@ main{padding-block:10px 24px!important}
 [data-nobeta]{display:none}
 body.is-beta .nb{display:none}
 #trialReset,#cpBox,#aiUnlock{}
+
+/* ===== 검토 항목(바른 공문) ===== */
+.xr-pop{width:min(360px,calc(100vw - 32px));padding:10px 12px!important;gap:3px!important;max-height:min(75vh,640px);overflow:auto}
+.xr-pop h4{margin:8px 0 2px!important;font-size:12.5px;display:flex;gap:6px;align-items:center;color:var(--muted)}
+.xr-pop h4:first-child{margin-top:0!important}
+.xr-st{color:#d4a017;letter-spacing:1px}
+.xr-i{display:flex;gap:8px;align-items:flex-start;padding:4px 6px;border-radius:6px;font-size:13px;line-height:1.35;cursor:pointer}
+.xr-i:hover{background:var(--green-soft)}
+.xr-i input{margin-top:3px;accent-color:var(--green)}
+.xr-i input:disabled{opacity:1}
+.xr-i span{display:flex;flex-direction:column}.xr-i small{color:var(--muted);font-size:11.5px}
+.xr-n{display:inline-grid;place-items:center;min-width:18px;height:18px;border-radius:9px;background:var(--green);color:#fff;font-size:11px;font-weight:700;padding:0 4px}
+@media (max-width:720px){.xr-pop{position:fixed!important;left:12px!important;right:12px!important;top:56px!important;width:auto!important}}
 </style>
 
 <header class="hd gut">
   <div class="wrap">
-    <a class="mark" href="#review"><img class="ku-g" alt="KU" src="data:image/png;base64,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"><img class="ku-w" alt="KU" src="data:image/png;base64,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"><span class="nm"><b>문서다듬 <i class="beta-tag" title="베타 버전: 기능과 기준이 계속 바뀔 수 있습니다">BETA</i></b><small>KU DOCUMENT POLISH</small></span></a>
+    <a class="mark" href="#review"><img class="ku-g" alt="KU" src="data:image/png;base64,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"><img class="ku-w" alt="KU" src="data:image/png;base64,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"><span class="nm"><b>공문김군 <i class="beta-tag" title="베타 버전: 기능과 기준이 계속 바뀔 수 있습니다">BETA</i></b><small>KU DOCUMENT ASSISTANT</small></span></a>
     <nav class="gnb" aria-label="주 메뉴">
       <a href="#review" data-tab="review">검토</a>
       <a href="#compare" data-tab="compare">3단 기준</a>
@@ -936,7 +949,7 @@ body.is-beta .nb{display:none}
           <button id="aiOffBtn" class="btn" hidden>잠그기</button>
           <button id="aiFixBtn" class="btn" hidden>권한 설정 열기</button>
           <a id="aiLogin" class="ai-link" href="https://claude.ai/login" target="_blank" rel="noopener">claude.ai 로그인</a>
-          <a id="aiOpenLink" class="ai-link strong" href="https://claude.ai/artifact/6m6wyQ3JLk84vFzx3Qysxw" target="_blank" rel="noopener" hidden>문서다듬 링크로 열기</a>
+          <a id="aiOpenLink" class="ai-link strong" href="https://claude.ai/artifact/6m6wyQ3JLk84vFzx3Qysxw" target="_blank" rel="noopener" hidden>공문김군 링크로 열기</a>
           <button id="histBtn" class="btn">검토 이력</button>
         </div>
         <p class="track-note">이용 기록(이용자 계정, 시각, 문서 유형, 글자 수)이 관리자에게 남습니다. 문서 내용은 저장하지 않습니다.</p>
@@ -1001,6 +1014,7 @@ body.is-beta .nb{display:none}
     </div>
     <label class="sr" for="docTypeSel">문서 유형</label>
     <select class="sel" id="docTypeSel" title="문서 유형에 따라 검토 기준이 바뀝니다"></select>
+    <div class="menu" id="xrMenu"><button class="btn" id="xrBtn" aria-haspopup="true" aria-expanded="false" title="바른 공문 추가 점검 항목">검토 항목 ▾</button><div class="menu-pop xr-pop" id="xrPop" hidden role="dialog" aria-label="검토 항목 선택"></div></div>
     <label class="tgl" title="주민번호·전화·이메일·계좌·학번을 가린 뒤 AI에 보냅니다"><input type="checkbox" id="piiMask" checked><span>개인정보 가림</span></label>
     <label class="tgl" title="더 꼼꼼하지만 느립니다"><input type="checkbox" id="deep"><span>정밀 검토</span></label>
     <span class="sp"></span>
@@ -1184,7 +1198,7 @@ body.is-beta .nb{display:none}
 <section class="tab" id="tab-compare" hidden>
   <h2 class="sec">3단 기준 비교</h2>
   <p class="cr-note">© 건국대학교 앵커사업단 · 이 비교표는 저작권 보호를 받아 드래그·복사할 수 없습니다.</p>
-  <p class="lead">같은 항목을 세 기준이 각각 어떻게 정하는지 나란히 놓았습니다. 왼쪽 띠가 주황색인 행은 기준끼리 내용이 다른 항목이며, 맨 오른쪽 칸은 문서다듬이 실제로 적용하는 방식입니다.</p>
+  <p class="lead">같은 항목을 세 기준이 각각 어떻게 정하는지 나란히 놓았습니다. 왼쪽 띠가 주황색인 행은 기준끼리 내용이 다른 항목이며, 맨 오른쪽 칸은 공문김군이 실제로 적용하는 방식입니다.</p>
   <div class="filter">
     <div class="seg" id="cmpFilter">
       <button data-v="all" aria-pressed="true">전체 항목</button>
@@ -1193,7 +1207,7 @@ body.is-beta .nb{display:none}
     <span class="meta" id="cmpCount"></span>
   </div>
   <div class="tbl-wrap"><table class="cmp">
-    <thead><tr><th>항목</th><th class="s-rule">학교 규정 (2025. 10. 1.)</th><th class="s-man">행안부 편람 (2025. 12. 17.)</th><th class="s-guide">국어원 길잡이 (2022. 12.)</th><th>문서다듬 적용</th></tr></thead>
+    <thead><tr><th>항목</th><th class="s-rule">학교 규정 (2025. 10. 1.)</th><th class="s-man">행안부 편람 (2025. 12. 17.)</th><th class="s-guide">국어원 길잡이 (2022. 12.)</th><th>공문김군 적용</th></tr></thead>
     <tbody id="cmpBody"></tbody>
   </table></div>
 </section>
@@ -1212,7 +1226,7 @@ body.is-beta .nb{display:none}
 <footer class="gut"><div class="wrap">
   <div class="copyright" id="copyright">
     <b>© 2026 건국대학교 앵커사업단 · 앵커김군. All rights reserved.</b>
-    <p>KU 문서다듬의 화면 구성, 검토 규칙 데이터, 3단 기준 비교·차이점 해설, 예시 문서는 「저작권법」의 보호를 받습니다. 사전 허락 없이 복제·배포·전송·변형하거나 다른 서비스에 옮겨 쓸 수 없습니다. 업무 목적의 이용과 출처를 밝힌 짧은 인용은 가능합니다.</p>
+    <p>KU 공문김군의 화면 구성, 검토 규칙 데이터, 3단 기준 비교·차이점 해설, 예시 문서는 「저작권법」의 보호를 받습니다. 사전 허락 없이 복제·배포·전송·변형하거나 다른 서비스에 옮겨 쓸 수 없습니다. 업무 목적의 이용과 출처를 밝힌 짧은 인용은 가능합니다.</p>
     <p>인용한 「건국대학교 문서규정」은 건국대학교, 「행정업무운영 편람」은 행정안전부, 「쉬운 공문서 쓰기 길잡이」는 국립국어원에 각각 권리가 있으며, KU 이니셜 마크는 건국대학교 상징물입니다. 사용자가 입력한 문서와 수정본의 권리는 작성자에게 있습니다.</p>
     <p class="meta">이용·인용 문의: coolzet@konkuk.ac.kr</p>
   </div>
@@ -1225,7 +1239,7 @@ body.is-beta .nb{display:none}
     <p class="te-tip">ChatGPT·Gemini·Copilot 등 다른 AI 채팅에 그대로 붙여 넣어 쓰는 요청문입니다. 학교 규정·행안부 편람·국어원 길잡이 3단 기준과 지금 고른 문서 유형이 담겨 있습니다.</p>
     <div class="xp-opt" role="radiogroup" aria-label="답 형식">
       <label class="pv"><input type="radio" name="xpFmt" value="read" checked><span><b>수정본 + 수정 내역 표</b><small>AI 답을 바로 읽고 복사해 쓰기</small></span></label>
-      <label class="pv"><input type="radio" name="xpFmt" value="json"><span><b>문서다듬으로 가져오기 (JSON)</b><small>AI 답을 아래에 붙여 넣으면 제안 카드로 수락·거절</small></span></label>
+      <label class="pv"><input type="radio" name="xpFmt" value="json"><span><b>공문김군으로 가져오기 (JSON)</b><small>AI 답을 아래에 붙여 넣으면 제안 카드로 수락·거절</small></span></label>
       <label class="pv"><input type="radio" name="xpFmt" value="rules"><span><b>기준만 먼저 알려 주기</b><small>문서 없이 기준을 보내 두고 이어서 여러 문서 교정</small></span></label>
     </div>
     <div class="pop-row xp-row">
@@ -1235,7 +1249,7 @@ body.is-beta .nb{display:none}
     <textarea id="xpPrompt" readonly rows="9" aria-label="만들어진 프롬프트"></textarea>
     <div class="pop-row"><button class="btn pri" id="xpCopy" type="button">프롬프트 복사</button><span class="meta" id="xpWarn"></span></div>
     <div id="xpBack" hidden>
-      <label class="tm-f"><span>AI 답 붙여넣기 → 문서다듬에 적용</span><textarea id="xpAns" rows="6" placeholder='AI가 준 {"edits":[…]} 답을 그대로 붙여 넣으세요. 앞뒤 설명이나 ```json 표시가 있어도 됩니다.'></textarea></label>
+      <label class="tm-f"><span>AI 답 붙여넣기 → 공문김군에 적용</span><textarea id="xpAns" rows="6" placeholder='AI가 준 {"edits":[…]} 답을 그대로 붙여 넣으세요. 앞뒤 설명이나 ```json 표시가 있어도 됩니다.'></textarea></label>
       <div class="pop-row"><button class="btn pri" id="xpApply" type="button">제안으로 불러오기</button></div>
     </div>
     <p class="te-msg" id="xpMsg"></p>
@@ -1367,7 +1381,7 @@ const CMP=[
   guide:"보고서·공고문 등 유형별 구성 안내.",guideRef:"3부",
   diff:true,apply:"구성 요소 누락은 고치지 않고 notes로 안내.",
   why:"학교 규정은 분류기호·시행일자를 두문에 두고, 편람은 생산등록번호(시행일)를 결문에 두며 공개 구분을 추가합니다.",
-  verdict:"전자결재 시스템 서식이 위치를 자동으로 정하므로, 문서다듬은 수신·제목·발신 명의가 빠졌는지만 확인합니다."},
+  verdict:"전자결재 시스템 서식이 위치를 자동으로 정하므로, 공문김군은 수신·제목·발신 명의가 빠졌는지만 확인합니다."},
  {id:"recv",topic:"수신란",sub:"",
   rule:"경유·수신. 수신자가 2인 이상이면 ‘수신처 참조’, 결문에 수신처란. 내부보고는 ‘보고’·‘품의’·‘내부결재’.",ruleRef:"제19·26·29조④",
   man:"내부결재 문서는 ‘내부결재’. 수신자가 많으면 ‘수신자 참조’, 결문에 수신자란. 기관장 직위(처리 보조기관) 형식.",manRef:"규칙 제4조② · p.57~58",manEx:"수신  행정안전부장관(정보공개과장)",
@@ -1575,7 +1589,7 @@ function renderCompare(){
  $("cmpBody").innerHTML=rows.map(c=>`<tr class="${c.diff?"is-diff":""}">
   <td class="topic">${esc(c.topic)}${c.sub?`<small>${esc(c.sub)}</small>`:""}${c.diff?`<a class="dbadge" href="#d-${c.id}" data-jump="${c.id}">차이 있음 ›</a>`:`<span class="sbadge">같은 취지</span>`}</td>
   <td class="c-rule" data-l="학교 규정 · 2025. 10. 1.">${cell(c.rule,c.ruleEx,c.ruleRef)}</td><td class="c-man" data-l="행안부 편람 · 2025. 12. 17.">${cell(c.man,c.manEx,c.manRef)}</td><td class="c-guide" data-l="국어원 길잡이 · 2022. 12.">${cell(c.guide,c.guideEx,c.guideRef)}</td>
-  <td class="apply" data-l="문서다듬 적용">${esc(c.apply)}</td></tr>`).join("");
+  <td class="apply" data-l="공문김군 적용">${esc(c.apply)}</td></tr>`).join("");
 }
 function renderDiffs(){
  const ds=CMP.filter(c=>c.diff);
@@ -1598,7 +1612,7 @@ function showTab(t,anchor){
  for(const k in TABS)$("tab-"+k).hidden=k!==t;
  document.querySelectorAll("[data-tab]").forEach(a=>{if(a.dataset.tab===t)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current");});
  if(t==="admin"){try{renderAdmin();loadStats();}catch{}}
- document.title=TABS[t][0]+" · KU 문서다듬 Beta";
+ document.title=TABS[t][0]+" · KU 공문김군 Beta";
  if(anchor){requestAnimationFrame(()=>document.getElementById(anchor)?.scrollIntoView({behavior:"smooth",block:"start"}));}
 }
 function route(){
@@ -1868,6 +1882,7 @@ function layoutCheck(text){
  }
  if(ends.gae.length&&ends.seo.length){const few=ends.gae.length<ends.seo.length?ends.gae:ends.seo;
   iss.push({line:few[0],g:"문장 구조",kind:"끝맺음 혼용",msg:`개조식(-음/-함)과 서술식(-다/-니다) 끝맺음이 섞여 있습니다(${few.slice(0,5).join(", ")}행). 하나로 통일하세요.`,ex:"",fix:false});}
+ try{iss.push(...docCheck(text));}catch(e){}
  return iss.sort((a,b)=>a.line-b.line);
 }
 function autoTidy(text){
@@ -1890,7 +1905,7 @@ function autoTidy(text){
  return{text:t,count:n};
 }
 
-const GROUP_ORDER=["문장 구조","항목 기호","표","줄바꿈","문단","공백"];
+const GROUP_ORDER=["공문 요건","문장 구조","항목 기호","표","줄바꿈","문단","공백"];
 let layTimer=null;
 function renderLayout(){
  const text=$("inText").value,iss=text.trim()?layoutCheck(text):[];
@@ -2058,8 +2073,9 @@ function scores(t,type){
  const iss=layoutCheck(t),stc=iss.filter(x=>x.g==="문장 구조"||x.kind==="표 안 표현").length;
  const cl=v=>Math.max(0,Math.min(100,Math.round(v)));
  const easy=cl(100-Math.max(0,avg-35)*1.2-hard*4-fr*3-stc*3);
- const req=reqCheck(t,type),rule=cl(req.length?req.filter(x=>x.ok).length/req.length*100:100);
- const rem=basicFix(t).changes.filter(c=>c.type!=="줄바꿈·문단").length,other=iss.filter(x=>x.g!=="문장 구조").length;
+ const xr=iss.filter(x=>x.g==="공문 요건").length;
+ const req=reqCheck(t,type),rule=cl((req.length?req.filter(x=>x.ok).length/req.length*100:100)-xr*6);
+ const rem=basicFix(t).changes.filter(c=>c.type!=="줄바꿈·문단").length,other=iss.filter(x=>x.g!=="문장 구조"&&x.g!=="공문 요건").length;
  const acc=cl(100-(rem+other)/Math.max(1,t.length/500)*12);
  return{easy,rule,acc,total:cl(rule*.4+acc*.35+easy*.25),avg:Math.round(avg),hard,fr};
 }
@@ -2170,7 +2186,7 @@ function saveMember(patch={}){
 function logUse(entry){if(db&&uid)db.collection(`members/${uid}/log`).add({...entry,at:Date.now()}).catch(()=>{});}
 async function redeem(){
  const raw=$("cpIn").value.trim().toUpperCase().replace(/\s+/g,"");if(!raw){$("cpIn").focus();return;}
- if(!db||!uid){toast("이용권은 claude.ai에 로그인해 문서다듬 링크로 열었을 때만 등록할 수 있습니다.");return;}
+ if(!db||!uid){toast("이용권은 claude.ai에 로그인해 공문김군 링크로 열었을 때만 등록할 수 있습니다.");return;}
  let h,snap;try{h=await sha256(raw);snap=await db.doc("coupons/"+h).get();}catch{toast("이용권을 확인하지 못했습니다. 잠시 후 다시 시도하세요.");return;}
  if(!snap.exists){toast("없는 이용권 코드입니다. 코드를 다시 확인하세요.");return;}
  const d=snap.data();
@@ -2269,7 +2285,7 @@ async function loadStats(){
 }
 $("rExport").onclick=async()=>{
  const data=JSON.stringify({exportedAt:new Date().toISOString(),builtin:RULES,teamGlossary:teamTerms.map(({term,note})=>({term,note})),teamRules:teamRules.map(({find,replace,why})=>({find,replace,why}))},null,2);
- try{const d=await claude.use("downloads");if(!d)throw 0;await d.save({filename:"문서다듬_규칙.json",data:new Blob([data],{type:"application/json"})});}catch{copyRich(`<pre>${esc(data)}</pre>`,data,"규칙 JSON");}
+ try{const d=await claude.use("downloads");if(!d)throw 0;await d.save({filename:"공문김군_규칙.json",data:new Blob([data],{type:"application/json"})});}catch{copyRich(`<pre>${esc(data)}</pre>`,data,"규칙 JSON");}
 };
 
 /* ================= 이용권·이용자 관리 ================= */
@@ -2862,7 +2878,7 @@ function extraRules(){
 [팀 용어집 — 공식 명칭이므로 띄어쓰기·표기를 고치지 말 것] ${allTerms().join(", ")}
 ${teamRules.length?`[팀 사용자 규칙 — 그대로 적용] ${teamRules.map(r=>`'${r.find}'→'${r.replace}'`).join(", ")}\n`:""}[법령·규정 인용] 법령명은 「」 낫표, 조·항·호는 '제5조제1항'처럼 붙여 쓰기, '동법·동조'는 '같은 법·같은 조'.
 [숫자] 합계·인원·금액·날짜와 요일이 서로 맞지 않으면 고치지 말고 notes에 계산과 함께 적기.
-[기록물] 붙임 파일이 .egg·.alz 압축이거나 .hwp라면 개방형 형식(hwpx·pdf) 권장을 notes에 적기.`;
+[기록물] 붙임 파일이 .egg·.alz 압축이거나 .hwp라면 개방형 형식(hwpx·pdf) 권장을 notes에 적기.`+xrPrompt();
 }
 async function run(){
  const src=$("inText").value.replace(/\s+$/,"");
@@ -2970,6 +2986,165 @@ $("mCopy").onclick=()=>copyWhole();
 function syncPaneHeight(){}
 try{const ro=new ResizeObserver(()=>requestAnimationFrame(syncPaneHeight));ro.observe($("inText"));ro.observe($("inPane"));}catch{}
 window.addEventListener("resize",syncPaneHeight);
+/* ================= 바른 공문 추가 점검 (★★★ 기본 · ★★/★ 선택) ================= */
+const XR=[
+ {id:"rel",lv:3,name:"관련 근거 표기",tip:"‘관련: 부서-번호(2026. 10. 1.)’ 형식"},
+ {id:"att",lv:3,name:"붙임 개수 일치",tip:"본문의 붙임 언급과 붙임 목록 수·순서"},
+ {id:"dord",lv:3,name:"날짜 앞뒤 관계",tip:"기간 역전, 신청 마감 > 행사일, 지난 마감일"},
+ {id:"name",lv:3,name:"명칭 일관성",tip:"같은 기관을 다르게 쓴 곳"},
+ {id:"abbr",lv:2,name:"약어 첫 등장 풀이",tip:"RISE(지역혁신중심 대학지원체계)"},
+ {id:"pub",lv:2,name:"공개 문서 개인정보",tip:"공개 문서에 연락처·주민번호 등"},
+ {id:"rel_d",lv:2,name:"상대적 날짜 표현",tip:"내일·다음 주·금주 → 구체 날짜"},
+ {id:"unit",lv:2,name:"숫자·단위 일관성",tip:"천원/원 혼용, 쉼표, %p, 시간 표기"},
+ {id:"ask",lv:1,name:"문의처 형식",tip:"담당 부서·담당자·02-450-○○○○"},
+ {id:"title",lv:1,name:"제목 다듬기",tip:"‘~에 관한 건’, 너무 긴 제목"},
+ {id:"offi",lv:1,name:"학교 공식 명칭",tip:"건대 → 건국대학교, Konkuk University"},
+ {id:"a11y",lv:1,name:"접근성",tip:"색으로만 구분, 설명 없는 그림, 머리행 없는 표"}
+];
+let xrOn=(()=>{try{const v=JSON.parse(lsGet("kku-xr")||"null");if(v&&typeof v==="object")return v;}catch{}const d={};XR.forEach(r=>d[r.id]=r.lv>=2);return d;})();
+const xrEnabled=id=>{const r=XR.find(x=>x.id===id);return r&&(r.lv===3||!!xrOn[id]);};
+function xrDate(s,defY){const m=String(s).match(/(?:(20\d{2})\s*\.\s*)?(\d{1,2})\s*\.\s*(\d{1,2})/);if(!m)return null;const y=m[1]?+m[1]:defY,mo=+m[2],d=+m[3];const dt=new Date(y,mo-1,d);return dt.getMonth()===mo-1&&dt.getDate()===d?dt:null;}
+const xrFmt=d=>`${d.getFullYear()}. ${d.getMonth()+1}. ${d.getDate()}.`;
+function docCheck(text){
+ const L=text.split("\n"),out=[];
+ const add=(i,kind,msg,ex)=>out.push({line:i+1,g:"공문 요건",kind,msg,ex:String(ex??L[i]??"").trim().slice(0,60),fix:false});
+ const lineOf=idx=>text.slice(0,idx).split("\n").length-1;
+ const body=L.filter(l=>!isTable(l)).join("\n");
+ const ym=text.match(/(20\d{2})\s*\./);const defY=ym?+ym[1]:new Date().getFullYear();
+ /* ★★★ 관련 근거 */
+ if(xrEnabled("rel"))L.forEach((l,i)=>{
+  const m=l.match(/^\s*(?:\d+\.|[가-하]\.)?\s*관\s*련(\s*근\s*거)?\s*([:：]?)\s*(.*)$/);if(!m||isTable(l))return;
+  if(/관\s*련\s+[:：]/.test(l))add(i,"관련 근거","쌍점(:)은 앞말에 붙여 씁니다(관련: …, 편람 p.44).");
+  else if(m[2]&&/[:：]\S/.test(l))add(i,"관련 근거","쌍점(:) 뒤는 한 칸 띄웁니다(관련: …).");
+  const v=m[3]||"";if(!v.trim()){if(!L[i+1]||!/^\s*[가-하]\.|^\s*\(\d\)/.test(L[i+1]))add(i,"관련 근거","관련 문서의 문서번호와 날짜를 적으세요. 예) 관련: 학생지원팀-123(2026. 10. 1.)");return;}
+  const docNo=/[가-힣A-Za-z]{2,}\s*[-‐–]\s*\d+/.test(v),law=/「[^」]+」|규정|지침|법|시행령|계획|공고|협약|훈령/.test(v);
+  if(docNo&&!/\(\s*20\d{2}\s*\.\s*\d{1,2}\s*\.\s*\d{1,2}\s*\.?\s*\)/.test(v))add(i,"관련 근거","문서번호 뒤에 시행 날짜를 괄호로 붙입니다. 예) 학생지원팀-123(2026. 10. 1.)");
+  if(!docNo&&!law)add(i,"관련 근거","관련 근거가 문서번호(부서-번호)·규정명으로 특정되지 않습니다. 찾아볼 수 있게 적으세요.");
+ });
+ /* ★★★ 붙임 개수 */
+ if(xrEnabled("att")){
+  const ai=L.findIndex(l=>/^\s*(붙임|첨부)(\s|$)/.test(l));
+  const refs=[...body.matchAll(/(?:붙임|첨부)\s*(\d+)/g)].filter(m=>ai<0||lineOf(m.index)<ai).map(m=>+m[1]);
+  const said=/(붙임|첨부)\s*(자료|파일|문서)?\s*(참조|참고|와\s*같이|과\s*같이)/.test(ai<0?body:L.slice(0,ai).join("\n"));
+  if(ai<0){if(refs.length||said)add(lineOf(text.search(/(붙임|첨부)/)),"붙임 개수","본문에서 붙임을 언급했지만 붙임 목록이 없습니다. 본문 끝 다음 줄에 ‘붙임  1. ○○ 1부.’를 적으세요.");}
+  else{
+   const nums=[];let m=L[ai].match(/^\s*(?:붙임|첨부)\s*(\d+)\./);
+   if(m){nums.push(+m[1]);for(let j=ai+1;j<L.length;j++){const n=L[j].match(/^\s*(\d+)\.\s*\S/);if(!n||/끝\.?\s*$/.test(L[j-1]))break;nums.push(+n[1]);if(/끝\.?\s*$/.test(L[j]))break;}}
+   const cnt=nums.length||1;
+   nums.forEach((n,k)=>{if(n!==k+1)add(ai+k,"붙임 개수",`붙임 번호가 순서대로가 아닙니다(${k+1}번 자리에 ${n}).`);});
+   const mx=refs.length?Math.max(...refs):0;
+   if(mx>cnt)add(ai,"붙임 개수",`본문은 ‘붙임 ${mx}’까지 언급하는데 붙임 목록은 ${cnt}개입니다.`);
+   if(refs.length&&cnt>1&&new Set(refs).size<cnt&&mx<=cnt)add(ai,"붙임 개수",`붙임 ${cnt}개 중 본문에서 언급하지 않은 붙임이 있습니다(언급: ${[...new Set(refs)].join(", ")}). 필요한 붙임인지 확인하세요.`);
+   if(!m&&/\S/.test(L[ai].replace(/^\s*(붙임|첨부)/,""))&&L[ai+1]&&/^\s*\d+\.\s*\S/.test(L[ai+1]))add(ai,"붙임 개수","붙임이 여러 개이면 ‘붙임  1. ○○ 1부.’처럼 번호를 붙입니다(편람 p.59).");
+  }
+ }
+ /* ★★★ 날짜 앞뒤 */
+ if(xrEnabled("dord")){
+  const reR=/((?:20\d{2}\s*\.\s*)?\d{1,2}\s*\.\s*\d{1,2}\s*\.?)\s*(?:\([일월화수목금토]\))?\s*(?:[0-9]{1,2}:[0-9]{2}\s*)?(?:~|∼|부터)\s*((?:20\d{2}\s*\.\s*)?\d{1,2}\s*\.\s*\d{1,2}\s*\.?)/g;
+  let m;const today=new Date();today.setHours(0,0,0,0);
+  const dl=[],ev=[];
+  L.forEach((l,i)=>{
+   const yb=text.slice(0,text.split("\n").slice(0,i).join("\n").length).match(/(20\d{2})\s*\.(?![\s\S]*20\d{2}\s*\.)/);const y0=yb?+yb[1]:defY;
+   reR.lastIndex=0;const ranges=[];
+   while((m=reR.exec(l))){const a=xrDate(m[1],m[1].match(/20\d{2}/)?0:y0),b0=m[2].match(/20\d{2}/)?xrDate(m[2],0):null;const b=b0||(a&&xrDate(m[2],a.getFullYear()));
+    if(a&&b){ranges.push([a,b]);if(b<a)add(i,"날짜 앞뒤",`기간의 끝(${xrFmt(b)})이 시작(${xrFmt(a)})보다 앞섭니다.`,m[0]);}}
+   const singles=[...l.matchAll(/(?:20\d{2}\s*\.\s*)?\d{1,2}\s*\.\s*\d{1,2}\s*\.(?!\s*\d)/g)].map(x=>xrDate(x[0],x[0].match(/20\d{2}/)?0:y0)).filter(Boolean);
+   const ends=ranges.length?ranges.map(r=>r[1]):singles,starts=ranges.length?ranges.map(r=>r[0]):singles;
+   if(!ends.length)return;
+   const isDl=/(신청|접수|등록)\s*(기간|마감|기한|일)?|마감/.test(l),isEv=/(개최|일\s*시|행사|시행\s*일|실시\s*일|교육\s*일|회의\s*일|운영\s*기간|일\s*정)/.test(l);
+   if(isDl&&!isEv)dl.push({i,d:new Date(Math.max(...ends))});
+   if(isEv&&!isDl)ev.push({i,d:new Date(Math.min(...starts))});
+  });
+  const evMin=ev.length?ev.reduce((a,b)=>a.d<=b.d?a:b):null;
+  dl.forEach(x=>{
+   if(evMin&&x.d>evMin.d)add(x.i,"날짜 앞뒤",`신청·접수 마감(${xrFmt(x.d)})이 행사·시행일(${xrFmt(evMin.d)}, ${evMin.i+1}행)보다 늦습니다.`);
+   if(x.d<today)add(x.i,"날짜 앞뒤",`마감일(${xrFmt(x.d)})이 오늘보다 이전입니다. 날짜를 확인하세요.`);
+  });
+ }
+ /* ★★★ 명칭 일관성 */
+ if(xrEnabled("name")){
+  const SUF="사업단|센터|위원회|연구소|연구원|본부|협의회|지원단|추진단|사무국";
+  const re=new RegExp("([A-Za-z가-힣]{2,12})(\\s?)("+SUF+")","g");const seen={};let m;
+  while((m=re.exec(body))){const pre=m[1].replace(/^(본|위|각|및|해당|우리|이)$/,"");if(!pre)continue;const key=(pre+m[3]).toLowerCase();(seen[key]=seen[key]||new Set()).add(m[0]);
+   const bySuf="§"+m[3];(seen[bySuf]=seen[bySuf]||new Set()).add(pre);}
+  for(const k in seen){if(k.startsWith("§"))continue;const v=[...seen[k]];if(v.length>1){const idx=body.indexOf(v[1]);add(lineOf(text.indexOf(v[1])),"명칭 일관성",`같은 명칭을 ${v.map(x=>`‘${x}’`).join(", ")}로 다르게 띄어 썼습니다. 하나로 통일하세요.`,v[1]);}}
+  for(const k in seen){if(!k.startsWith("§"))continue;const p=[...seen[k]],lat=p.filter(x=>/^[A-Za-z]+$/.test(x)),han=p.filter(x=>/^[가-힣]+$/.test(x));
+   if(lat.length&&han.length){const a=lat[0]+k.slice(1),b=han.map(h=>h+k.slice(1));const hit=b.find(x=>body.includes(x));if(hit)add(lineOf(text.indexOf(a)),"명칭 일관성",`‘${a}’와 ‘${b.join("’, ‘")}’가 함께 쓰였습니다. 같은 기관이라면 한 가지 표기로 통일하세요.`,a);}}
+  const ku=[["건국대학교",/건국대학교/g],["건국대",/건국대(?!학)/g],["건대",/건대(?![가-힣])/g]].filter(([,r])=>(body.match(r)||[]).length);
+  if(ku.length>1)add(lineOf(text.search(/건대(?![가-힣])|건국대(?!학)/)),"명칭 일관성",`학교 이름을 ${ku.map(x=>`‘${x[0]}’`).join(", ")}로 섞어 썼습니다. 공문서에서는 ‘건국대학교’로 통일하세요.`);
+ }
+ /* ★★ 약어 */
+ if(xrEnabled("abbr")){
+  const OK=new Set(["KU","PDF","HWP","HWPX","URL","QR","PC","IT","AI","ID","PW","SNS","TF","OK","CEO","USB","TV","PPT","KTX","LH","MOU","FAQ","Q","A","AM","PM","GB","MB","KB","ICT","CCTV","PR","PDF"]);
+  const done=new Set();let m;const re=/(?<![A-Za-z])([A-Z][A-Z0-9&]{1,9})(?![A-Za-z])/g;
+  const gl=(()=>{try{return allTerms().join(" ")}catch{return ""}})();
+  while((m=re.exec(text))){const a=m[1];if(done.has(a)||OK.has(a)||gl.includes(a))continue;done.add(a);
+   const after=text.slice(m.index+a.length,m.index+a.length+40),before=text.slice(Math.max(0,m.index-40),m.index);
+   if(/^\s*\(\s*[가-힣]/.test(after)||/[가-힣]\s*\(\s*$/.test(before)||/^\s*[:：]/.test(after))continue;
+   if(new RegExp("[가-힣]\\s*\\(\\s*"+a+"\\s*\\)").test(text))continue;
+   add(lineOf(m.index),"약어 풀이",`‘${a}’를 처음 쓸 때 우리말 풀이를 함께 적으세요. 예) ${a}(○○○○)`,a);}
+ }
+ /* ★★ 공개 문서 개인정보 */
+ if(xrEnabled("pub")){
+  const pubLine=L.findIndex(l=>/(공개\s*구분\s*[:：]?\s*공개|^\s*공개\s*$|(?<!비|부분)공개\s*$)/.test(l));
+  if(pubLine>=0){const mk=maskPII(text);if(mk.map.length)add(pubLine,"공개 문서 개인정보",`공개 문서인데 개인정보로 보이는 값이 ${mk.map.length}건 있습니다. ‘부분공개’로 하거나 가려 주세요(편람 p.65).`);}
+ }
+ /* ★★ 상대 날짜 */
+ if(xrEnabled("rel_d"))L.forEach((l,i)=>{const m=l.match(/(?<![가-힣])(오늘|내일|모레|어제|금일|명일|금주|이번\s*주|다음\s*주|차주|이번\s*달|다음\s*달|이달\s*말|금월|익월|월말|연말까지)(?!(?:채움|공제|배움|희망))/);if(m)add(i,"상대적 날짜",`‘${m[1]}’은 받는 사람이 읽는 날에 따라 뜻이 달라집니다. 구체적인 날짜로 쓰세요.`,m[1]);});
+ /* ★★ 숫자·단위 */
+ if(xrEnabled("unit")){
+  const k1=body.search(/\d\s*천\s*원/),k2=body.search(/\d,\d{3}\s*원/);
+  if(k1>=0&&k2>=0)add(lineOf(text.indexOf(body.slice(k1,k1+6))),"숫자·단위","금액 단위로 ‘천 원’과 ‘원’을 섞어 썼습니다. 한 단위로 통일하세요(편람 p.37).");
+  L.forEach((l,i)=>{
+   const m=l.match(/(?<![\d,.\-])(\d{5,})(?![\d,])\s*(원|명|개|건|부|회|천\s*원|만\s*원)/);if(m)add(i,"숫자·단위",`큰 수는 세 자리마다 쉼표를 찍습니다: ${Number(m[1]).toLocaleString()}${m[2]}.`,m[0]);
+   if((l.match(/%/g)||[]).length>=2&&/(\d+(?:\.\d+)?)\s*%\s*(증가|감소|상승|하락|늘|줄|올|내)/.test(l)&&!/%p|퍼센트포인트|포인트/.test(l))add(i,"숫자·단위","비율끼리의 차이는 ‘%’가 아니라 ‘%p(퍼센트포인트)’로 씁니다.");
+  });
+  if(/(오전|오후)\s*\d/.test(body)&&/(?<!\d)\d{1,2}:\d{2}/.test(body))add(lineOf(text.search(/(오전|오후)\s*\d/)),"숫자·단위","시간을 ‘오전·오후’와 24시각제(15:20)로 섞어 썼습니다. 24시각제로 통일하세요(편람 p.49).");
+ }
+ /* ★ 문의처 */
+ if(xrEnabled("ask")){
+  const qi=L.findIndex(l=>/^\s*(?:[\d가-하]+\.|[□○※-])?\s*문\s*의(처)?\s*[:：]?/.test(l)&&!isTable(l));
+  if(qi>=0){const near=L.slice(qi,qi+3).join(" ");
+   if(!/\d{2,4}[-)]\s?\d{3,4}-\d{4}/.test(near))add(qi,"문의처","문의처에 전화번호(02-450-○○○○)를 적으세요.");
+   else if(/\d{2,3}\)\s?\d{3,4}-\d{4}|\(\d{2,3}\)\d/.test(near))add(qi,"문의처","전화번호는 ‘02-450-1234’처럼 붙임표로 씁니다.");
+   if(!/(팀|과|처|실|센터|사업단|단|원|본부)/.test(near))add(qi,"문의처","문의처에 담당 부서(와 담당자)를 함께 적으세요.");
+  }else if(state.docType==="notice")add(0,"문의처","공고·안내문에는 문의처(부서·담당자·전화)가 필요합니다.","");
+ }
+ /* ★ 제목 */
+ if(xrEnabled("title")){const ti=L.findIndex(l=>/^\s*제\s*목\s*[:：]?\s*\S/.test(l));
+  if(ti>=0){const t=L[ti].replace(/^\s*제\s*목\s*[:：]?\s*/,"").trim();
+   if(/(에\s*관한|에\s*대한|의)\s*건$|\s건$/.test(t))add(ti,"제목","‘~에 관한 건’, ‘~의 건’은 빼고 핵심만 쓰세요. 예) 2026 하반기 성과보고회 개최 안내");
+   if(t.replace(/\s/g,"").length>35)add(ti,"제목",`제목이 ${t.replace(/\s/g,"").length}자로 깁니다. 무엇을 하는 문서인지 한눈에 보이게 줄이세요(규정 제20조).`);
+   if(/[.。]$/.test(t))add(ti,"제목","제목 끝에는 마침표를 찍지 않습니다.");}}
+ /* ★ 공식 명칭 */
+ if(xrEnabled("offi")){
+  L.forEach((l,i)=>{let m;
+   if((m=l.match(/Konkuk\s+Univ\.?(?!ersity)|KonKuk|Kunkuk|Konkuk\s+university|KONKUK\s+Univ(?!ERSITY)/)))add(i,"공식 명칭","영문 공식 명칭은 ‘Konkuk University’입니다.",m[0]);
+   if((m=l.match(/건대(?![가-힣])|건국\s+대학교/)))add(i,"공식 명칭","공문서에서는 학교 이름을 ‘건국대학교’로 씁니다.",m[0]);});
+ }
+ /* ★ 접근성 */
+ if(xrEnabled("a11y")){
+  L.forEach((l,i)=>{let m;
+   if((m=l.match(/(빨간|붉은|파란|푸른|초록|녹|노란|주황|보라|회)색\s*(글씨|글자|표시|부분|칸|으로|로)/)))add(i,"접근성","색으로만 구분하면 색각 이상자·흑백 출력에서 알아보기 어렵습니다. 기호나 글로도 표시하세요.",m[0]);
+   if((m=l.match(/\[(그림|사진|이미지)\]/)))add(i,"접근성","그림에는 무엇을 보여 주는지 짧은 설명을 붙이세요. 예) [그림: 2026 성과보고회 현장]",m[0]);});
+  segs(text).filter(x=>x.t==="tb").forEach((tb,ti)=>{const h=tb.rows[0]||[];if(h.length&&h.every(c=>/^[\s\d,.%원명-]*$/.test(String(c))))add(lineOf(text.indexOf("|")),"접근성",`표 ${ti+1}의 첫 행이 숫자뿐입니다. 각 열이 무엇인지 알 수 있는 머리행을 두세요.`,"");});
+ }
+ return out;
+}
+function xrPrompt(){
+ const on=XR.filter(r=>r.lv===3||xrOn[r.id]);
+ return on.length?`\n[바른 공문 추가 점검 — 고칠 수 있으면 edits, 판단이 필요하면 notes]\n`+on.map(r=>`- ${r.name}: ${r.tip}`).join("\n")+`\n- 명칭 일관성은 같은 기관·사업을 문서 안에서 한 가지 표기로 통일(처음 정식 명칭, 이후 줄임 가능하나 일관되게).`:"";
+}
+function renderXr(){
+ const grp=lv=>XR.filter(r=>r.lv===lv).map(r=>`<label class="xr-i"><input type="checkbox" data-xr="${r.id}" ${lv===3?"checked disabled":xrOn[r.id]?"checked":""}><span><b>${r.name}</b><small>${r.tip}</small></span></label>`).join("");
+ $("xrPop").innerHTML=`<h4>기본 적용 <span class="xr-st">★★★</span></h4>${grp(3)}<h4>선택 <span class="xr-st">★★</span></h4>${grp(2)}<h4>선택 <span class="xr-st">★</span></h4>${grp(1)}<div class="pop-row"><button class="btn sm" type="button" id="xrAll">선택 항목 모두 켜기</button><button class="btn sm ghost" type="button" id="xrNone">선택 항목 모두 끄기</button></div><p class="meta">결과는 ‘점검’ 탭의 ‘공문 요건’에 나오고, AI 검토 요청에도 함께 들어갑니다.</p>`;
+ const n=XR.filter(r=>r.lv<3&&xrOn[r.id]).length;$("xrBtn").innerHTML=`검토 항목 <span class="xr-n">${4+n}</span> ▾`;
+}
+function xrSave(){lsSet("kku-xr",JSON.stringify(xrOn));renderXr();renderLayout();try{scheduleInsights();}catch{}}
+$("xrPop").addEventListener("change",e=>{const id=e.target.dataset?.xr;if(!id)return;xrOn[id]=e.target.checked;xrSave();});
+$("xrPop").addEventListener("click",e=>{if(e.target.id==="xrAll"||e.target.id==="xrNone"){XR.forEach(r=>{if(r.lv<3)xrOn[r.id]=e.target.id==="xrAll";});xrSave();}});
+renderXr();bindMenu("xrBtn","xrPop");
+
 /* ================= AI 연결 방식: 본인 Claude 계정 · Claude 채팅창 · Claude API 키 · 없음 ================= */
 var claudeSample=null;
 var provider=(()=>{const v=lsGet("kku-prov");return ["claude","manual","anthropic","none"].includes(v)?v:(window.claude?"claude":"none");})();
@@ -3164,14 +3339,14 @@ $("xpApply").onclick=()=>{
  const docName=()=>{try{return DOC_TYPES[state.docType]?.label||DOC_TYPES[state.docType]?.name||state.docType}catch{return ""}};
  function text(){
   const t=$("tmType").value,m=$("tmMsg").value.trim();
-  let s="[KU 문서다듬] "+t+(m?"\n"+m:"");
+  let s="[KU 공문김군] "+t+(m?"\n"+m:"");
   if($("tmCtx").checked)s+="\n— 화면: "+tabName()+(docName()?" · 문서 유형: "+docName():"");
   return s;
  }
  function sync(){
   const s=text();
   $("tmGo").href="https://teams.microsoft.com/l/chat/0/0?users="+encodeURIComponent(TO)+"&message="+encodeURIComponent(s);
-  $("tmMail").href="mailto:"+TO+"?subject="+encodeURIComponent("[KU 문서다듬] "+$("tmType").value)+"&body="+encodeURIComponent(s);
+  $("tmMail").href="mailto:"+TO+"?subject="+encodeURIComponent("[KU 공문김군] "+$("tmType").value)+"&body="+encodeURIComponent(s);
  }
  bindMenu("tmBtn","tmPop");
  ["tmType","tmMsg","tmCtx"].forEach(id=>$(id).addEventListener("input",sync));
