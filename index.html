@@ -1,4 +1,4 @@
-<title>건국대 공문서 검토기</title>
+<title>KU 문서다듬</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -667,7 +667,7 @@ main{padding-block:10px 24px!important}
 @media (max-width:720px){
  body{padding-bottom:0!important}
  .hd .wrap{flex-wrap:wrap!important;row-gap:2px!important}
- .mark .nm{display:none}
+ .mark .nm{display:flex;padding-left:8px}.mark .nm small{display:none}.mark .nm b{font-size:15px;white-space:nowrap}
  nav.gnb{display:flex!important;order:3;flex-basis:100%;margin-left:0!important;overflow-x:auto}
  nav.gnb a{flex:1;text-align:center;padding:6px 6px!important;font-size:13px!important}
  #aiMenu{margin-left:auto}
@@ -787,11 +787,107 @@ main{padding-block:10px 24px!important}
  .fsz button{padding:4px 5px}
  .cbar .tgl{font-size:12px}
 }
+/* ===== 3단 기준·차이점 화면 정리 ===== */
+.cmp{table-layout:fixed}
+.cmp th:nth-child(1),.cmp td.topic{width:130px}
+.cmp th:nth-child(5),.cmp td.apply{width:210px}
+.cmp td.topic{font-size:14px}
+.cmp td.topic small{margin-top:2px}
+.cmp .dbadge,.cmp .sbadge{display:block;width:fit-content;margin-top:6px;font-size:12px;text-decoration:none}
+.cmp td{font-size:14px;line-height:1.55;overflow-wrap:anywhere;word-break:keep-all}
+.cmp td .ref{font-size:12px;line-height:1.5;margin-top:5px}
+.cmp td .ref[style]{background:var(--bg);border-radius:4px;padding:4px 7px}
+#tab-compare .tbl-wrap,#tab-admin .tbl-wrap{overflow-x:auto!important;border:1px solid var(--line)!important;background:var(--paper)!important}
+.dcard .tri>div{font-size:14px;line-height:1.55}
+.dcard .tri .ex{font-size:12.5px}
+.dcard .verdict{font-size:14px;line-height:1.55}
+.toc{flex-wrap:wrap}
+@media (max-width:1023px) and (min-width:721px){
+ .cmp th:nth-child(1),.cmp td.topic{width:104px}
+ .cmp th:nth-child(5),.cmp td.apply{width:150px}
+ .cmp td{font-size:13.5px}
+ #tab-compare .cmp{min-width:820px}
+}
+@media (max-width:720px){
+ #tab-compare .tbl-wrap{border:0!important;background:none!important;overflow:visible!important}
+ .cmp{min-width:0!important;table-layout:auto}
+ .cmp thead{display:none}
+ .cmp,.cmp tbody,.cmp tr,.cmp td{display:block;width:auto!important}
+ .cmp tr{background:var(--paper);border:1px solid var(--line);border-radius:8px;margin-bottom:12px;overflow:hidden}
+ .cmp tr.is-diff{border-left:5px solid var(--diff)}
+ .cmp tr.is-diff td.topic{box-shadow:none}
+ .cmp td{border-bottom:1px solid var(--line);padding:10px 12px;font-size:14.5px}
+ .cmp td:last-child{border-bottom:0}
+ .cmp td.topic{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;font-size:16px;background:var(--bg)}
+ .cmp td.topic small{margin:0}
+ .cmp td.topic .dbadge,.cmp td.topic .sbadge{margin:0 0 0 auto}
+ .cmp td[data-l]::before{content:attr(data-l);display:block;font-size:12px;font-weight:700;margin-bottom:3px}
+ .cmp td.c-rule::before{color:var(--src-rule)}.cmp td.c-man::before{color:var(--src-man)}.cmp td.c-guide::before{color:var(--src-guide)}.cmp td.apply::before{color:var(--green)}
+ .toc{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px}
+ .toc a{white-space:nowrap}
+ .dcard{padding:12px 14px}
+ .dcard h3{font-size:16px}
+}
+
+/* ===== Teams 채팅 ===== */
+.tm-btn{padding:5px 11px;font-size:12.5px;font-weight:700;color:#4b53bc;border-color:color-mix(in srgb,#4b53bc 40%,var(--line))}
+.tm-btn:hover{border-color:#4b53bc;background:color-mix(in srgb,#4b53bc 8%,var(--paper))}
+.tm-ic{width:16px;height:16px;flex:none}
+.tm-pop{gap:10px!important}
+.tm-head{display:flex;gap:10px;align-items:center;padding-bottom:8px;border-bottom:1px solid var(--line);color:#4b53bc}
+.tm-head .tm-ic{width:26px;height:26px}
+.tm-head div{display:flex;flex-direction:column;line-height:1.3}
+.tm-head b{color:var(--ink);font-size:14px}.tm-head span{font-family:var(--f-mono);font-size:11.5px;color:var(--muted)}
+.tm-f{display:flex;flex-direction:column;gap:4px;font-size:12.5px;font-weight:700;color:var(--muted)}
+.tm-f .sel{width:100%}
+.tm-f textarea{min-height:88px!important;height:auto;resize:vertical;border:1px solid var(--line);border-radius:6px;padding:8px 10px;font-size:14px;line-height:1.5;background:var(--paper);color:var(--ink)}
+.tm-f textarea:focus-visible{outline:2px solid var(--green);outline-offset:0;box-shadow:none}
+.tm-ctx{white-space:normal}
+.tm-note{margin:0;font-size:11.5px;color:var(--muted);line-height:1.5}
+.tm-acts .btn{text-decoration:none}.tm-acts .btn.ghost{padding:7px 6px;text-decoration:underline}
+.tm-acts .btn.pri{background:#4b53bc;border-color:#4b53bc}
+.foot-tm{color:#4b53bc;font-weight:700}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tm-btn,:root:not([data-theme="light"]) .tm-head,:root:not([data-theme="light"]) .foot-tm{color:#a9b0ff}}
+:root[data-theme="dark"] .tm-btn,:root[data-theme="dark"] .tm-head,:root[data-theme="dark"] .foot-tm{color:#a9b0ff}
+@media (max-width:1100px){.tm-btn .tm-lb{display:none}.tm-btn{padding:6px 8px}}
+@media (max-width:720px){.tm-pop{position:fixed!important;left:12px!important;right:12px!important;top:56px!important;width:auto!important}}
+
+/* ===== AI 연결 방식 ===== */
+#aiPop{max-height:min(80vh,720px);overflow:auto}
+.prov{display:flex;flex-direction:column;gap:4px}
+.pv{display:flex;gap:8px;align-items:flex-start;border:1px solid var(--line);border-radius:6px;padding:6px 9px;cursor:pointer;font-size:13px;line-height:1.35}
+.pv input{margin-top:3px;accent-color:var(--green)}
+.pv span{display:flex;flex-direction:column;min-width:0}
+.pv small{color:var(--muted);font-size:11.5px}
+.pv:has(input:checked){border-color:var(--green);background:var(--green-soft)}
+.pv:has(input:disabled){opacity:.5;cursor:default}
+.pv:has(input:focus-visible){outline:2px solid var(--green);outline-offset:1px}
+.keybox{display:flex;flex-direction:column;gap:6px;border-left:3px solid var(--green);padding-left:10px}
+.keybox .ai-unlock input{font-family:var(--f-mono);font-size:12.5px!important}
+.keybox .tgl{white-space:normal}
+.prov-note{color:var(--ink)!important}
+.mn{width:min(760px,100%);overflow:auto}
+.mn-steps{margin:0;padding-left:20px;font-size:13.5px;line-height:1.6}
+.mn-peek textarea,.mn textarea{width:100%;min-height:0;border:1px solid var(--line);border-radius:6px;padding:8px 10px;font-size:13px;line-height:1.5;background:var(--paper);color:var(--ink);resize:vertical}
+.mn-peek textarea{font-family:var(--f-mono);font-size:12px}
+.mn .pop-row .btn{text-decoration:none}
+.te-msg.err{color:var(--diff)}
+@media (max-width:720px){#aiPop{position:fixed!important;left:12px!important;right:12px!important;top:56px!important;width:auto!important;max-height:calc(100vh - 140px)}}
+
+/* ===== 다른 AI용 프롬프트 ===== */
+.xp-opt{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.xp-row{align-items:center}
+.xp #xpPrompt{font-family:var(--f-mono);font-size:12px;line-height:1.5;min-height:160px}
+.xp-tips{margin:0;padding-left:18px;font-size:12px;color:var(--muted);line-height:1.55}
+.xp-pop{width:100%;justify-content:center;color:var(--green);border-color:var(--green-mid)}
+.xp-ic{font-size:14px}
+@media (max-width:1100px){#xpBtn .xp-lb{display:none}}
+@media (max-width:720px){.xp-opt{grid-template-columns:1fr}.xp #xpPrompt{min-height:120px}}
 </style>
 
 <header class="hd gut">
   <div class="wrap">
-    <a class="mark" href="#review"><img class="ku-g" alt="KU" src="data:image/png;base64,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"><img class="ku-w" alt="KU" src="data:image/png;base64,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"><span class="nm"><b>공문서 검토</b><small>KONKUK DOCUMENT CHECK</small></span></a>
+    <a class="mark" href="#review"><img class="ku-g" alt="KU" src="data:image/png;base64,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"><img class="ku-w" alt="KU" src="data:image/png;base64,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"><span class="nm"><b>문서다듬</b><small>KU DOCUMENT POLISH</small></span></a>
     <nav class="gnb" aria-label="주 메뉴">
       <a href="#review" data-tab="review">검토</a>
       <a href="#compare" data-tab="compare">3단 기준</a>
@@ -806,6 +902,22 @@ main{padding-block:10px 24px!important}
     <div class="menu" id="aiMenu">
       <button class="chipbtn" id="aiChip" aria-haspopup="true" aria-expanded="false"><span id="aiState" class="ai-pill">확인 중</span> ▾</button>
       <div class="menu-pop wide" id="aiPop" hidden>
+        <h4>AI 연결</h4>
+        <div class="prov" id="prov" role="radiogroup" aria-label="AI 연결 방식">
+          <label class="pv"><input type="radio" name="prov" value="claude"><span><b>본인 Claude 계정</b><small>claude.ai 링크로 열면 자동 연결 · 본인 사용 한도에서 차감</small></span></label>
+          <label class="pv"><input type="radio" name="prov" value="manual"><span><b>Claude 채팅창 이용</b><small>요청문 복사 → claude.ai 채팅에 붙여넣기 → 답을 다시 붙여넣기 · 어디서나 · 키 불필요</small></span></label>
+          <label class="pv" data-file><input type="radio" name="prov" value="anthropic"><span><b>Claude API 키</b><small>내려받은 HTML 파일에서 사용 · API 요금 별도</small></span></label>
+          <label class="pv"><input type="radio" name="prov" value="none"><span><b>AI 없이 기본 규칙</b><small>맞춤법·띄어쓰기·날짜·기호 등 내장 규칙만</small></span></label>
+        </div>
+        <div class="keybox" id="keyBox" hidden>
+          <label class="sr" for="keyIn">API 키</label>
+          <div class="ai-unlock"><input id="keyIn" type="password" autocomplete="off" spellcheck="false" placeholder="API 키 (sk-…)"><button class="btn" id="keyTest" type="button">연결 확인</button></div>
+          <div class="ai-unlock"><label class="sr" for="modelIn">모델</label><input id="modelIn" list="modelList" autocomplete="off" spellcheck="false" placeholder="모델 이름"><datalist id="modelList"></datalist></div>
+          <label class="tgl"><input type="checkbox" id="keyKeep"><span>이 기기에 키 기억 (공용 PC에서는 끄세요)</span></label>
+          <p class="meta" id="keyMsg"></p>
+        </div>
+        <p class="ai-tip prov-note" id="provNote"></p>
+        <button class="btn xp-pop" id="xpBtn2" type="button">✎ 다른 AI(ChatGPT·Gemini 등)용 프롬프트 제안</button>
         <h4>검토 사용</h4>
         <p class="ai-tip" id="aiTip"></p>
         <p class="meta" id="meLine"></p>
@@ -816,7 +928,7 @@ main{padding-block:10px 24px!important}
           <button id="aiOffBtn" class="btn" hidden>잠그기</button>
           <button id="aiFixBtn" class="btn" hidden>권한 설정 열기</button>
           <a id="aiLogin" class="ai-link" href="https://claude.ai/login" target="_blank" rel="noopener">claude.ai 로그인</a>
-          <a id="aiOpenLink" class="ai-link strong" href="https://claude.ai/artifact/6m6wyQ3JLk84vFzx3Qysxw" target="_blank" rel="noopener" hidden>검토기 링크로 열기</a>
+          <a id="aiOpenLink" class="ai-link strong" href="https://claude.ai/artifact/6m6wyQ3JLk84vFzx3Qysxw" target="_blank" rel="noopener" hidden>문서다듬 링크로 열기</a>
           <button id="histBtn" class="btn">검토 이력</button>
         </div>
         <p class="track-note">이용 기록(이용자 계정, 시각, 문서 유형, 글자 수, 이용권 사용)이 관리자에게 남습니다. 문서 내용은 저장하지 않습니다.</p>
@@ -829,6 +941,30 @@ main{padding-block:10px 24px!important}
           <li>개인정보는 ⟦개인정보1⟧처럼 가려 보낸 뒤 결과에서 되돌립니다.</li>
           <li>단축키: Ctrl+Enter 검토 · J/K 제안 이동 · A 수락 · R 거절 · Ctrl+Z 되돌리기</li>
         </ul></details>
+      </div>
+    </div>
+    <div class="menu tm-menu" id="tmMenu">
+      <button class="btn tm-btn" id="tmBtn" aria-haspopup="true" aria-expanded="false" title="Teams로 앵커김군(coolzet@konkuk.ac.kr)에게 채팅"><svg class="tm-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H11l-4.6 3.7c-.5.4-1.4.1-1.4-.6V16h-.5A2.5 2.5 0 0 1 2 13.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><path d="M8 8.5h8M8 12h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span class="tm-lb">Teams 채팅</span></button>
+      <div class="menu-pop wide tm-pop" id="tmPop" hidden role="dialog" aria-label="Teams 채팅 문의">
+        <div class="tm-head"><svg class="tm-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H11l-4.6 3.7c-.5.4-1.4.1-1.4-.6V16h-.5A2.5 2.5 0 0 1 2 13.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><path d="M8 8.5h8M8 12h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><div><b>앵커김군에게 Teams 채팅</b><span>coolzet@konkuk.ac.kr</span></div></div>
+        <label class="tm-f"><span>문의 유형</span>
+          <select class="sel" id="tmType">
+            <option value="사용 문의">사용 문의</option>
+            <option value="오류 신고">오류 신고</option>
+            <option value="이용권 요청">이용권(쿠폰) 요청</option>
+            <option value="검토 기준 개선 제안">검토 기준 개선 제안</option>
+            <option value="기타">기타</option>
+          </select></label>
+        <label class="tm-f"><span>보낼 내용</span>
+          <textarea id="tmMsg" rows="4" placeholder="궁금한 점이나 오류가 난 상황을 적어 주세요."></textarea></label>
+        <label class="tgl tm-ctx"><input type="checkbox" id="tmCtx" checked><span>현재 화면 정보 함께 보내기 (탭·문서 유형)</span></label>
+        <p class="tm-note">작성한 문서 내용은 자동으로 담기지 않습니다. 개인정보는 적지 마세요.</p>
+        <div class="pop-row tm-acts">
+          <a class="btn pri" id="tmGo" href="https://teams.microsoft.com/l/chat/0/0?users=coolzet@konkuk.ac.kr" target="_blank" rel="noopener">Teams에서 채팅 열기</a>
+          <button class="btn" id="tmCopy" type="button">내용 복사</button>
+          <a class="btn ghost" id="tmMail" href="mailto:coolzet@konkuk.ac.kr" target="_blank" rel="noopener">메일로 보내기</a>
+        </div>
+        <p class="tm-note">Teams 앱 또는 웹이 열리면 받는 사람과 내용이 채워져 있습니다. 보내기는 Teams에서 직접 누르세요.</p>
       </div>
     </div>
     <span class="who"><b>앵커김군</b><span>coolzet@konkuk.ac.kr</span></span>
@@ -863,6 +999,7 @@ main{padding-block:10px 24px!important}
     <span class="prog" id="prog" hidden><span id="progTxt">0/0 처리</span><span class="tr"><span class="fl" id="progFl"></span></span></span>
     <span class="status" id="status"></span>
     <button class="btn" id="stopBtn" hidden>중지</button>
+    <button class="btn" id="xpBtn" title="ChatGPT·Gemini 등 다른 AI에 붙여 넣을 요청문을 만듭니다"><span class="xp-ic" aria-hidden="true">✎</span><span class="xp-lb">다른 AI용 프롬프트</span></button>
     <button class="btn pri" id="runBtn">검토하기</button>
   </div>
 
@@ -1039,7 +1176,7 @@ main{padding-block:10px 24px!important}
 <section class="tab" id="tab-compare" hidden>
   <h2 class="sec">3단 기준 비교</h2>
   <p class="cr-note">© 건국대학교 앵커사업단 · 이 비교표는 저작권 보호를 받아 드래그·복사할 수 없습니다.</p>
-  <p class="lead">같은 항목을 세 기준이 각각 어떻게 정하는지 나란히 놓았습니다. 왼쪽 띠가 주황색인 행은 기준끼리 내용이 다른 항목이며, 맨 오른쪽 칸은 이 검토기가 실제로 적용하는 방식입니다.</p>
+  <p class="lead">같은 항목을 세 기준이 각각 어떻게 정하는지 나란히 놓았습니다. 왼쪽 띠가 주황색인 행은 기준끼리 내용이 다른 항목이며, 맨 오른쪽 칸은 문서다듬이 실제로 적용하는 방식입니다.</p>
   <div class="filter">
     <div class="seg" id="cmpFilter">
       <button data-v="all" aria-pressed="true">전체 항목</button>
@@ -1048,7 +1185,7 @@ main{padding-block:10px 24px!important}
     <span class="meta" id="cmpCount"></span>
   </div>
   <div class="tbl-wrap"><table class="cmp">
-    <thead><tr><th>항목</th><th class="s-rule">학교 규정 (2025. 10. 1.)</th><th class="s-man">행안부 편람 (2025. 12. 17.)</th><th class="s-guide">국어원 길잡이 (2022. 12.)</th><th>검토기 적용</th></tr></thead>
+    <thead><tr><th>항목</th><th class="s-rule">학교 규정 (2025. 10. 1.)</th><th class="s-man">행안부 편람 (2025. 12. 17.)</th><th class="s-guide">국어원 길잡이 (2022. 12.)</th><th>문서다듬 적용</th></tr></thead>
     <tbody id="cmpBody"></tbody>
   </table></div>
 </section>
@@ -1067,13 +1204,58 @@ main{padding-block:10px 24px!important}
 <footer class="gut"><div class="wrap">
   <div class="copyright" id="copyright">
     <b>© 2026 건국대학교 앵커사업단 · 앵커김군. All rights reserved.</b>
-    <p>이 검토기의 화면 구성, 검토 규칙 데이터, 3단 기준 비교·차이점 해설, 예시 문서는 「저작권법」의 보호를 받습니다. 사전 허락 없이 복제·배포·전송·변형하거나 다른 서비스에 옮겨 쓸 수 없습니다. 업무 목적의 이용과 출처를 밝힌 짧은 인용은 가능합니다.</p>
+    <p>KU 문서다듬의 화면 구성, 검토 규칙 데이터, 3단 기준 비교·차이점 해설, 예시 문서는 「저작권법」의 보호를 받습니다. 사전 허락 없이 복제·배포·전송·변형하거나 다른 서비스에 옮겨 쓸 수 없습니다. 업무 목적의 이용과 출처를 밝힌 짧은 인용은 가능합니다.</p>
     <p>인용한 「건국대학교 문서규정」은 건국대학교, 「행정업무운영 편람」은 행정안전부, 「쉬운 공문서 쓰기 길잡이」는 국립국어원에 각각 권리가 있으며, KU 이니셜 마크는 건국대학교 상징물입니다. 사용자가 입력한 문서와 수정본의 권리는 작성자에게 있습니다.</p>
     <p class="meta">이용·인용 문의: coolzet@konkuk.ac.kr</p>
   </div>
   <span>기준: 건국대학교 문서규정(2025. 10. 1. 개정) · 2025 행정업무운영 편람(행정안전부) · 쉬운 공문서 쓰기 길잡이(국립국어원, 2022)</span>
-  <span>앵커사업단 업무 지원용 비공식 도구 · 문의 coolzet@konkuk.ac.kr · <a href="#admin" data-tab="admin" class="foot-adm">관리자</a></span>
+  <span>앵커사업단 업무 지원용 비공식 도구 · 문의 coolzet@konkuk.ac.kr · <a href="https://teams.microsoft.com/l/chat/0/0?users=coolzet@konkuk.ac.kr" target="_blank" rel="noopener" class="foot-tm" id="footTm">Teams 채팅</a> · <a href="#admin" data-tab="admin" class="foot-adm">관리자</a></span>
 </div></footer>
+<div class="te-wrap" id="xpWrap" hidden>
+  <div class="te mn xp" role="dialog" aria-modal="true" aria-labelledby="xpHead">
+    <div class="te-h"><h3 id="xpHead">다른 AI용 프롬프트 제안</h3><button class="btn ghost sm" id="xpClose" type="button" aria-label="닫기">닫기 ✕</button></div>
+    <p class="te-tip">ChatGPT·Gemini·Copilot 등 다른 AI 채팅에 그대로 붙여 넣어 쓰는 요청문입니다. 학교 규정·행안부 편람·국어원 길잡이 3단 기준과 지금 고른 문서 유형이 담겨 있습니다.</p>
+    <div class="xp-opt" role="radiogroup" aria-label="답 형식">
+      <label class="pv"><input type="radio" name="xpFmt" value="read" checked><span><b>수정본 + 수정 내역 표</b><small>AI 답을 바로 읽고 복사해 쓰기</small></span></label>
+      <label class="pv"><input type="radio" name="xpFmt" value="json"><span><b>문서다듬으로 가져오기 (JSON)</b><small>AI 답을 아래에 붙여 넣으면 제안 카드로 수락·거절</small></span></label>
+      <label class="pv"><input type="radio" name="xpFmt" value="rules"><span><b>기준만 먼저 알려 주기</b><small>문서 없이 기준을 보내 두고 이어서 여러 문서 교정</small></span></label>
+    </div>
+    <div class="pop-row xp-row">
+      <label class="tgl"><input type="checkbox" id="xpMask" checked><span>개인정보 가림 (주민번호·전화·이메일·계좌·학번)</span></label>
+      <span class="sp"></span><span class="meta" id="xpLen"></span>
+    </div>
+    <textarea id="xpPrompt" readonly rows="9" aria-label="만들어진 프롬프트"></textarea>
+    <div class="pop-row"><button class="btn pri" id="xpCopy" type="button">프롬프트 복사</button><span class="meta" id="xpWarn"></span></div>
+    <div id="xpBack" hidden>
+      <label class="tm-f"><span>AI 답 붙여넣기 → 문서다듬에 적용</span><textarea id="xpAns" rows="6" placeholder='AI가 준 {"edits":[…]} 답을 그대로 붙여 넣으세요. 앞뒤 설명이나 ```json 표시가 있어도 됩니다.'></textarea></label>
+      <div class="pop-row"><button class="btn pri" id="xpApply" type="button">제안으로 불러오기</button></div>
+    </div>
+    <p class="te-msg" id="xpMsg"></p>
+    <ul class="xp-tips">
+      <li>다른 AI는 학교 계정 보안·개인정보 처리 기준이 다를 수 있습니다. 민감한 문서는 가림을 켜고, 결과는 반드시 직접 확인하세요.</li>
+      <li>문서가 길면 AI 답이 중간에 끊길 수 있습니다. ‘계속’이라고 보내거나 문서를 나누어 요청하세요.</li>
+    </ul>
+  </div>
+</div>
+<div class="te-wrap" id="mnWrap" hidden>
+  <div class="te mn" role="dialog" aria-modal="true" aria-labelledby="mnHead">
+    <div class="te-h"><h3 id="mnHead">Claude 채팅창으로 검토</h3><span class="meta" id="mnStep"></span></div>
+    <ol class="mn-steps">
+      <li><b>요청문 복사</b>를 누르고 Claude 채팅창(claude.ai)을 엽니다.</li>
+      <li>채팅창에 붙여 넣어 보냅니다.<span id="mnImg" hidden> <b>캡처 이미지는 채팅창에 직접 첨부</b>하세요.</span></li>
+      <li>Claude의 답(JSON)을 전부 복사해 아래 칸에 붙여 넣고 <b>결과 적용</b>을 누릅니다.</li>
+    </ol>
+    <div class="pop-row">
+      <button class="btn pri" id="mnCopy" type="button">① 요청문 복사</button>
+      <a class="btn" href="https://claude.ai/new" target="_blank" rel="noopener">Claude 열기</a>
+      <span class="meta" id="mnLen"></span>
+    </div>
+    <details class="mn-peek"><summary>요청문 보기</summary><textarea id="mnPrompt" readonly rows="6"></textarea></details>
+    <label class="tm-f"><span>② Claude 답 붙여넣기</span><textarea id="mnAns" rows="7" placeholder='{"edits":[…]} 형태의 답을 그대로 붙여 넣으세요. 앞뒤 설명이나 ```json 표시가 있어도 됩니다.'></textarea></label>
+    <p class="te-msg" id="mnMsg"></p>
+    <div class="te-f"><button class="btn" id="mnCancel" type="button">취소</button><button class="btn pri" id="mnOk" type="button">③ 결과 적용</button></div>
+  </div>
+</div>
 <div class="te-wrap" id="teWrap" hidden>
   <div class="te" role="dialog" aria-modal="true" aria-labelledby="teHead">
     <div class="te-h"><h3 id="teHead">표 입력</h3><span class="meta" id="teSize"></span></div>
@@ -1177,7 +1359,7 @@ const CMP=[
   guide:"보고서·공고문 등 유형별 구성 안내.",guideRef:"3부",
   diff:true,apply:"구성 요소 누락은 고치지 않고 notes로 안내.",
   why:"학교 규정은 분류기호·시행일자를 두문에 두고, 편람은 생산등록번호(시행일)를 결문에 두며 공개 구분을 추가합니다.",
-  verdict:"전자결재 시스템 서식이 위치를 자동으로 정하므로, 검토기는 수신·제목·발신 명의가 빠졌는지만 확인합니다."},
+  verdict:"전자결재 시스템 서식이 위치를 자동으로 정하므로, 문서다듬은 수신·제목·발신 명의가 빠졌는지만 확인합니다."},
  {id:"recv",topic:"수신란",sub:"",
   rule:"경유·수신. 수신자가 2인 이상이면 ‘수신처 참조’, 결문에 수신처란. 내부보고는 ‘보고’·‘품의’·‘내부결재’.",ruleRef:"제19·26·29조④",
   man:"내부결재 문서는 ‘내부결재’. 수신자가 많으면 ‘수신자 참조’, 결문에 수신자란. 기관장 직위(처리 보조기관) 형식.",manRef:"규칙 제4조② · p.57~58",manEx:"수신  행정안전부장관(정보공개과장)",
@@ -1384,8 +1566,8 @@ function renderCompare(){
  $("cmpCount").textContent=`${rows.length}개 항목 · 차이 ${CMP.filter(c=>c.diff).length}개`;
  $("cmpBody").innerHTML=rows.map(c=>`<tr class="${c.diff?"is-diff":""}">
   <td class="topic">${esc(c.topic)}${c.sub?`<small>${esc(c.sub)}</small>`:""}${c.diff?`<a class="dbadge" href="#d-${c.id}" data-jump="${c.id}">차이 있음 ›</a>`:`<span class="sbadge">같은 취지</span>`}</td>
-  <td>${cell(c.rule,c.ruleEx,c.ruleRef)}</td><td>${cell(c.man,c.manEx,c.manRef)}</td><td>${cell(c.guide,c.guideEx,c.guideRef)}</td>
-  <td class="apply">${esc(c.apply)}</td></tr>`).join("");
+  <td class="c-rule" data-l="학교 규정 · 2025. 10. 1.">${cell(c.rule,c.ruleEx,c.ruleRef)}</td><td class="c-man" data-l="행안부 편람 · 2025. 12. 17.">${cell(c.man,c.manEx,c.manRef)}</td><td class="c-guide" data-l="국어원 길잡이 · 2022. 12.">${cell(c.guide,c.guideEx,c.guideRef)}</td>
+  <td class="apply" data-l="문서다듬 적용">${esc(c.apply)}</td></tr>`).join("");
 }
 function renderDiffs(){
  const ds=CMP.filter(c=>c.diff);
@@ -1408,7 +1590,7 @@ function showTab(t,anchor){
  for(const k in TABS)$("tab-"+k).hidden=k!==t;
  document.querySelectorAll("[data-tab]").forEach(a=>{if(a.dataset.tab===t)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current");});
  if(t==="admin"){try{renderAdmin();loadStats();}catch{}}
- document.title=TABS[t][0]+" · 건대 공문서 검토기";
+ document.title=TABS[t][0]+" · KU 문서다듬";
  if(anchor){requestAnimationFrame(()=>document.getElementById(anchor)?.scrollIntoView({behavior:"smooth",block:"start"}));}
 }
 function route(){
@@ -1918,7 +2100,8 @@ const canReview=()=>unlocked()||trialUsed<TRIAL||credits>0;
 const aiOn=()=>!!(sample&&canReview());
 function setAi(st){
  if(st==="ready"||st==="granted")aiAvail=true;
- if(st==="off"||st==="denied"||st==="nofile"||st==="unavail"){aiAvail=false;aiWhy=st;}
+ if(st==="ready"||st==="granted")aiWhy=null;
+ if(["off","denied","nofile","unavail","none","nokey"].includes(st)){aiAvail=false;aiWhy=st;}
  const el=$("aiState"),tip=$("aiTip");
  $("aiUnlock").hidden=unlocked();
  $("aiOffBtn").hidden=!unlocked()||isAdmin;
@@ -1931,7 +2114,9 @@ function setAi(st){
  else if(tLeft){el.textContent=`무료 체험 ${tLeft}회 남음${credits?` · 이용권 ${credits}회`:""}`;el.className="ai-pill trial";}
  else if(credits>0){el.textContent=`이용권 ${credits}회 남음`;el.className="ai-pill on";}
  else{el.textContent="이용권 필요";el.className="ai-pill off";}
- const why={nofile:"내려받은 HTML 파일로 열려 Claude를 쓸 수 없습니다(기본 규칙으로 검토). claude.ai 링크로 여세요.",denied:"Claude 사용이 거부되어 기본 규칙으로 검토합니다. ‘권한 설정’에서 켤 수 있습니다.",unavail:"Claude를 쓸 수 없어 기본 규칙으로 검토합니다. 로그인 상태를 확인하세요.",off:"Claude를 쓸 수 없어 기본 규칙으로 검토합니다."}[aiWhy];
+ if(provider!=="claude"&&aiWhy==="nofile")aiWhy=null;
+ $("aiLogin").hidden=$("aiLogin").hidden||provider!=="claude";$("aiOpenLink").hidden=$("aiOpenLink").hidden||provider!=="claude";$("aiFixBtn").hidden=$("aiFixBtn").hidden||provider!=="claude";
+ const why={none:"기본 규칙으로 검토합니다.",nokey:"API 키를 입력하면 AI 검토를 쓸 수 있습니다. 그 전에는 기본 규칙으로 검토합니다.",nofile:"내려받은 HTML 파일로 열려 Claude를 쓸 수 없습니다(기본 규칙으로 검토). claude.ai 링크로 여세요.",denied:"Claude 사용이 거부되어 기본 규칙으로 검토합니다. ‘권한 설정’에서 켤 수 있습니다.",unavail:"Claude를 쓸 수 없어 기본 규칙으로 검토합니다. 로그인 상태를 확인하세요.",off:"Claude를 쓸 수 없어 기본 규칙으로 검토합니다."}[aiWhy];
  tip.textContent=!canReview()?`무료 체험 ${TRIAL}회를 모두 사용했습니다. 이용권 코드(10·50·100회)나 팀 암호를 입력하세요.`
   :(aiAvail===false?why:(aiAvail===null?"Claude 연결을 확인하고 있습니다.":(unlocked()?"AI 검토(문장 구조 포함)를 횟수 제한 없이 쓸 수 있습니다.":`처음 ${TRIAL}회는 무료입니다. 이후에는 이용권 코드나 팀 암호가 필요합니다.`)));
  $("credLine").textContent=unlocked()?"":`무료 체험 ${tLeft}/${TRIAL}회 · 이용권 ${credits}회 남음`;
@@ -1975,7 +2160,7 @@ function saveMember(patch={}){
 function logUse(entry){if(db&&uid)db.collection(`members/${uid}/log`).add({...entry,at:Date.now()}).catch(()=>{});}
 async function redeem(){
  const raw=$("cpIn").value.trim().toUpperCase().replace(/\s+/g,"");if(!raw){$("cpIn").focus();return;}
- if(!db||!uid){toast("이용권은 claude.ai에 로그인해 검토기 링크로 열었을 때만 등록할 수 있습니다.");return;}
+ if(!db||!uid){toast("이용권은 claude.ai에 로그인해 문서다듬 링크로 열었을 때만 등록할 수 있습니다.");return;}
  let h,snap;try{h=await sha256(raw);snap=await db.doc("coupons/"+h).get();}catch{toast("이용권을 확인하지 못했습니다. 잠시 후 다시 시도하세요.");return;}
  if(!snap.exists){toast("없는 이용권 코드입니다. 코드를 다시 확인하세요.");return;}
  const d=snap.data();
@@ -2074,7 +2259,7 @@ async function loadStats(){
 }
 $("rExport").onclick=async()=>{
  const data=JSON.stringify({exportedAt:new Date().toISOString(),builtin:RULES,teamGlossary:teamTerms.map(({term,note})=>({term,note})),teamRules:teamRules.map(({find,replace,why})=>({find,replace,why}))},null,2);
- try{const d=await claude.use("downloads");if(!d)throw 0;await d.save({filename:"검토기_규칙.json",data:new Blob([data],{type:"application/json"})});}catch{copyRich(`<pre>${esc(data)}</pre>`,data,"규칙 JSON");}
+ try{const d=await claude.use("downloads");if(!d)throw 0;await d.save({filename:"문서다듬_규칙.json",data:new Blob([data],{type:"application/json"})});}catch{copyRich(`<pre>${esc(data)}</pre>`,data,"규칙 JSON");}
 };
 
 /* ================= 이용권·이용자 관리 ================= */
@@ -2704,9 +2889,9 @@ async function run(){
   statusEl.textContent=`검토 완료 · ${Math.round((Date.now()-t0)/1000)}초${miss?` · 위치 못 찾은 제안 ${miss}건`:""}`;
   done();
  }catch(e){
-  const msg={cancelled:"검토를 중지했습니다.",rate_limited:"요청이 많습니다. 잠시 후 다시 시도하세요.",invalid_json:"결과 형식이 올바르지 않습니다. 다시 시도하세요.",refused:"이 내용은 검토할 수 없습니다.",session_expired:"다시 로그인한 뒤 시도하세요.",prompt_too_large:"문서가 너무 깁니다. 나누어 검토하세요."}[e?.code];
+  const msg={cancelled:"검토를 중지했습니다.",rate_limited:"요청이 많습니다. 잠시 후 다시 시도하세요.",invalid_json:"결과 형식이 올바르지 않습니다. 다시 시도하세요.",refused:"이 내용은 검토할 수 없습니다.",session_expired:"다시 로그인한 뒤 시도하세요.",prompt_too_large:"문서가 너무 깁니다. 나누어 검토하세요.",bad_key:"API 키가 올바르지 않습니다. AI 연결에서 키를 확인하세요.",network:"AI 서버에 연결하지 못했습니다. claude.ai 페이지 안에서는 API 키 방식을 쓸 수 없으니 내려받은 HTML 파일에서 쓰거나 ‘Claude 채팅창 이용’을 고르세요.",bad_model:"모델 이름을 찾을 수 없습니다. ‘연결 확인’으로 목록을 불러와 고르세요.",quota:"API 사용 한도나 잔액이 부족합니다."}[e?.code]||(e?.detail?"AI 오류: "+e.detail:"");
   if(["not_granted","sampling_disabled","not_declared","capability_disabled","capability_removed"].includes(e?.code)){
-   sample=null;setAi(e.code==="not_granted"?"denied":"off");state={...state,result:basicEdits(src),source:src,isExample:false,finalized:false};render();statusEl.textContent="Claude를 쓸 수 없어 기본 점검으로 대신했습니다.";done();
+   if(provider==="claude"){claudeSample=null;}sample=null;setAi(e.code==="not_granted"?"denied":"off");state={...state,result:basicEdits(src),source:src,isExample:false,finalized:false};render();statusEl.textContent="Claude를 쓸 수 없어 기본 점검으로 대신했습니다.";done();
   }else{render();statusEl.textContent=msg||"검토 중 오류가 났습니다. 다시 시도하세요.";}
  }finally{clearInterval(timer);$("busy").hidden=true;$("runBtn").disabled=false;$("mRun").disabled=false;$("stopBtn").hidden=true;}
 }
@@ -2775,6 +2960,173 @@ $("mCopy").onclick=()=>copyWhole();
 function syncPaneHeight(){}
 try{const ro=new ResizeObserver(()=>requestAnimationFrame(syncPaneHeight));ro.observe($("inText"));ro.observe($("inPane"));}catch{}
 window.addEventListener("resize",syncPaneHeight);
+/* ================= AI 연결 방식: 본인 Claude 계정 · Claude 채팅창 · Claude API 키 · 없음 ================= */
+var claudeSample=null;
+var provider=(()=>{const v=lsGet("kku-prov");return ["claude","manual","anthropic","none"].includes(v)?v:(window.claude?"claude":"none");})();
+const IN_ARTIFACT=!!window.claude;
+const PROV_NAME={claude:"본인 Claude 계정",manual:"Claude 채팅창 이용",anthropic:"Claude API",none:"AI 없음"};
+const DEF_MODEL={anthropic:"claude-sonnet-4-5"};
+const JSON_ONLY="\n\n[응답 형식] 설명이나 머리말 없이 JSON 객체 하나로만 답하세요.";
+function keyGet(pv){try{return sessionStorage.getItem("kku-key-"+pv)||localStorage.getItem("kku-key-"+pv)||"";}catch{return "";}}
+function keySet(pv,k,keep){try{sessionStorage.removeItem("kku-key-"+pv);localStorage.removeItem("kku-key-"+pv);if(k)(keep?localStorage:sessionStorage).setItem("kku-key-"+pv,k);}catch{}}
+function extractJSON(t){
+ t=String(t||"").trim().replace(/^```(?:json)?\s*/i,"").replace(/```\s*$/,"");
+ try{return JSON.parse(t);}catch{}
+ const a=t.indexOf("{"),b=t.lastIndexOf("}");
+ if(a>=0&&b>a){try{return JSON.parse(t.slice(a,b+1));}catch{}}
+ throw{code:"invalid_json"};
+}
+const fileToB64=f=>new Promise((ok,no)=>{const r=new FileReader();r.onload=()=>ok(String(r.result));r.onerror=()=>no(r.error);r.readAsDataURL(f);});
+async function apiFetch(url,opt){
+ let r;try{r=await fetch(url,opt);}catch(e){if(e?.name==="AbortError")throw{code:"cancelled"};throw{code:"network"};}
+ if(r.ok)return r.json();
+ let d="";try{const j=await r.json();d=j?.error?.message||j?.message||"";}catch{}
+ if(r.status===401||r.status===403)throw{code:"bad_key",detail:d};
+ if(r.status===404||/model/i.test(d)&&r.status===400)throw{code:"bad_model",detail:d};
+ if(r.status===429)throw{code:/quota|credit|billing|balance/i.test(d)?"quota":"rate_limited",detail:d};
+ throw{code:"api",detail:d||("HTTP "+r.status)};
+}
+function makeAnthropic(key,model){const H={"x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"};return{
+ limits:async()=>({images:{maxCount:10}}),
+ async json(prompt,o={}){
+  const content=[];
+  for(const f of o.images||[]){const d=await fileToB64(f);const m=d.match(/^data:([^;]+);base64,(.*)$/);if(m)content.push({type:"image",source:{type:"base64",media_type:m[1],data:m[2]}});}
+  content.push({type:"text",text:prompt+JSON_ONLY});
+  const j=await apiFetch("https://api.anthropic.com/v1/messages",{method:"POST",signal:o.signal,headers:{...H,"content-type":"application/json"},
+   body:JSON.stringify({model,max_tokens:16000,system:"당신은 한국 대학 행정 공문서 교정 전문가입니다. 항상 JSON 객체 하나로만 답합니다.",messages:[{role:"user",content}]})});
+  const t=(j?.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("");o.onText?.({text:t});return extractJSON(t);
+ },
+ async models(){const j=await apiFetch("https://api.anthropic.com/v1/models?limit=100",{headers:H});return (j.data||[]).map(m=>m.id);}
+};}
+/* 채팅창 이용: 요청문을 복사해 Claude 채팅에 붙여 넣고 답을 받아 오는 방식 */
+let mnPending=null;
+const manualAdapter={
+ limits:async()=>({images:{maxCount:10}}),
+ json(prompt,o={}){
+  return new Promise((ok,no)=>{
+   const full=prompt+JSON_ONLY;
+   $("mnPrompt").value=full;$("mnAns").value="";$("mnMsg").textContent="";$("mnMsg").className="te-msg";
+   $("mnLen").textContent=full.length.toLocaleString()+"자";
+   $("mnImg").hidden=!(o.images&&o.images.length);
+   const m=/구간 (\d+)\/(\d+)|전체 (\d+)구간 중 (\d+)구간/.exec(full);$("mnStep").textContent=m?`구간 ${m[4]||m[1]}/${m[3]||m[2]}`:"";
+   $("mnWrap").hidden=false;$("mnCopy").focus();
+   const end=()=>{$("mnWrap").hidden=true;mnPending=null;};
+   mnPending={ok:v=>{end();ok(v);},no:e=>{end();no(e);}};
+   o.signal?.addEventListener("abort",()=>mnPending?.no({code:"cancelled"}),{once:true});
+  });
+ }
+};
+$("mnCopy").onclick=async()=>{try{await navigator.clipboard.writeText($("mnPrompt").value);$("mnMsg").className="te-msg";$("mnMsg").textContent="요청문을 복사했습니다. 채팅창에 붙여 넣어 보내세요.";$("mnCopy").textContent="① 복사됨 ✓";setTimeout(()=>$("mnCopy").textContent="① 요청문 복사",2000);}catch{$("mnPrompt").closest("details").open=true;$("mnPrompt").select();$("mnMsg").textContent="자동 복사가 막혀 있습니다. 요청문을 선택해 Ctrl+C로 복사하세요.";}};
+$("mnOk").onclick=()=>{try{const v=extractJSON($("mnAns").value);mnPending?.ok(v);}catch{$("mnMsg").className="te-msg err";$("mnMsg").textContent="답에서 JSON을 찾지 못했습니다. AI 답을 처음부터 끝까지 그대로 붙여 넣으세요.";}};
+$("mnCancel").onclick=()=>mnPending?.no({code:"cancelled"});
+$("mnWrap").addEventListener("keydown",e=>{if(e.key==="Escape")mnPending?.no({code:"cancelled"});});
+
+function provAdapter(){
+ if(provider==="claude")return claudeSample;
+ if(provider==="manual")return manualAdapter;
+ if(provider==="anthropic"){const k=keyGet(provider);if(!k)return null;const m=lsGet("kku-model-"+provider)||DEF_MODEL[provider];return makeAnthropic(k,m);}
+ return null;
+}
+function renderProv(){
+ document.querySelectorAll('#prov input[name=prov]').forEach(r=>{r.checked=r.value===provider;
+  const lab=r.closest(".pv");if(lab.hasAttribute("data-file"))r.disabled=IN_ARTIFACT;
+  if(r.value==="claude")r.disabled=!IN_ARTIFACT;});
+ const isKey=provider==="anthropic";
+ $("keyBox").hidden=!isKey;
+ if(isKey){$("keyIn").value=keyGet(provider);$("keyIn").placeholder="Claude API 키 (sk-ant-…)";
+  $("modelIn").value=lsGet("kku-model-"+provider)||DEF_MODEL[provider];
+  let kept=false;try{kept=!!localStorage.getItem("kku-key-"+provider);}catch{}$("keyKeep").checked=kept;}
+ const note={
+  claude:IN_ARTIFACT?"보고 있는 사람 본인의 Claude 계정으로 검토합니다. 별도 키나 요금이 없고 본인 사용 한도에서 차감됩니다.":"내려받은 HTML 파일에서는 Claude 계정에 연결할 수 없습니다. ‘Claude 채팅창 이용’이나 Claude API 키를 고르세요.",
+  manual:"claude.ai 웹·앱의 본인 Claude 계정(무료·유료 모두)을 그대로 씁니다. 요청문을 복사해 채팅창에 붙이고, 답을 다시 붙여 넣는 방식입니다. 긴 문서는 구간마다 한 번씩 반복합니다.",
+  anthropic:"Claude 콘솔(console.anthropic.com)에서 발급한 API 키가 필요합니다. Claude Pro 구독과는 별도로 사용량만큼 요금이 붙습니다. 키는 이 브라우저에만 저장되고 Anthropic으로만 전송됩니다.",
+  none:"AI를 쓰지 않고 내장 규칙으로만 검토합니다. 문장 구조 검토와 이미지 읽기는 쓸 수 없습니다."}[provider];
+ $("provNote").textContent=note+(IN_ARTIFACT?"":" · API 키 방식은 이 파일에서 바로 쓸 수 있습니다.");
+}
+function applyProvider(quiet){
+ sample=provAdapter();
+ renderProv();
+ if(sample)setAi("ready");
+ else if(provider==="none")setAi("none");
+ else if(provider==="claude")setAi(IN_ARTIFACT?(claudeSample===null&&aiWhy?aiWhy:"wait"):"nofile");
+ else setAi("nokey");
+ if(!quiet)toast("AI 연결: "+PROV_NAME[provider]+(sample?"":" (설정 필요)"));
+}
+$("prov").addEventListener("change",e=>{const v=e.target.value;if(!v)return;provider=v;lsSet("kku-prov",v);applyProvider();});
+$("keyIn").addEventListener("change",()=>{keySet(provider,$("keyIn").value.trim(),$("keyKeep").checked);applyProvider(true);});
+$("keyKeep").addEventListener("change",()=>{keySet(provider,$("keyIn").value.trim(),$("keyKeep").checked);});
+$("modelIn").addEventListener("change",()=>{lsSet("kku-model-"+provider,$("modelIn").value.trim()||null);applyProvider(true);});
+$("keyTest").onclick=async()=>{
+ keySet(provider,$("keyIn").value.trim(),$("keyKeep").checked);applyProvider(true);
+ const a=provAdapter(),msg=$("keyMsg");if(!a){msg.textContent="API 키를 입력하세요.";return;}
+ msg.innerHTML='<span class="spin">연결을 확인하고 있습니다…</span>';
+ try{const ms=await a.models();$("modelList").innerHTML=ms.map(m=>`<option value="${esc(m)}">`).join("");
+  const cur=$("modelIn").value.trim();
+  if(ms.length&&!ms.includes(cur)){const pick=ms.find(m=>/sonnet/.test(m))||ms[0];$("modelIn").value=pick;lsSet("kku-model-"+provider,pick);applyProvider(true);}
+  msg.textContent=`연결됨 · 쓸 수 있는 모델 ${ms.length}개 · 현재 ${$("modelIn").value}`;
+ }catch(e){msg.textContent={bad_key:"키가 올바르지 않습니다.",network:IN_ARTIFACT?"claude.ai 페이지 안에서는 외부 API에 연결할 수 없습니다. 내려받은 HTML 파일에서 쓰세요.":"서버에 연결하지 못했습니다. 인터넷·회사 방화벽을 확인하세요."}[e?.code]||("확인 실패: "+(e?.detail||e?.code||"알 수 없는 오류"));}
+};
+
+/* ================= 다른 AI용 프롬프트 제안 ================= */
+let xpCtx=null;
+function xpBuild(){
+ const fmt=document.querySelector('input[name=xpFmt]:checked').value;
+ const src=$("inText").value.replace(/\s+$/,"");
+ const dt=DOC_TYPES[state.docType]||{};
+ const rules=buildRules(state.scope,extraRules());
+ const typeLine=`\n\n[이번 문서 유형] ${dt.label||""}${dt.rules?" — "+dt.rules:""}`;
+ let out,mask={text:src,map:[]};
+ if(fmt==="rules"){
+  out=rules+typeLine+`\n\n[요청] 위 기준을 기억해 두세요. 이어서 제가 보내는 공문서마다 이 기준으로 교정하고, 답은 ① 수정본 전문(코드 블록) ② 수정 내역 표(번호 | 원문 | 수정 | 이유 | 근거) ③ 확인이 필요한 사항 순서로 주세요. 지금은 '준비됨'이라고만 답하세요.`;
+ }else{
+  mask=$("xpMask").checked?maskPII(src):{text:src,map:[]};
+  const doc=`\n\n[검토할 문서]\n<<<\n${mask.text||"(여기에 문서를 붙여 넣으세요)"}\n>>>`;
+  if(fmt==="json")out=rules+typeLine+doc+`\n\n[응답 형식] 설명이나 머리말 없이 위에서 정한 JSON 객체 하나로만 답하세요. find에는 원문 글자를 한 글자도 바꾸지 말고 그대로 넣으세요. ⟦개인정보N⟧ 표시는 그대로 두세요.`;
+  else out=rules+typeLine+doc+`\n\n[응답 형식 — 위의 JSON 형식 대신 아래 형식으로 답하세요]
+① 수정본: 고친 문서 전문을 원문의 줄바꿈·들여쓰기·'| 칸 |' 표 형식 그대로 코드 블록 안에.
+② 수정 내역: 표(번호 | 원문 | 수정 | 이유 | 근거 — 학교 규정·행안부 편람·국어원 길잡이·어문 규범 중 하나와 조항·쪽).
+   같은 수정이 여러 곳이면 한 줄로 쓰고 '외 n곳'.
+③ 확인이 필요한 사항: 숫자·날짜·요일·합계 불일치, 필수 요소 누락처럼 고치지 않고 확인만 할 것.
+⟦개인정보N⟧ 표시는 그대로 두세요.`;
+ }
+ xpCtx={fmt,src,map:mask.map};
+ $("xpPrompt").value=out;
+ $("xpLen").textContent=out.length.toLocaleString()+"자";
+ $("xpBack").hidden=fmt!=="json";
+ $("xpMask").disabled=fmt==="rules";
+ $("xpWarn").textContent=fmt!=="rules"&&!src.trim()?"입력란이 비어 있어 문서 자리만 비워 두었습니다.":(mask.map.length?`개인정보 ${mask.map.length}건을 가렸습니다.`:"");
+ $("xpMsg").textContent="";
+}
+function xpOpen(){document.querySelectorAll(".menu-pop").forEach(p=>p.hidden=true);$("xpMask").checked=$("piiMask").checked;xpBuild();$("xpWrap").hidden=false;$("xpCopy").focus();}
+function xpClose(){$("xpWrap").hidden=true;}
+$("xpBtn").onclick=xpOpen;$("xpBtn2").onclick=xpOpen;$("xpClose").onclick=xpClose;
+$("xpWrap").addEventListener("click",e=>{if(e.target.id==="xpWrap")xpClose();});
+$("xpWrap").addEventListener("keydown",e=>{if(e.key==="Escape")xpClose();});
+document.querySelectorAll('input[name=xpFmt]').forEach(r=>r.addEventListener("change",xpBuild));
+$("xpMask").addEventListener("change",xpBuild);
+$("xpCopy").onclick=async()=>{try{await navigator.clipboard.writeText($("xpPrompt").value);$("xpCopy").textContent="복사됨 ✓";setTimeout(()=>$("xpCopy").textContent="프롬프트 복사",2000);toast("프롬프트를 복사했습니다. 사용할 AI 채팅창에 붙여 넣으세요.");}catch{$("xpPrompt").select();toast("자동 복사가 막혀 있습니다. Ctrl+C로 복사하세요.");}};
+$("xpApply").onclick=()=>{
+ const msg=$("xpMsg");msg.className="te-msg";
+ if(!xpCtx||!xpCtx.src.trim()){msg.className="te-msg err";msg.textContent="문서가 비어 있습니다. 입력란에 문서를 넣고 프롬프트를 다시 만드세요.";return;}
+ if($("inText").value.replace(/\s+$/,"")!==xpCtx.src){msg.className="te-msg err";msg.textContent="프롬프트를 만든 뒤 원문이 바뀌었습니다. 형식을 다시 골라 프롬프트를 새로 만든 다음 AI에 보내세요.";return;}
+ if(!canReview()){msg.className="te-msg err";msg.textContent=`무료 체험 ${TRIAL}회를 모두 사용했습니다. 이용권 코드나 팀 암호를 입력하세요.`;return;}
+ let res;try{res=extractJSON($("xpAns").value);}catch{msg.className="te-msg err";msg.textContent="답에서 JSON을 찾지 못했습니다. AI 답을 처음부터 끝까지 그대로 붙여 넣으세요.";return;}
+ const map=xpCtx.map,all=[];
+ if(Array.isArray(res.edits))for(const e of res.edits){if(!e||typeof e.find!=="string"||typeof e.replace!=="string")continue;all.push({src:e.src,type:e.type,where:e.where,reason:e.reason,basis:e.basis,find:unmask(e.find,map),replace:unmask(e.replace,map)});}
+ else if(typeof res.corrected==="string")all.push({src:"norm",type:"전체 수정",reason:"문서 전체를 고쳤습니다.",find:xpCtx.src,replace:unmask(res.corrected,map)});
+ if(!all.length){msg.className="te-msg err";msg.textContent="불러올 수정 제안이 없습니다.";return;}
+ const notes=Array.isArray(res.notes)?res.notes.map(n=>unmask(String(n),map)):[];
+ const{kept,prot}=protectEdits(all);
+ if(prot.length)notes.push(`팀 용어집의 공식 명칭(${prot.join(", ")})을 바꾸는 제안은 뺐습니다.`);
+ notes.unshift("다른 AI의 답을 불러온 결과입니다. 근거와 내용을 꼭 확인하세요.");
+ state={...state,result:{kind:"ai",edits:mergeEdits(kept),summary:String(res.summary||""),notes},source:xpCtx.src,isExample:false,finalized:false};
+ useTrial({mode:"external",type:state.docType,chars:xpCtx.src.length,edits:kept.length});saveHistory();
+ state.view="mark";curId=-1;render();
+ const miss=state.result.edits.filter(e=>e.ok&&!e.applied&&!e.bulk).length;
+ $("status").textContent=`다른 AI 결과 불러옴 · 제안 ${state.result.edits.length}건${miss?` · 위치 못 찾은 제안 ${miss}건`:""}`;
+ const f=state.result.edits.find(x=>!x.dec);if(f)selectEdit(f.id,false);
+ xpClose();$("xpAns").value="";if(isMobile())setM("panel");toast("다른 AI의 제안을 불러왔습니다.");
+};
 (function init(){
  let draft=lsGet("kku-draft")||"",type=lsGet("kku-type")||"inner";
  state.docType=DOC_TYPES[type]?type:"inner";state.scope=DOC_TYPES[state.docType].scope;
@@ -2783,12 +3135,40 @@ window.addEventListener("resize",syncPaneHeight);
  renderTypes();render();renderCompare();renderDiffs();route();renderLayout();setAi("wait");renderAdmin();requestAnimationFrame(syncPaneHeight);
  initDb();
  if(window.claude?.use){
-  claude.use("sample").then(async s=>{sample=s;
-   if(s){setAi("ready");return;}
+  claude.use("sample").then(async s=>{claudeSample=s;
+   if(s){applyProvider();return;}
    let st=null;try{const pm=await claude.use("permissions");st=pm?await pm.state("sample"):null;}catch{}
    setAi(st==="denied"?"denied":"unavail");
   }).catch(()=>setAi("unavail"));
- }else setAi("nofile");
+ }else{setAi("nofile");}
+ applyProvider(true);
  if(isAdmin)loadStats();
+})();
+
+
+/* ================= Teams 채팅 ================= */
+(function(){
+ const TO="coolzet@konkuk.ac.kr";
+ const tabName=()=>{try{return (TABS[(location.hash||"#review").slice(1)]||TABS.review)[0]}catch{return ""}};
+ const docName=()=>{try{return DOC_TYPES[state.docType]?.label||DOC_TYPES[state.docType]?.name||state.docType}catch{return ""}};
+ function text(){
+  const t=$("tmType").value,m=$("tmMsg").value.trim();
+  let s="[KU 문서다듬] "+t+(m?"\n"+m:"");
+  if($("tmCtx").checked)s+="\n— 화면: "+tabName()+(docName()?" · 문서 유형: "+docName():"");
+  return s;
+ }
+ function sync(){
+  const s=text();
+  $("tmGo").href="https://teams.microsoft.com/l/chat/0/0?users="+encodeURIComponent(TO)+"&message="+encodeURIComponent(s);
+  $("tmMail").href="mailto:"+TO+"?subject="+encodeURIComponent("[KU 문서다듬] "+$("tmType").value)+"&body="+encodeURIComponent(s);
+ }
+ bindMenu("tmBtn","tmPop");
+ ["tmType","tmMsg","tmCtx"].forEach(id=>$(id).addEventListener("input",sync));
+ $("tmType").addEventListener("change",sync);$("tmCtx").addEventListener("change",sync);
+ $("tmBtn").addEventListener("click",()=>{sync();setTimeout(()=>$("tmMsg").focus(),0);});
+ $("tmGo").addEventListener("click",()=>{sync();toast("Teams를 엽니다. 내용 확인 후 Teams에서 보내기를 누르세요.");});
+ $("tmCopy").onclick=async()=>{try{await navigator.clipboard.writeText(text());toast("문의 내용을 복사했습니다.");}catch{$("tmMsg").select();toast("복사가 막혀 있습니다. Ctrl+C로 복사하세요.");}};
+ $("footTm").addEventListener("click",e=>{e.preventDefault();window.scrollTo({top:0,behavior:"smooth"});$("tmBtn").click();});
+ sync();
 })();
 </script>
