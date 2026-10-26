@@ -919,6 +919,29 @@ body.is-beta .nb{display:none}
 .aibar-x:hover{background:var(--bg)}
 @media (max-width:720px){.aibar-ic{display:none}.aibar{padding:8px 10px}.aibar-t{flex-basis:100%}.aibar-a{width:100%}.aibar-a .btn{flex:1 1 auto;justify-content:center}}
 @media (prefers-reduced-motion:reduce){.aibar.pulse{animation:none}}
+
+/* ===== 작업 세션 ===== */
+.ss-btn{max-width:220px}
+.ss-btn .ss-t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:150px}
+.ss-ic{font-size:13px;color:var(--green)}
+.ss-pop{width:min(380px,calc(100vw - 32px));padding:12px!important;gap:6px!important;max-height:min(78vh,640px);overflow:auto}
+.ss-pop h4{margin:6px 0 0!important;font-size:12.5px;color:var(--muted);display:flex;justify-content:space-between}
+.ss-new{flex-direction:column;align-items:center;gap:0;width:100%;padding:9px}
+.ss-new small{font-weight:400;font-size:11.5px;color:#fff!important;opacity:.85}
+.ss-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+.ss-list li{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:6px;padding:2px 4px 2px 2px}
+.ss-list li.cur{border-color:var(--green);background:var(--green-soft)}
+.ss-open{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;text-align:left;border:0;background:none;padding:6px 8px;cursor:pointer;color:var(--ink);font:inherit;border-radius:5px}
+.ss-open:hover{background:var(--bg)}
+.ss-open b{font-size:13.5px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ss-open small{font-size:11.5px;color:var(--muted)}
+.ss-now{font-size:11px;font-weight:700;color:var(--green);white-space:nowrap}
+.ss-del{border:0;background:none;color:var(--muted);cursor:pointer;width:28px;height:28px;border-radius:5px;flex:none}
+.ss-del:hover{background:var(--del-bg);color:var(--del-fg)}
+.ss-empty{border:1px dashed var(--line)!important;padding:10px!important;font-size:12.5px;color:var(--muted)}
+.ss-note{margin:4px 0 0;font-size:11.5px}
+@media (max-width:1100px){.ss-btn .ss-t{max-width:90px}}
+@media (max-width:720px){.ss-pop{position:fixed!important;left:12px!important;right:12px!important;top:56px!important;width:auto!important}.ss-btn .ss-t{max-width:70px}}
 </style>
 
 <header class="hd gut">
@@ -1013,6 +1036,17 @@ body.is-beta .nb{display:none}
 <section class="tab" id="tab-review">
   <!-- 명령 줄 -->
   <div class="cbar" role="toolbar" aria-label="검토 도구">
+    <div class="menu" id="sessMenu">
+      <button class="btn ss-btn" id="sessBtn" aria-haspopup="true" aria-expanded="false">작업 ▾</button>
+      <div class="menu-pop ss-pop" id="sessPop" hidden role="dialog" aria-label="작업 보관함">
+        <button class="btn pri ss-new" id="sessNew" type="button">＋ 새 작업 <small>지금 작업은 보관함에 남습니다</small></button>
+        <h4>현재 작업</h4>
+        <div class="ai-unlock"><label class="sr" for="sessName">작업 이름</label><input id="sessName" maxlength="40" autocomplete="off"><button class="btn" id="sessKeep" type="button">보관</button></div>
+        <h4>보관함 <span class="meta" id="sessCnt"></span></h4>
+        <ul class="ss-list" id="sessList"></ul>
+        <p class="meta ss-note">작업(원문·제안·수락 결정)은 입력하는 대로 이 브라우저에 자동 보관됩니다. 최근 30개까지 보관하며 다른 기기와는 공유되지 않습니다.</p>
+      </div>
+    </div>
     <div class="menu" id="impMenu">
       <button class="btn" id="impBtn" aria-haspopup="true" aria-expanded="false">가져오기 ▾</button>
       <div class="menu-pop" id="impPop" hidden role="menu">
@@ -1022,7 +1056,7 @@ body.is-beta .nb{display:none}
         <button role="menuitem" id="imgDocBtn"><b>캡처 이미지 업로드</b><small>PNG·JPG, 여러 장</small></button>
         <button role="menuitem" id="teBtn"><b>표 입력·편집</b><small>칸에 직접 입력</small></button>
         <button role="menuitem" id="sampleBtn"><b>예시로 체험</b><small>예시 문서 불러오기</small></button>
-        <button role="menuitem" id="clearBtn"><b>새 문서</b><small>입력 내용 지우기</small></button>
+        <button role="menuitem" id="clearBtn"><b>새 작업</b><small>지금 작업은 보관함에 보관</small></button>
       </div>
       <input type="file" id="fileIn" accept=".hwpx,.docx,.pdf,.txt,.hwp,application/pdf" hidden>
       <input type="file" id="imgDocFile" accept="image/png,image/jpeg,image/webp,image/gif" multiple hidden>
@@ -2371,6 +2405,7 @@ $("adminBody").addEventListener("click",async e=>{
 
 /* ================= 검토 이력 (W7) ================= */
 function saveHistory(){
+ try{setTimeout(()=>sessSave(),0);}catch{}
  const r=state.result;if(!r||state.isExample)return;let h=[];try{h=JSON.parse(lsGet("kku-hist")||"[]")}catch{}
  const item={t:Date.now(),type:state.docType,source:state.source,fin:!!state.finalized,result:{kind:r.kind,summary:r.summary,notes:r.notes,edits:r.edits.map(({applied,...e})=>e)}};
  h=h.filter(x=>x.source!==item.source);h.unshift(item);h=h.slice(0,10);
@@ -3075,7 +3110,7 @@ function count(){$("inCount").textContent=$("inText").value.length.toLocaleStrin
 $("runBtn").onclick=run;
 $("stopBtn").onclick=()=>ctl?.abort();
 $("sampleBtn").onclick=()=>{$("inText").value=SAMPLE_IN;count();renderLayout();state={...state,result:{...SAMPLE_OUT,edits:mergeEdits(SAMPLE_OUT.edits.map(e=>({...e,ok:true,dec:false})))},source:SAMPLE_IN,isExample:true,view:"mark",finalized:false};$("status").textContent="";curId=-1;render();selectEdit(state.result.edits[0].id,false);toast("예시 문서입니다. 카드나 밑줄을 눌러 수락·거절해 보세요.");};
-$("clearBtn").onclick=()=>{$("inText").value="";count();renderLayout();lsSet("kku-draft","");state={...state,result:null,source:"",isExample:false,view:"edit",finalized:false};$("status").textContent="";render();setM("doc");};
+$("clearBtn").onclick=()=>sessNew();
 document.querySelectorAll("#view button").forEach(b=>b.onclick=()=>{state.view=b.dataset.v;render();});
 document.querySelectorAll("#cmpFilter button").forEach(b=>b.onclick=()=>{cmpFilter=b.dataset.v;renderCompare();});
 $("copyBtn").onclick=copyWhole;
@@ -3463,6 +3498,83 @@ $("aiBarChat").onclick=()=>{provider="manual";lsSet("kku-prov","manual");applyPr
 $("aiBarKey").onclick=()=>{provider="anthropic";lsSet("kku-prov","anthropic");applyProvider(true);$("aiChip").click();setTimeout(()=>$("keyIn").focus(),50);};
 $("aiBarBasic").onclick=()=>{provider="none";lsSet("kku-prov","none");applyProvider(true);toast("기본 규칙으로만 검토합니다. 오른쪽 위 메뉴에서 언제든 Claude를 연결할 수 있습니다.");};
 $("aiBarX").onclick=()=>{aiBarClosed=true;ssSet("kku-aibar-x","1");renderAiBar();};
+/* ================= 작업 세션: 진행 중인 작업 보관 · 새 작업 ================= */
+const SESS_MAX=30;
+let curSess=lsGet("kku-cur")||null,sessLast="";
+const sessLoad=()=>{try{const v=JSON.parse(lsGet("kku-sess")||"[]");return Array.isArray(v)?v:[];}catch{return[];}};
+function sessStore(list){list=list.slice(0,SESS_MAX);for(let n=list.length;n>0;n=Math.floor(n/2)){try{localStorage.setItem("kku-sess",JSON.stringify(list.slice(0,n)));return true;}catch{}}return false;}
+const sessId=()=>"s"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+function sessAutoTitle(t){const m=t.match(/^\s*제\s*목\s*[:：]?\s*(.+)$/m);const l=(m?m[1]:(t.split("\n").find(x=>x.trim())||"")).trim().replace(/\s+/g," ");return l.slice(0,32)||"제목 없는 작업";}
+function sessSnap(){
+ const text=$("inText").value,r=state.result&&!state.isExample?state.result:null;
+ return{text,type:state.docType,source:r?state.source:"",fin:!!state.finalized,
+  result:r?{kind:r.kind,summary:r.summary,notes:r.notes,edits:(r.edits||[]).map(({applied,...e})=>e)}:null};
+}
+function sessStatus(x){if(!x.result)return x.text.trim()?"검토 전":"빈 작업";const e=x.result.edits||[],d=e.filter(v=>v.dec).length;return x.fin?"확정":`제안 ${e.length} · 결정 ${d}`;}
+function sessSave(force){
+ const sn=sessSnap();if(!sn.text.trim()&&!sn.result)return null;
+ const key=JSON.stringify(sn);if(!force&&key===sessLast&&curSess)return curSess;
+ const list=sessLoad();let x=list.find(v=>v.id===curSess);
+ if(!x){x={id:sessId(),created:Date.now(),title:"",manual:false};curSess=x.id;lsSet("kku-cur",curSess);list.unshift(x);}
+ Object.assign(x,sn,{updated:Date.now()});if(!x.manual)x.title=sessAutoTitle(sn.text);
+ list.sort((a,b)=>b.updated-a.updated);sessStore(list);sessLast=key;renderSessBtn();return x.id;
+}
+function sessApply(x){
+ $("inText").value=x.text||"";count();
+ if(x.type&&DOC_TYPES[x.type]){state.docType=x.type;state.scope=DOC_TYPES[x.type].scope;lsSet("kku-type",x.type);}renderTypes();
+ state={...state,source:x.result?x.source:(x.text||""),result:x.result?{...x.result,edits:x.result.edits.map((e,i)=>({...e,id:i}))}:null,isExample:false,finalized:!!x.fin,view:x.result?"mark":"edit"};
+ try{lsSet("kku-draft",x.text||"");}catch{}
+ curId=-1;render();renderLayout();try{scheduleInsights();}catch{}
+ $("status").textContent=x.result?`‘${x.title}’ 작업을 이어서 합니다.`:"";
+ sessLast=JSON.stringify(sessSnap());
+}
+function sessOpen(id){
+ if(id===curSess){toast("지금 열려 있는 작업입니다.");return;}
+ sessSave();const x=sessLoad().find(v=>v.id===id);if(!x)return;
+ curSess=id;lsSet("kku-cur",id);sessApply(x);renderSess();renderSessBtn();setM("doc");toast(`‘${x.title}’ 작업을 열었습니다. 이전 작업은 보관함에 있습니다.`);
+}
+function sessNew(){
+ const saved=sessSave(true);
+ curSess=null;lsSet("kku-cur",null);sessLast="";
+ $("inText").value="";count();lsSet("kku-draft","");
+ state={...state,result:null,source:"",isExample:false,view:"edit",finalized:false};$("status").textContent="";
+ render();renderLayout();try{scheduleInsights();}catch{}renderSess();renderSessBtn();setM("doc");$("inText").focus();
+ toast(saved?"진행 중이던 작업을 보관하고 새 작업을 시작합니다.":"새 작업을 시작합니다.");
+}
+function sessDel(id){
+ const list=sessLoad(),x=list.find(v=>v.id===id);if(!x)return;
+ sessStore(list.filter(v=>v.id!==id));if(id===curSess){curSess=null;lsSet("kku-cur",null);sessLast="";}
+ renderSess();renderSessBtn();
+ showUndo(`‘${x.title}’ 작업을 지웠습니다.`,()=>{const l=sessLoad();l.push(x);l.sort((a,b)=>b.updated-a.updated);sessStore(l);renderSess();renderSessBtn();});
+}
+function showUndo(msg,fn){try{$("undoTxt").textContent=msg;const u=$("undo");u.hidden=false;const b=$("undoBtn");const old=b.onclick;b.onclick=()=>{fn();u.hidden=true;b.onclick=old;};clearTimeout(showUndo.t);showUndo.t=setTimeout(()=>{u.hidden=true;b.onclick=old;},6000);}catch{toast(msg);}}
+function renderSessBtn(){const x=sessLoad().find(v=>v.id===curSess);$("sessBtn").innerHTML=`<span class="ss-ic" aria-hidden="true">▤</span><span class="ss-t">${esc(x?x.title:"새 작업")}</span> ▾`;$("sessBtn").title=x?`현재 작업: ${x.title}`:"현재 작업: 새 작업(아직 보관 전)";}
+function renderSess(){
+ const list=sessLoad(),cur=list.find(v=>v.id===curSess);
+ const fmt=t=>{const d=new Date(t),n=new Date();const same=d.toDateString()===n.toDateString();return same?`오늘 ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`:`${d.getMonth()+1}. ${d.getDate()}.`;};
+ $("sessName").value=cur?cur.title:sessAutoTitle($("inText").value);
+ $("sessName").placeholder=$("inText").value.trim()?"작업 이름":"입력하면 자동으로 이름이 붙습니다";
+ $("sessList").innerHTML=list.length?list.map(x=>`<li class="${x.id===curSess?"cur":""}"><button class="ss-open" data-so="${x.id}"><b>${esc(x.title)}</b><small>${esc(DOC_TYPES[x.type]?.label||"")} · ${sessStatus(x)} · ${fmt(x.updated)}</small></button>${x.id===curSess?'<span class="ss-now">지금</span>':""}<button class="ss-del" data-sd="${x.id}" aria-label="${esc(x.title)} 지우기" title="지우기">✕</button></li>`).join("")
+  :'<li class="ss-empty">보관된 작업이 없습니다. 작업은 입력하는 대로 자동 보관됩니다.</li>';
+ $("sessCnt").textContent=`${list.length}/${SESS_MAX}`;
+}
+$("sessBtn").addEventListener("click",()=>{sessSave();renderSess();});
+bindMenu("sessBtn","sessPop");
+$("sessNew").onclick=()=>{$("sessPop").hidden=true;$("sessBtn").setAttribute("aria-expanded","false");sessNew();};
+$("sessKeep").onclick=()=>{const v=$("sessName").value.trim();if(!$("inText").value.trim()&&!state.result){toast("보관할 내용이 없습니다.");return;}sessSave(true);const list=sessLoad(),x=list.find(y=>y.id===curSess);if(x&&v){x.title=v.slice(0,40);x.manual=true;sessStore(list);}renderSess();renderSessBtn();toast("현재 작업을 보관했습니다.");};
+$("sessName").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();$("sessKeep").click();}});
+$("sessList").addEventListener("click",e=>{const o=e.target.closest("[data-so]"),d=e.target.closest("[data-sd]");if(d){e.stopPropagation();sessDel(d.dataset.sd);return;}if(o){$("sessPop").hidden=true;sessOpen(o.dataset.so);}});
+/* 자동 보관: 입력 멈춘 뒤, 검토·수락 결정 뒤, 창 닫을 때 */
+let sessT=null;$("inText").addEventListener("input",()=>{clearTimeout(sessT);sessT=setTimeout(()=>sessSave(),1500);});
+setInterval(()=>sessSave(),5000);
+window.addEventListener("pagehide",()=>sessSave());
+document.addEventListener("visibilitychange",()=>{if(document.hidden)sessSave();});
+function sessRestoreOnLoad(){
+ const x=sessLoad().find(v=>v.id===curSess);
+ if(x&&x.text===$("inText").value&&x.result){sessApply(x);}
+ else if(!x){curSess=null;lsSet("kku-cur",null);}
+ sessLast=JSON.stringify(sessSnap());renderSessBtn();
+}
 (function init(){
  if(BETA)document.body.classList.add("is-beta");
  let draft=lsGet("kku-draft")||"",type=lsGet("kku-type")||"inner";
@@ -3479,6 +3591,7 @@ $("aiBarX").onclick=()=>{aiBarClosed=true;ssSet("kku-aibar-x","1");renderAiBar()
   }).catch(()=>setAi("unavail"));
  }else{setAi("nofile");}
  applyProvider(true);
+ sessRestoreOnLoad();
  if(isAdmin)loadStats();
 })();
 
