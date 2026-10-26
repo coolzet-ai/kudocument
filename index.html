@@ -1065,6 +1065,22 @@ body{word-break:keep-all;overflow-wrap:break-word}
 #layList li.cur{background:var(--warn-bg);box-shadow:inset 3px 0 0 var(--warn)}
 #layList li[data-ln]:focus-visible{outline:2px solid var(--green);outline-offset:-2px}
 @media (prefers-reduced-motion:reduce){.hl-chk.pulse{animation:none}}
+
+/* ===== 입력 칸 줄 구분 ===== */
+.zone-mirror{z-index:0}
+.zone-mirror .zl-line{position:relative;border-radius:2px;margin-left:-10px;padding-left:10px;margin-right:-40px;padding-right:40px}
+#inText{padding-right:48px!important}
+.z-t{background:color-mix(in srgb,var(--green) 13%,transparent);box-shadow:inset 4px 0 0 var(--green)}
+.z-h{background:color-mix(in srgb,var(--muted) 9%,transparent);box-shadow:inset 4px 0 0 var(--muted)}
+.z-tb{background:color-mix(in srgb,var(--src-man) 11%,transparent);box-shadow:inset 4px 0 0 var(--src-man)}
+.z-b{box-shadow:inset 2px 0 0 color-mix(in srgb,var(--green-mid) 55%,transparent)}
+.zone-mirror [data-tag]::after{content:attr(data-tag);position:absolute;right:3px;top:3px;font:700 10.5px/1.5 var(--f-body);letter-spacing:.02em;color:#fff;background:var(--zc,var(--green));border-radius:3px;padding:0 6px;white-space:nowrap}
+.z-t[data-tag]{--zc:var(--green)}.z-tb[data-tag]{--zc:var(--src-man)}.z-h[data-tag]{--zc:var(--muted)}.z-b[data-tag]{--zc:var(--green-mid)}
+.zlegend{display:inline-flex;align-items:center;gap:3px;font-size:11px;color:var(--muted);white-space:nowrap}
+.zl{display:inline-block;width:9px;height:9px;border-radius:2px;margin-left:5px}
+.zl-h{background:var(--muted)}.zl-t{background:var(--green)}.zl-b{background:var(--green-mid)}.zl-tb{background:var(--src-man)}
+@media (max-width:1100px){.zlegend{display:none}}
+@media (max-width:720px){#inText{padding-right:44px!important}.zone-mirror [data-tag]::after{font-size:9.5px;padding:0 4px}}
 </style>
 
 <header class="hd gut">
@@ -1241,10 +1257,11 @@ body{word-break:keep-all;overflow-wrap:break-word}
           <button id="fsDown" title="글자 작게" aria-label="글자 작게">가<sup>−</sup></button><span id="fsVal">17</span><button id="fsUp" title="글자 크게" aria-label="글자 크게">가<sup>+</sup></button>
           <button id="lhBtn" title="줄 간격 바꾸기" aria-label="줄 간격 바꾸기">줄 <b id="lhVal">좁게</b></button>
         </span>
-        <span class="in-count" id="inCount">0자</span>
+        <span class="zlegend" id="zLegend" title="입력 칸에서 줄 종류를 색으로 구분합니다"><i class="zl zl-h"></i>두문 <i class="zl zl-t"></i>제목 <i class="zl zl-b"></i>본문 <i class="zl zl-tb"></i>표</span><span class="in-count" id="inCount">0자</span>
       </div>
       <div class="stale" id="stale" hidden>원문이 바뀌었습니다. 제안은 이전 원문 기준입니다. <button class="link" id="staleRun">다시 검토</button></div>
       <div class="docbody">
+        <div class="hl-mirror zone-mirror" id="inZones" aria-hidden="true"></div>
         <div class="hl-mirror" id="inHl" aria-hidden="true" hidden></div>
         <textarea id="inText" spellcheck="false" placeholder="검토할 공문서를 붙여 넣으세요. 한글·워드·엑셀의 표도 그대로 붙여 넣으면 ‘| 칸 | 칸 |’ 텍스트 표로 바뀝니다."></textarea>
         <div class="empty-start" id="emptyStart" hidden>
@@ -1971,6 +1988,7 @@ $("inText").addEventListener("paste",e=>{
  }
  if(t===null)t=plain||(html?htmlToText(html).text:"");
  if(!t)return;
+ const cf=cleanForeign(t);if(cf.count){t=cf.text;parts.push(`네모(□)로 보이는 특수·제어 문자 ${cf.count}개를 지움`);}
  const u=unwrapLines(t);if(u.count){t=u.text;parts.push(`화면 폭 때문에 끊긴 줄 ${u.count}곳을 이어 붙임`);}
  const tr=t.replace(/[ \t]+$/gm,"");if(tr!==t){t=tr;}
  if(t===plain0&&!parts.length)return; // 바꿀 것이 없으면 기본 붙여넣기
@@ -2704,6 +2722,7 @@ async function pdfToImages(pdf,max){
  return files;
 }
 function putText(text,name,note){
+ const cf=cleanForeign(text);text=cf.text;if(cf.count)note=`네모(□)로 보이는 특수 문자 ${cf.count}개를 지웠습니다. `+note;
  const ta=$("inText");if(!ta.value.trim()||ta.value===SAMPLE_IN){ta.value=text;}else{insertText(ta,(ta.selectionStart>0?"\n\n":"")+text+"\n");}
  ta.dispatchEvent(new Event("input",{bubbles:true}));
  $("inMsg").textContent=`${name}에서 ${text.length.toLocaleString()}자를 불러왔습니다. ${note}`;
@@ -3074,7 +3093,7 @@ function markHtml(text){
   const s=e.src in SRC?e.src:"norm",cls=!e.dec?"pend":(e.ok?"acc":"rej"),cur=id===curId?" cur":"";
   const body=inner||(cls==="acc"?'<span class="sgm-del">⌫</span>':"");
   return`<span class="sgm ${cls}${cur}" data-id="${id}" style="--c:var(--src-${s==="team"?"norm":s})" title="${esc((cls==="acc"?"수락됨 · 원문: "+e.find:(e.type||"수정")+": "+e.find+" → "+e.replace))}">${body}</span>`;
- }).replace(/&lt;br&gt;/g,"<br>");
+ }).replace(/&lt;br&gt;/g,"<br>").replace(/[\uE000-\uE1FF]/g,"");
 }
 /* 수락한 제안을 반영한 글(=수정본) 위에 수락 부분은 바뀐 글로, 미정·거절 제안은 원래 글에 표시 */
 function displayMarked(src,edits){
@@ -3094,8 +3113,35 @@ function displayMarked(src,edits){
  for(const x of all){out+=t.slice(p,x.a)+PUA_S+String.fromCharCode(0xE100+x.id)+t.slice(x.a,x.b)+PUA_E;p=x.b;}
  return out+t.slice(p);
 }
+
+/* 표시용 표식이 표 칸(|)이나 줄을 넘지 않게 칸·줄마다 나눠 닫고 다시 엶 — 남은 표식은 네모(□)로 보이므로 */
+function fixMarks(t){
+ const S=PUA_S,E=PUA_E,PU=/[-]/g;let open=null;const out=[];
+ for(const L of t.split("\n")){
+  const tbl=isTable(L.replace(PU,""));let res="",i=0,inside=false;
+  const lead=L.match(/^[ \t]*/)[0];res+=lead;i=lead.length;
+  const reopen=()=>{if(open!==null&&!inside){res+=S+open;inside=true;}};
+  const close=()=>{if(inside){res+=E;inside=false;}};
+  if(tbl){while(L[i]===S||L[i]===E){if(L[i]===S){open=L[i+1];i+=2;}else{open=null;i++;}}if(L[i]==="|"){res+="|";i++;}}
+  reopen();
+  for(;i<L.length;i++){const c=L[i];
+   if(c===S){open=L[i+1];i++;close();reopen();continue;}
+   if(c===E){close();open=null;continue;}
+   if(tbl&&c==="|"){close();res+="|";if(L.slice(i+1).replace(PU,"").trim())reopen();continue;}
+   res+=c;}
+  close();out.push(res);
+ }
+ return out.join("\n");
+}
+/* 한글(HWP)·PDF에서 딸려 오는 제어 문자·사용자 정의 문자(네모로 보임) 정리 */
+function cleanForeign(t){
+ let n=0;
+ const out=String(t).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F-\uFFFC\uFFFD]/g,()=>{n++;return"";})
+  .replace(/[ -    ]/g," ").replace(/[​‌‍⁠﻿]/g,()=>{n++;return"";});
+ return{text:out,count:n};
+}
 function renderMarked(){
- const r=state.result,mk=displayMarked(state.source,r.edits);
+ const r=state.result,mk=fixMarks(displayMarked(state.source,r.edits));
  return segs(mk).map((s,i)=>{
   if(s.t==="p")return`<div class="mblk">${markHtml(s.v)}</div>`;
   const w=Math.max(...s.rows.map(x=>x.length));
@@ -3132,6 +3178,7 @@ function render(){
  setPressed("view",state.view);
  const ta=$("inText"),out=$("out"),editing=state.view==="edit";
  if(!editing&&typeof hlClear==="function"&&!$("inHl").hidden)hlClear();
+ if(typeof renderZones==="function")setTimeout(renderZones,0);
  ta.hidden=!editing;out.hidden=editing;
  $("emptyStart").hidden=!(editing&&!ta.value.trim());
  if(!editing&&r){
@@ -4021,6 +4068,35 @@ $("layList").addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){con
 $("inText").addEventListener("scroll",()=>{const m=$("inHl");if(!m.hidden)m.scrollTop=$("inText").scrollTop;});
 $("inText").addEventListener("input",()=>{if(hlRange)hlClear();});
 window.addEventListener("resize",()=>{if(hlRange)hlShow(hlRange.a,hlRange.b);});
+
+/* ================= 입력 칸 줄 구분: 두문·제목·본문·표 ================= */
+function lineZone(l){
+ const t=l.trim();if(!t)return"e";
+ if(isTable(l))return"tb";
+ if(/^제\s*목(\s|[:：]|$)/.test(t))return"t";
+ if(/^(수\s*신(자)?|\(?\s*경\s*유\s*\)?|참\s*조)(\s|[:：]|$)/.test(t))return"h";
+ return"b";
+}
+function mirrorStyle(m){
+ const ta=$("inText"),cs=getComputedStyle(ta);
+ ["fontFamily","fontSize","fontWeight","lineHeight","letterSpacing","wordSpacing","paddingTop","paddingRight","paddingBottom","paddingLeft","wordBreak","overflowWrap","tabSize","textIndent","whiteSpace"].forEach(k=>m.style[k]=cs[k]);
+ m.style.left=ta.offsetLeft+"px";m.style.top=ta.offsetTop+"px";m.style.width=ta.clientWidth+"px";m.style.height=ta.clientHeight+"px";m.scrollTop=ta.scrollTop;
+}
+let zoneRaf=0;
+function renderZones(){
+ cancelAnimationFrame(zoneRaf);zoneRaf=requestAnimationFrame(()=>{
+  const ta=$("inText"),m=$("inZones");
+  if(ta.hidden||!ta.value.trim()){m.innerHTML="";m.hidden=true;return;}
+  m.hidden=false;
+  const L=ta.value.split("\n");let prev="";const seen={};
+  m.innerHTML=L.map(l=>{const z=lineZone(l);const first=z!=="e"&&z!=="b"&&z!==prev&&!seen[z+L.indexOf(l)];const tag=(z!==prev&&(z==="t"||z==="tb"||z==="h"))?` data-tag="${{t:"제목",tb:"표",h:"두문"}[z]}"`:(z==="b"&&prev!=="b"&&prev!=="e"?' data-tag="본문"':"");prev=z==="e"?prev:z;return`<div class="zl-line z-${z}"${tag}>${esc(l)||"&nbsp;"}</div>`;}).join("")+"<div>&nbsp;</div>";
+  mirrorStyle(m);
+ });
+}
+$("inText").addEventListener("input",renderZones);
+$("inText").addEventListener("scroll",()=>{const m=$("inZones");if(!m.hidden)m.scrollTop=$("inText").scrollTop;});
+window.addEventListener("resize",renderZones);
+try{new ResizeObserver(renderZones).observe($("inText"));}catch{}
 (function init(){
  if(BETA)document.body.classList.add("is-beta");
  let draft=lsGet("kku-draft")||"",type=lsGet("kku-type")||"inner";
@@ -4039,6 +4115,7 @@ window.addEventListener("resize",()=>{if(hlRange)hlShow(hlRange.a,hlRange.b);});
  applyProvider(true);
  sessRestoreOnLoad();
  renderRunBar();
+ renderZones();
  pyrAll();
  if(isAdmin)loadStats();
 })();
