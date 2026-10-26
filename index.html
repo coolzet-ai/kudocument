@@ -1724,6 +1724,10 @@ function buildRules(scope,extra=""){
 [표]
 - '| 칸 | 칸 |' 형식의 줄은 한글·워드에서 붙여 넣은 표입니다. 행·열 수와 순서, '|' 구분자를 그대로 유지하고 칸 안의 글자만 교정. 칸 안의 '<br>'은 칸 내부 줄바꿈이므로 그대로 둘 것. ‘^’(위 칸과 병합)·‘<’(왼쪽 칸과 병합)는 병합 칸 표시이므로 그대로 두고, 빈 칸은 채우지 말 것.
 - 표로 본문이 끝나면 표 다음 줄 왼쪽에서 '  끝.'(편람 p.61). 표 중간에서 기재가 끝났다면 '이하 빈칸'을 notes로 안내.
+- 칸 안의 불필요한 공백(두 칸 이상 공백, '<br>' 앞뒤 공백, 괄호 안쪽 공백, 쉼표·% 앞 공백)은 지울 것. type은 '표'.
+
+[정렬 (규정 제20~22조 · 편람 p.51~53)]
+- 수신·제목·첫째 항목(1.)은 왼쪽 기본선에서 시작, 하위 항목은 상위 항목보다 2타씩 들여 씀. 어긋나면 고치고 type은 '줄바꿈·문단'.
 
 [문단·줄바꿈 (편람 p.51~53)]
 - 복사 과정에서 생긴 문장 중간의 강제 줄바꿈은 이어 붙이고, 줄바꿈으로 나뉜 단어·어절(예: '추진 결↵과', '사업↵을')은 바르게 붙이거나 띄울 것.
@@ -2004,7 +2008,7 @@ function docToHtml(text,forClip){
   if(isTable(L[i])){
    const rows=[];while(i<L.length&&isTable(L[i])){rows.push(L[i]);i++;}i--;
    const grid=rows.filter(r=>!/^\s*\|[\s:\-|]+\|\s*$/.test(r)).map(r=>r.trim().slice(1,-1).split("|").map(c=>c.trim()));const SL=spanLayout(grid);
-   const body=grid.map((r,ri)=>"<tr>"+r.map((c,j)=>{const sp=SL[ri][j];if(sp.skip)return"";return`<td${spanAttr(sp)}${forClip?' style="border:1px solid #000;padding:2px 6px;vertical-align:middle"':""}>${esc(c).replace(/&lt;br&gt;/g,"<br>")}</td>`;}).join("")+"</tr>").join("");
+   const body=grid.map((r,ri)=>"<tr>"+r.map((c,j)=>{const sp=SL[ri][j];if(sp.skip)return"";return`<td${spanAttr(sp)} style="text-align:${cellAlign(c,ri===0)};${forClip?"border:1px solid #000;padding:2px 6px;vertical-align:middle;":""}${ri===0&&forClip?"font-weight:bold;background:#e8f2ec":""}">${esc(c).replace(/&lt;br&gt;/g,"<br>")}</td>`;}).join("")+"</tr>").join("");
    h+=`<table class="doc-t"${forClip?' style="border-collapse:collapse"':""}>${body}</table>`;
   }else{
    const line=esc(L[i]).replace(/^ +/,m=>"&nbsp;".repeat(m.length)).replace(/ {2}/g," &nbsp;");
@@ -2099,9 +2103,14 @@ function fixMarkerSpace(body){
 
 /* ---- 표 칸 점검 ---- */
 const SHORT_DATE=/(?<![\d.])(\d{1,2})\.[ \t]?(\d{1,2})\.(?=[(\s~|]|$)/g;
+/* 표 칸 안의 불필요한 공백 정리 */
+function cellWs(c){
+ let v=String(c).replace(/[\u00a0\u3000\u2002-\u200a]/g," ").replace(/[\u200b\ufeff]/g,"");
+ v=v.replace(/\s*<br>\s*/g,"<br>").replace(/(\S) {2,}(?=\S)/g,"$1 ").replace(/\(\s+/g,"(").replace(/\s+\)/g,")").replace(/\s+([,%])/g,"$1");
+ return v.trim();
+}
 function fixCell(c){
- let v=c.replace(/[\u00a0\u3000\u2002-\u200a]/g," ").replace(/[\u200b\ufeff]/g,"");
- v=v.replace(/(\S) {2,}(?=\S)/g,"$1 ");
+ let v=cellWs(c);
  v=v.replace(SHORT_DATE,(x,a,b)=>`${+a}. ${+b}.`);
  v=v.replace(/(\S)[ \t]*~[ \t]*(\S)/g,"$1~$2");
  return v.trim();
@@ -2128,7 +2137,9 @@ function layoutCheck(text){
    cells.forEach((raw,ci)=>{
     const c=raw.trim(),plain=c.replace(/<br>/g," ");if(!plain)return;
     const at=`표 ${tno} · ${trow}행 ${ci+1}열`;
-    if(fixCell(raw)!==c)add(i,"표","표 안 띄어쓰기",`${at}: 날짜(10. 30.)·물결표(~)·공백 표기를 고칠 곳이 있습니다(편람 p.44, 49).`,c,1);
+    const ws=cellWs(raw);
+    if(ws!==c||/^ {2,}|\S {2,}$/.test(raw))add(i,"표","표 칸 공백",`${at}: 칸 안에 불필요한 공백이 있습니다${/ {2,}/.test(c)?" — 공백 두 칸 이상":""}${/\s<br>|<br>\s/.test(c)?" — 칸 안 줄바꿈 앞뒤 공백":""}${/\(\s|\s\)/.test(c)?" — 괄호 안쪽 공백":""}${/\s[,%]/.test(c)?" — 쉼표·% 앞 공백":""}${/[\u00a0\u3000]/.test(c)?" — 특수 공백":""}${/^ {2,}|\S {2,}$/.test(raw)?" — 칸 앞뒤 여백":""}.`,c,1);
+    if(fixCell(raw)!==ws)add(i,"표","표 안 띄어쓰기",`${at}: 날짜(10. 30.)·물결표(~) 표기를 고칠 곳이 있습니다(편람 p.44, 49).`,c,1);
     if(trow>1&&plain.replace(/\s/g,"").length>60)add(i,"표","표 안 긴 문구",`${at}: ${plain.replace(/\s/g,"").length}자로 깁니다. 칸 안은 짧은 명사형으로 줄이세요.`,c);
     for(const[re,msg]of STRUCT){const mm=plain.match(re);if(mm)add(i,"표","표 안 표현",`${at}: ${msg}`,mm[0]);}
     if(trow>1){const t=plain.replace(/[.\s]+$/,"");const e=colEnds[ci]=colEnds[ci]||{gae:[],seo:[]};if(/(다|니다|요)$/.test(t))e.seo.push([i+1,trow]);else if(/[가-힣]$/.test(t))e.gae.push([i+1,trow]);}
@@ -2181,6 +2192,11 @@ function autoTidy(text){
   b=b.replace(/([.)」』”"])[ \t]*끝\.?$/,(x,a)=>{const y=a+"  끝.";if(y!==x)n++;return y;});
   return lead+b;});
  const out=[];for(let i=0;i<L.length;i++){let cur=L[i];while(i+1<L.length&&isWrap(cur,L[i+1])){cur=joinWrap(cur,L[i+1]);n++;i++;}out.push(cur);}
+ // 제목·수신은 왼쪽 기본선, 첫째 항목이 들여 써져 있으면 문서 전체를 그만큼 내어 씀(편람 p.51)
+ for(let i=0;i<out.length;i++){if(/^\s+(제\s*목|수\s*신|\(\s*경\s*유\s*\))(\s|[:：]|$)/.test(out[i])){out[i]=out[i].trimStart();n++;}}
+ try{const plan=itemPlan(out,scope),top=plan.find(p=>p.lv===1);
+  if(top&&top.lead>0&&!plan.some(p=>p.i<top.i)){const d=top.lead;const body=out.map((l,i)=>i>=top.i&&l.trim()&&!isTable(l));
+   if(out.every((l,i)=>!body[i]||l.match(/^ */)[0].length>=d)){for(let i=0;i<out.length;i++)if(body[i])out[i]=out[i].slice(d);n++;}}}catch{}
  // 가나다 들여쓰기 맞춤(위계가 맞는 항목만)
  for(const p of itemPlan(out,scope)){if(p.expLead===undefined||p.issues.some(x=>x[0]==="위계")||p.lead===p.expLead)continue;out[p.i]=" ".repeat(p.expLead)+out[p.i].trimStart();n++;}
  t=out.join("\n").replace(/\n{3,}/g,()=>{n++;return"\n\n";});
@@ -2771,7 +2787,7 @@ async function loadDocFile(f){
 $("fileIn").onchange=e=>{const f=e.target.files?.[0];e.target.value="";if(f)loadDocFile(f);};
 const X=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 async function buildDocx(text){
- const P=(l,b)=>`<w:p><w:r>${b?"<w:rPr><w:b/></w:rPr>":""}<w:t xml:space="preserve">${X(l)}</w:t></w:r></w:p>`;
+ const P=(l,b,jc)=>`<w:p>${jc?`<w:pPr><w:jc w:val="${jc}"/></w:pPr>`:""}<w:r>${b?"<w:rPr><w:b/></w:rPr>":""}<w:t xml:space="preserve">${X(l)}</w:t></w:r></w:p>`;
  const body=segs(text).map(s=>{
   if(s.t==="p")return s.v.split("\n").map(l=>P(l)).join("");
   const bd=["top","left","bottom","right","insideH","insideV"].map(b=>`<w:${b} w:val="single" w:sz="4" w:space="0" w:color="000000"/>`).join("");
@@ -2780,7 +2796,7 @@ async function buildDocx(text){
    const o=own.find(v=>v.i===i&&v.j===j);
    if(x.skip&&!(o&&!o.start))continue;
    if(o&&!o.start){h+=`<w:tc><w:tcPr>${o.cs>1?`<w:gridSpan w:val="${o.cs}"/>`:""}<w:vMerge/>${sh}</w:tcPr>${P("")}</w:tc>`;continue;}
-   h+=`<w:tc><w:tcPr>${x.cs>1?`<w:gridSpan w:val="${x.cs}"/>`:""}${x.rs>1?'<w:vMerge w:val="restart"/>':""}${sh}</w:tcPr>${cellPlain(r[j]??"").split("\n").map(l=>P(l,i===0)).join("")}</w:tc>`;}
+   h+=`<w:tc><w:tcPr>${x.cs>1?`<w:gridSpan w:val="${x.cs}"/>`:""}${x.rs>1?'<w:vMerge w:val="restart"/>':""}${sh}</w:tcPr>${cellPlain(r[j]??"").split("\n").map(l=>P(l,i===0,cellAlign(r[j],i===0))).join("")}</w:tc>`;}
    return h+"</w:tr>";}).join("");})()+"</w:tbl>"+P("");
  }).join(P(""));
  const W='xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"';
@@ -2939,6 +2955,8 @@ function spanLayout(rows){
  }
  return L;
 }
+/* 표 칸 정렬(작성 관례): 머리행 가운데, 숫자·금액 오른쪽, 글자 왼쪽 */
+const cellAlign=(c,head)=>{const v=mClean(c).replace(/<br>/g," ");if(head)return"center";if(/^[-+]?(\d{1,3}(,\d{3})+|\d+)(\.\d+)?\s*(%|%p|원|천\s*원|만\s*원|명|건|개|회|부|팀|시간|일)?$/.test(v)||/^[-–]$/.test(v))return"right";return"left";};
 const isMergeMark=c=>{const v=mClean(c);return v==="^"||v==="<";};
 const spanAttr=x=>(x.rs>1?` rowspan="${x.rs}"`:"")+(x.cs>1?` colspan="${x.cs}"`:"");
 function tableHtml(ra,rb,mode){
@@ -2955,7 +2973,7 @@ function tableHtml(ra,rb,mode){
   for(let j=0;j<w;j++){const a=A?.[j]??"",b=B?.[j]??"";
    const sp=SL[i]?.[j]||{rs:1,cs:1};if(sp.skip)continue;
    const tag=i===0?"th":"td";
-   h+=`<${tag}${spanAttr(sp)}>${!A?(mode==="clean"?cellHtml(b):`<ins>${cellHtml(b)}</ins>`):!B?`<del>${cellHtml(a)}</del>`:cellDiff(a,b,mode==="both"?"both":mode)}</${tag}>`;}
+   h+=`<${tag}${spanAttr(sp)} style="text-align:${cellAlign(B?.[j]??A?.[j],i===0)}">${!A?(mode==="clean"?cellHtml(b):`<ins>${cellHtml(b)}</ins>`):!B?`<del>${cellHtml(a)}</del>`:cellDiff(a,b,mode==="both"?"both":mode)}</${tag}>`;}
   h+="</tr>";
  }
  return h+"</table>";
@@ -3175,7 +3193,7 @@ function renderMarked(){
   if(s.t==="p")return`<div class="mblk">${markHtml(s.v)}</div>`;
   const w=Math.max(...s.rows.map(x=>x.length));
   const SL=spanLayout(s.rows);
-  return`<div class="mblk"><table class="doc-t">${s.rows.map((row,ri)=>`<tr>${Array.from({length:w},(_,j)=>{const sp=SL[ri][j];if(sp.skip)return"";return`<${ri===0?"th":"td"}${spanAttr(sp)}>${markHtml(row[j]??"")}</${ri===0?"th":"td"}>`;}).join("")}</tr>`).join("")}</table></div>`;
+  return`<div class="mblk"><table class="doc-t">${s.rows.map((row,ri)=>`<tr>${Array.from({length:w},(_,j)=>{const sp=SL[ri][j];if(sp.skip)return"";return`<${ri===0?"th":"td"}${spanAttr(sp)} style="text-align:${cellAlign(row[j],ri===0)}">${markHtml(row[j]??"")}</${ri===0?"th":"td"}>`;}).join("")}</tr>`).join("")}</table></div>`;
  }).join("");
 }
 function counts(){const ch=state.result?.edits||[];const dec=ch.filter(e=>e.dec).length,acc=ch.filter(e=>e.dec&&e.ok).length;return{n:ch.length,dec,acc,rej:dec-acc,left:ch.length-dec};}
@@ -3385,7 +3403,7 @@ const tsvCell=c=>{const v=cellPlain(c);return /[\t\n"]/.test(v)?'"'+v.replace(/"
 let SLc=null;
 function tableClipHtml(rows){
  const w=Math.max(1,...rows.map(r=>r.length));
- return'<table border="1" cellspacing="0" cellpadding="4" style="border-collapse:collapse;border:1px solid #000">'+(SLc=spanLayout(rows),rows.map((r,i)=>"<tr>"+Array.from({length:w},(_,j)=>{const sp=SLc[i][j];if(sp.skip)return"";return`<td${spanAttr(sp)} style="border:1px solid #000;padding:2px 6px;vertical-align:middle${i===0?";font-weight:bold;background:#e8f2ec;text-align:center":""}">${esc(cellPlain(r[j]??"")).replace(/\n/g,"<br>")||"&nbsp;"}</td>`;}).join("")+"</tr>")).join("")+"</table>";
+ return'<table border="1" cellspacing="0" cellpadding="4" style="border-collapse:collapse;border:1px solid #000">'+(SLc=spanLayout(rows),rows.map((r,i)=>"<tr>"+Array.from({length:w},(_,j)=>{const sp=SLc[i][j];if(sp.skip)return"";return`<td${spanAttr(sp)} style="border:1px solid #000;padding:2px 6px;vertical-align:middle;text-align:${cellAlign(r[j],i===0)}${i===0?";font-weight:bold;background:#e8f2ec":""}">${esc(cellPlain(r[j]??"")).replace(/\n/g,"<br>")||"&nbsp;"}</td>`;}).join("")+"</tr>")).join("")+"</table>";
 }
 const tableTsv=rows=>rows.map(r=>r.map(c=>isMergeMark(c)?"":tsvCell(c)).join("\t")).join("\n");
 const parasHtml=t=>t.split("\n").map(l=>`<p style="margin:0">${esc(l).replace(/^ +/,m=>"&nbsp;".repeat(m.length)).replace(/ {2}/g," &nbsp;")||"&nbsp;"}</p>`).join("");
@@ -3452,6 +3470,7 @@ const XR=[
  {id:"att",lv:3,name:"붙임 개수 일치",tip:"본문의 붙임 언급과 붙임 목록 수·순서"},
  {id:"dord",lv:3,name:"날짜 앞뒤 관계",tip:"기간 역전, 신청 마감 > 행사일, 지난 마감일"},
  {id:"name",lv:3,name:"명칭 일관성",tip:"같은 기관을 다르게 쓴 곳"},
+ {id:"align",lv:3,name:"제목·본문·표 정렬",tip:"왼쪽 기본선, 하위 항목 2타, 표로 끝날 때 ‘끝.’·‘이하 빈칸’"},
  {id:"abbr",lv:2,name:"약어 첫 등장 풀이",tip:"지역성장 인재양성체계(ANCHOR)"},
  {id:"pub",lv:2,name:"공개 문서 개인정보",tip:"공개 문서에 연락처·주민번호 등"},
  {id:"rel_d",lv:2,name:"상대적 날짜 표현",tip:"내일·다음 주·금주 → 구체 날짜"},
@@ -3533,6 +3552,22 @@ function docCheck(text){
   const ku=[["건국대학교",/건국대학교/g],["건국대",/건국대(?!학)/g],["건대",/건대(?![가-힣])/g]].filter(([,r])=>(body.match(r)||[]).length);
   if(ku.length>1)add(lineOf(text.search(/건대(?![가-힣])|건국대(?!학)/)),"명칭 일관성",`학교 이름을 ${ku.map(x=>`‘${x[0]}’`).join(", ")}로 섞어 썼습니다. 공문서에서는 ‘건국대학교’로 통일하세요.`);
  }
+ /* ★★★ 제목·본문·표 정렬 (규정 제20~22조 · 편람 p.51~53, p.61) */
+ if(xrEnabled("align")){
+  L.forEach((l,i)=>{if(/^\s+제\s*목(\s|[:：])/.test(l))add(i,"정렬","제목은 들여 쓰지 않고 왼쪽 기본선에서 시작합니다(편람 p.51).");
+   if(/^\s+(수\s*신|\(\s*경\s*유\s*\))/.test(l))add(i,"정렬","수신·경유란은 왼쪽 기본선에서 시작합니다.");});
+  try{const plan=itemPlan(L,state.scope||"in");const top=plan.find(p=>p.lv===1);if(top&&top.lead>0&&!plan.some(p=>p.i<top.i))add(top.i,"정렬",`첫째 항목 ‘${top.mk.k}’는 왼쪽 기본선에서 시작합니다(현재 ${top.lead}칸 들여씀 · 편람 p.51).`);}catch{}
+  // 표로 본문이 끝나는 경우
+  let last=-1;for(let i=L.length-1;i>=0;i--){const t=L[i].trim();if(!t)continue;if(/^(붙\s*임|첨\s*부|수신처|발신)/.test(t)||/^\d+\.\s.*\d+\s*부\.?\s*(끝\.?)?$/.test(t)&&i>0&&/^(붙\s*임|첨\s*부)/.test(L[i-1]?.trim()||""))continue;last=i;break;}
+  if(last>=0&&isTable(L[last])){
+   const cells=L[last].trim().slice(1,-1).split("|").map(c=>c.trim());
+   if(cells.some(c=>/끝\.?$/.test(c)))add(last,"정렬","표로 끝날 때 ‘끝’은 표 안이 아니라 표 아래 줄 왼쪽에 씁니다(규정 제22조 · 편람 p.61).");
+   else add(last,"정렬","본문이 표로 끝났습니다. 표 아래 줄 왼쪽에 ‘끝.’을 쓰세요(규정 제22조 · 편람 p.61).","");
+  }
+  // 표 아래쪽 빈 행 → 이하 빈칸
+  let tStart=-1;for(let i=0;i<=L.length;i++){const tb=i<L.length&&isTable(L[i]);if(tb&&tStart<0)tStart=i;if(!tb&&tStart>=0){const rows=L.slice(tStart,i);let k=rows.length-1,empty=0;while(k>0&&rows[k].trim().slice(1,-1).split("|").every(c=>!c.trim()||c.trim()==="^"||c.trim()==="<")){empty++;k--;}
+    if(empty&&!rows.some(r=>/이하\s*빈\s*칸/.test(r)))add(tStart+k,"정렬",`표 아래쪽에 빈 행이 ${empty}개 있습니다. 기재가 끝난 다음 칸에 ‘이하 빈칸’을 쓰세요(편람 p.61).`,"");tStart=-1;}}
+ }
  /* ★★ 약어 */
  if(xrEnabled("abbr")){
   for(const[ab,full]of Object.entries(ABBR_DEF)){const i=text.search(new RegExp("(?<![A-Za-z])"+ab+"(?![A-Za-z])"));if(i<0)continue;
@@ -3601,7 +3636,7 @@ function xrPrompt(){
 function renderXr(){
  const grp=lv=>XR.filter(r=>r.lv===lv).map(r=>`<label class="xr-i"><input type="checkbox" data-xr="${r.id}" ${lv===3?"checked disabled":xrOn[r.id]?"checked":""}><span><b>${r.name}</b><small>${r.tip}</small></span></label>`).join("");
  $("xrPop").innerHTML=`<h4>기본 적용 <span class="xr-st">★★★</span></h4>${grp(3)}<h4>선택 <span class="xr-st">★★</span></h4>${grp(2)}<h4>선택 <span class="xr-st">★</span></h4>${grp(1)}<div class="pop-row"><button class="btn sm" type="button" id="xrAll">선택 항목 모두 켜기</button><button class="btn sm ghost" type="button" id="xrNone">선택 항목 모두 끄기</button></div><p class="meta">결과는 ‘점검’ 탭의 ‘공문 요건’에 나오고, AI 검토 요청에도 함께 들어갑니다.</p>`;
- const n=XR.filter(r=>r.lv<3&&xrOn[r.id]).length;$("xrBtn").innerHTML=`검토 항목 <span class="xr-n">${4+n}</span> ▾`;
+ const n=XR.filter(r=>r.lv<3&&xrOn[r.id]).length;$("xrBtn").innerHTML=`검토 항목 <span class="xr-n">${XR.filter(r=>r.lv===3).length+n}</span> ▾`;
 }
 function xrSave(){lsSet("kku-xr",JSON.stringify(xrOn));renderXr();renderLayout();try{scheduleInsights();}catch{}}
 $("xrPop").addEventListener("change",e=>{const id=e.target.dataset?.xr;if(!id)return;xrOn[id]=e.target.checked;xrSave();});
