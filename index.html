@@ -969,6 +969,13 @@ body.is-beta .nb{display:none}
 @media (max-width:720px){.ai-pill .pl-b{display:none}}
 @media (max-width:380px){.beta-tag{display:none}.mark .nm b{font-size:14px}.hd .ai-pill{padding:1px 8px;font-size:11px}.hd .wrap{gap:8px!important}}
 .ai-pill.beta.noai{background:var(--muted);border-color:var(--muted)}
+
+/* ===== 수정본 보기 내어쓰기 ===== */
+#out .blk-body .cl{white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere;min-height:1em}
+#out .blk-body .cl-h{display:flex;align-items:baseline}
+#out .blk-body .cl-m{white-space:pre;flex:none}
+#out .blk-body .cl-t{flex:1;min-width:0;white-space:pre-wrap}
+#out .blk-p .blk-body:has(.cl){white-space:normal}
 </style>
 
 <header class="hd gut">
@@ -1836,13 +1843,17 @@ function docToHtml(text,forClip){
 /* ================= 문단·줄바꿈·문장 구조 점검 (Claude 없이 동작) ================= */
 const MARK=/^\s*(\d{1,2}\.(?!\d)|[가-힣]\.(?=\s)|\(\d+\)|\([가-힣]\)|\d{1,2}\)|[가-힣]\)|[①-⑳]|[㉮-㉻]|[□■○●◦ㅇ▶▷※*•·\-–]|붙임|첨부|제목|수신|참조|경유|발신|끝|\|)/;
 const ENDS=/([.!?:;)\]」』"”’>\d]|다|음|함|됨|임|요|까|람|것|기|등|명|원|건|개|회|부|일|월|년|분|시|안|서|표|계획|결과|현황|개요|보고)\s*$/;
-const PART=/^(을|를|이|가|은|는|에|에서|에게|의|와|과|로|으로|도|만|까지|부터|하고|하여|하는|하기|한|할|함|했|하였|합니다|되|된|될|됨|되어|적|적인|적으로|별|당|용|들)(?=[\s.,·)]|$)/;
+const PART=/^(하였음|하였습니다|하였다|했음|했습니다|합니다|됩니다|되었음|되었습니다|하고자|하여야|하며|하면|하지|하는데|을|를|이|가|은|는|에|에서|에게|의|와|과|로|으로|도|만|까지|부터|하고|하여|하는|하기|한|할|함|했|하였|합니다|되|된|될|됨|되어|적|적인|적으로|별|당|용|들)(?=[\s.,·)]|$)/;
 function isWrap(cur,nx){
  const a=cur.trim(),b=(nx||"").trim();
  if(!a||!b||isTable(cur)||isTable(nx)||MARK.test(nx)||mkInfo(b))return false;
  if(PART.test(b)&&/[가-힣]$/.test(a))return true;
  if(splitWord(a,b))return true;
- return a.length>=12&&!ENDS.test(a);
+ // 강제 줄바꿈으로 볼 만한 증거가 약하면 이어 붙이지 않음(제목·이름표 줄, 개조식 끝맺음, 짧은 줄)
+ if(/^[가-힣A-Za-z·\s]{1,12}\s*[:：]/.test(b))return false;
+ if(/^(제\s*목|수\s*신|경\s*유|발\s*신|붙\s*임|첨\s*부|참\s*조|문\s*의|일\s*시|장\s*소|대\s*상)/.test(a))return false;
+ if(/[음함임됨것등요]$|[)」』”"]$/.test(a))return false;
+ return a.length>=25&&!ENDS.test(a)&&/[가-힣A-Za-z0-9,·]$/.test(a)&&/^[가-힣A-Za-z0-9(「]/.test(b);
 }
 const SOLO=/^(및|등|것|수|때|중|위|안|곳|날|해|달|간|시|데|바|뿐|분|명|원|건|개|회|부|일|월|년|차|급|과|팀|실|처|장|단|더|또|각|총|약|본|이|그|저|전|후|외|내|별|당|만)$/;
 function splitWord(a,b){const last=a.split(/\s+/).pop();return /^[가-힣]$/.test(last)&&!SOLO.test(last)&&/^[가-힣]/.test(b)&&!MARK.test(b);}
@@ -1885,20 +1896,20 @@ const LEVELS={in:["1.","가.","(1)","(가)","1)"],out:["1.","가.","1)","가)","
 const symOf=(cls,idx)=>({"1.":`${idx}.`,"가.":`${HSEQ[idx-1]||"?"}.`,"(1)":`(${idx})`,"(가)":`(${HSEQ[idx-1]||"?"})`,"1)":`${idx})`,"가)":`${HSEQ[idx-1]||"?"})`,"①":String.fromCharCode(0x2460+idx-1),"㉮":String.fromCharCode(0x326E+idx-1)}[cls]);
 function itemPlan(L,scope){
  // 각 항목 줄의 위계·기대 들여쓰기·순서 오류를 계산
- const order=LEVELS[scope==="out"?"out":"in"],plan=[];let base=null,cnt=[],lastLv=0;
+ const order=LEVELS[scope==="out"?"out":"in"],plan=[];let base=null,root=0,cnt=[],lastLv=0;
  L.forEach((l,i)=>{
   if(isTable(l)||!l.trim())return;
   const lead=l.match(/^\s*/)[0].replace(/\t/g,"  ").length,body=l.trimStart(),mk=mkInfo(body);if(!mk)return;
   const lv=order.indexOf(mk.cls)+1;
   const p={i,lead,mk,lv,issues:[]};
   if(!lv){p.issues.push(["위계",`‘${mk.k}’는 ${scope==="out"?"편람":"학교 규정"} 항목 기호 체계에 없는 기호입니다(${order.join(" → ")}).`]);plan.push(p);return;}
-  if(base===null)base=lv===1?lead:Math.max(0,lead-2*(lv-1));
+  if(base===null){base=lead;root=lv;}else if(lv<root){base=Math.max(0,base-2*(root-lv));root=lv;}
   if(lv>lastLv+1&&lastLv>0)p.issues.push(["위계",`‘${order[lastLv-1]}’ 다음 하위 항목은 ‘${order[lastLv]}’입니다. ‘${mk.k}’는 ${lv}번째 항목 기호입니다(${scope==="out"?"편람 p.51":"규정 제21조"}).`]);
   else if(lastLv===0&&lv>1&&i>0)p.issues.push(["위계",`상위 항목 없이 ${lv}번째 항목 기호 ‘${mk.k}’로 시작합니다. 첫째 항목은 ‘${order[0]}’입니다.`]);
   cnt.length=lv;const exp=(cnt[lv-1]||0)+1;
   if(mk.idx!==exp&&mk.idx!==1)p.issues.push(["순서",mk.idx<exp?`‘${mk.k}’가 반복됩니다. ‘${symOf(mk.cls,exp)}’ 차례입니다.`:`‘${symOf(mk.cls,exp)}’ 차례인데 ‘${mk.k}’가 왔습니다(빠진 항목 확인).`]);
   cnt[lv-1]=mk.idx;lastLv=lv;
-  p.expLead=base+2*(lv-1);
+  p.expLead=base+2*(lv-root);
   plan.push(p);
  });
  return plan;
@@ -2062,7 +2073,9 @@ function applyEdits(src,edits){
  }
  return t;
 }
-function recompute(){const r=state.result;if(r&&Array.isArray(r.edits))r.corrected=applyEdits(state.source,r.edits);}
+/* 수정본에는 줄 끝 공백을 남기지 않음(교정 결과로 생긴 공백 포함) */
+const trimEol=t=>String(t).replace(/[ \t\u00a0\u3000\u2002-\u200b]+$/gm,"");
+function recompute(){const r=state.result;if(r&&Array.isArray(r.edits))r.corrected=trimEol(applyEdits(state.source,r.edits));}
 
 /* ================= 팀 용어집(예외 사전)·팀 규칙 ================= */
 let teamTerms=[],teamRules=[];
@@ -2763,6 +2776,17 @@ function renderDoc(src,cor,view){
  }
  return A.map((s,i)=>blockHtml({t:s.t,a:s.t==="tb"?s.rows:s.v,b:s.t==="tb"?B[i].rows:B[i].v,key:"b"+i,label:lab(B[i])},view)).join("");
 }
+/* 수정본 보기: 화면 폭 때문에 줄이 넘어가도 항목 기호 뒤 글자 위치에 맞춰 이어지게(내어쓰기) */
+function cleanLines(text){
+ return String(text).split("\n").map(l=>{
+  if(!l.trim())return'<div class="cl cl-e">&nbsp;</div>';
+  const lead=l.match(/^[ \t]*/)[0],body=l.slice(lead.length);
+  const m=body.match(/^(\d{1,2}\.(?!\d)|[가-힣]\.(?=\s)|\(\d+\)|\([가-힣]\)|\d{1,2}\)|[가-힣]\)|[①-⑳㉮-㉻□■○●◦ㅇ▶▷※*•·\-–])\s+/)||body.match(/^((?:제\s*목|수\s*신|경\s*유|붙\s*임|첨\s*부)\s*[:：]?\s+)/);
+  const head=lead+(m?m[0]:""),rest=body.slice(m?m[0].length:0);
+  if(!head)return`<div class="cl">${esc(rest)}</div>`;
+  return`<div class="cl cl-h"><span class="cl-m">${esc(head)}</span><span class="cl-t">${esc(rest)}</span></div>`;
+ }).join("");
+}
 function blockHtml(bk,view){
  const cbtn=bk.key?`<button class="blk-copy" data-copy="${bk.key}" title="${bk.t==="tb"?"이 표만 복사(한글·워드·엑셀에 표로 붙음)":"이 문단만 복사"}">복사</button>`:"";
  const changed=bk.t==="tb"?JSON.stringify(bk.a)!==JSON.stringify(bk.b):bk.a!==bk.b;
@@ -2773,7 +2797,7 @@ function blockHtml(bk,view){
   const R=bk.t==="tb"?tableHtml(bk.a,bk.b,"new"):renderDiff(bk.a,bk.b,"new");
   return`<div class="${cls}">${tag}<div class="blk-side"><div>${L}</div><div>${R}</div></div></div>`;
  }
- const body=view==="clean"?(bk.t==="tb"?tableHtml(bk.a,bk.b,"clean"):esc(bk.b)):(bk.t==="tb"?tableHtml(bk.a,bk.b,"both"):renderDiff(bk.a,bk.b));
+ const body=view==="clean"?(bk.t==="tb"?tableHtml(bk.a,bk.b,"clean"):cleanLines(bk.b)):(bk.t==="tb"?tableHtml(bk.a,bk.b,"both"):renderDiff(bk.a,bk.b));
  return`<div class="${cls}">${tag}<div class="blk-body">${body}</div></div>`;
 }
 
