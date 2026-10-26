@@ -942,6 +942,33 @@ body.is-beta .nb{display:none}
 .ss-note{margin:4px 0 0;font-size:11.5px}
 @media (max-width:1100px){.ss-btn .ss-t{max-width:90px}}
 @media (max-width:720px){.ss-pop{position:fixed!important;left:12px!important;right:12px!important;top:56px!important;width:auto!important}.ss-btn .ss-t{max-width:70px}}
+
+/* ===== Claude 계정 연결 카드 ===== */
+#aiLogin,#aiOpenLink,#aiFixBtn{display:none!important}
+.acct{border:1px solid var(--line);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:8px;background:var(--paper)}
+.acct[data-st="on"]{border-color:var(--green);background:var(--green-soft)}
+.acct[data-st="off"]{border-color:var(--warn);background:var(--warn-bg)}
+.acct-h{display:flex;gap:10px;align-items:center}
+.acct-av{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:15px;background:var(--line);color:var(--muted);flex:none}
+.acct[data-st="on"] .acct-av{background:var(--green);color:#fff}
+.acct[data-st="off"] .acct-av{background:var(--warn);color:#fff}
+.acct-t{display:flex;flex-direction:column;min-width:0;line-height:1.35}
+.acct-t b{font-size:14px}
+.acct-t small{font-size:12px;color:var(--muted);overflow-wrap:anywhere}
+.acct-a{display:flex;flex-wrap:wrap;gap:6px}
+.acct-a .btn{text-decoration:none}
+.acct-a .btn.pri{flex:1 1 auto;justify-content:center}
+.acct-n{margin:0;font-size:11.5px;color:var(--muted);line-height:1.5}
+.acct-n:empty{display:none}
+.prov-more summary{cursor:pointer;font-size:12.5px;font-weight:700;color:var(--green);padding:4px 0}
+.prov-more[open] summary{margin-bottom:6px}
+.prov-more .prov-note{margin-top:6px}
+.ai-pill .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#fff;opacity:.45;margin-right:5px;vertical-align:0}
+.ai-pill .dot.on{opacity:1;background:#9ff0c0;box-shadow:0 0 0 2px rgba(255,255,255,.35)}
+#aiPop p:empty{display:none}
+@media (max-width:720px){.ai-pill .pl-b{display:none}}
+@media (max-width:380px){.beta-tag{display:none}.mark .nm b{font-size:14px}.hd .ai-pill{padding:1px 8px;font-size:11px}.hd .wrap{gap:8px!important}}
+.ai-pill.beta.noai{background:var(--muted);border-color:var(--muted)}
 </style>
 
 <header class="hd gut">
@@ -961,7 +988,12 @@ body.is-beta .nb{display:none}
     <div class="menu" id="aiMenu">
       <button class="chipbtn" id="aiChip" aria-haspopup="true" aria-expanded="false"><span id="aiState" class="ai-pill">확인 중</span> ▾</button>
       <div class="menu-pop wide" id="aiPop" hidden>
-        <h4>AI 연결</h4>
+        <div class="acct" id="acct">
+          <div class="acct-h"><span class="acct-av" id="acctAv" aria-hidden="true">C</span><div class="acct-t"><b id="acctHead">Claude 연결 확인 중</b><small id="acctSub"></small></div></div>
+          <div class="acct-a" id="acctAct"></div>
+          <p class="acct-n" id="acctNote"></p>
+        </div>
+        <details class="prov-more" id="provMore"><summary>다른 연결 방식</summary>
         <div class="prov" id="prov" role="radiogroup" aria-label="AI 연결 방식">
           <label class="pv"><input type="radio" name="prov" value="claude"><span><b>본인 Claude 계정</b><small>claude.ai 링크로 열면 자동 연결 · 본인 사용 한도에서 차감</small></span></label>
           <label class="pv"><input type="radio" name="prov" value="manual"><span><b>Claude 채팅창 이용</b><small>요청문 복사 → claude.ai 채팅에 붙여넣기 → 답을 다시 붙여넣기 · 어디서나 · 키 불필요</small></span></label>
@@ -976,6 +1008,7 @@ body.is-beta .nb{display:none}
           <p class="meta" id="keyMsg"></p>
         </div>
         <p class="ai-tip prov-note" id="provNote"></p>
+        </details>
         <button class="btn xp-pop" id="xpBtn2" type="button">✎ 다른 AI(ChatGPT·Gemini 등)용 프롬프트 제안</button>
         <h4>검토 사용</h4>
         <p class="ai-tip" id="aiTip"></p>
@@ -2198,7 +2231,7 @@ function setAi(st){
  $("aiOpenLink").hidden=aiWhy!=="nofile";
  const tLeft=Math.max(0,TRIAL-trialUsed);
  $("cpBox").hidden=BETA||unlocked();$("aiUnlock").hidden=BETA||unlocked();$("aiOffBtn").hidden=BETA||$("aiOffBtn").hidden;
- if(BETA){el.textContent="BETA · 무제한";el.className="ai-pill on beta";}
+ if(BETA){const con=!!sample;el.innerHTML=`<i class="dot ${con?"on":""}"></i>${con?(typeof provider!=="undefined"&&provider!=="claude"?(provider==="manual"?"Claude 채팅창":"Claude API"):"Claude 연결"):"AI 미연결"}<span class="pl-b"> · BETA</span>`;el.className="ai-pill on beta"+(con?"":" noai");el.parentElement.title=con?"AI 연결됨 · 베타 기간 무제한":"AI가 연결되지 않았습니다. 눌러서 Claude를 연결하세요.";}
  else if(unlocked()){el.textContent=isAdmin?"무제한 · 관리자":"무제한 · 팀 암호";el.className="ai-pill on";}
  else if(tLeft){el.textContent=`무료 체험 ${tLeft}회 남음${credits?` · 이용권 ${credits}회`:""}`;el.className="ai-pill trial";}
  else if(credits>0){el.textContent=`이용권 ${credits}회 남음`;el.className="ai-pill on";}
@@ -2206,13 +2239,14 @@ function setAi(st){
  if(provider!=="claude"&&aiWhy==="nofile")aiWhy=null;
  $("aiLogin").hidden=$("aiLogin").hidden||provider!=="claude";$("aiOpenLink").hidden=$("aiOpenLink").hidden||provider!=="claude";$("aiFixBtn").hidden=$("aiFixBtn").hidden||provider!=="claude";
  const why={none:"기본 규칙으로 검토합니다.",nokey:"API 키를 입력하면 AI 검토를 쓸 수 있습니다. 그 전에는 기본 규칙으로 검토합니다.",nofile:"내려받은 HTML 파일로 열려 Claude를 쓸 수 없습니다(기본 규칙으로 검토). claude.ai 링크로 여세요.",denied:"Claude 사용이 거부되어 기본 규칙으로 검토합니다. ‘권한 설정’에서 켤 수 있습니다.",unavail:"Claude를 쓸 수 없어 기본 규칙으로 검토합니다. 로그인 상태를 확인하세요.",off:"Claude를 쓸 수 없어 기본 규칙으로 검토합니다."}[aiWhy];
- tip.textContent=BETA?(aiAvail===false?why:"베타 기간에는 누구나 횟수 제한 없이 쓸 수 있습니다. 불편한 점은 Teams 채팅으로 알려 주세요."):!canReview()?`무료 체험 ${TRIAL}회를 모두 사용했습니다. 이용권 코드(10·50·100회)나 팀 암호를 입력하세요.`
+ tip.textContent=BETA?"베타 기간에는 누구나 횟수 제한 없이 쓸 수 있습니다. 불편한 점은 Teams 채팅으로 알려 주세요.":!canReview()?`무료 체험 ${TRIAL}회를 모두 사용했습니다. 이용권 코드(10·50·100회)나 팀 암호를 입력하세요.`
   :(aiAvail===false?why:(aiAvail===null?"Claude 연결을 확인하고 있습니다.":(unlocked()?"AI 검토(문장 구조 포함)를 횟수 제한 없이 쓸 수 있습니다.":`처음 ${TRIAL}회는 무료입니다. 이후에는 이용권 코드나 팀 암호가 필요합니다.`)));
  $("credLine").textContent=(BETA||unlocked())?"":`무료 체험 ${tLeft}/${TRIAL}회 · 이용권 ${credits}회 남음`;
  $("meLine").textContent=meName?`현재 이용자: ${meName}`:"";
  $("runBtn").textContent=canReview()?"검토하기":"검토하기 · 이용권 필요";
  $("mRun").textContent=canReview()?"검토하기":"이용권 필요";
  if(typeof renderAiBar==="function")renderAiBar();
+ if(typeof renderAcct==="function")renderAcct();
  const on=aiOn();
  $("imgTableBtn").title=on?"":"검토를 쓸 수 있을 때 사용할 수 있습니다";$("imgDocBtn").title=on?"문서·표 캡처 이미지를 읽어 입력란에 옮겨 적습니다":"검토를 쓸 수 있을 때 사용할 수 있습니다";
  $("admTab").hidden=!isAdmin;
@@ -2270,7 +2304,7 @@ function saveLocalTeam(){lsSet("kku-team",JSON.stringify({terms:teamTerms,rules:
 async function initDb(){
  if(!window.claude?.use){loadLocalTeam();dbNote="공유 저장소를 쓸 수 없어 이 브라우저에만 저장합니다.";return;}
  try{db=await claude.use("db");}catch{}
- try{const u=await claude.use("user");if(u){userCap=u;uid=await u.id();try{const me=await u.me();meName=[me?.name,me?.email].filter(Boolean).join(" · ");}catch{}}}catch{}
+ try{const u=await claude.use("user");if(u){userCap=u;uid=await u.id();try{const me=await u.me();meName=[me?.name,me?.email].filter(Boolean).join(" · ");try{renderAcct();}catch{}}catch{}}}catch{}
  if(!db){loadLocalTeam();dbNote="공유 저장소를 쓸 수 없어 이 브라우저에만 저장합니다.";renderAdmin();scheduleInsights();setAi("refresh");return;}
  dbNote="팀 공유 저장소에 연결되어, 바꾼 내용이 이 페이지를 쓰는 모두에게 적용됩니다.";
  db.doc("config/main").onSnapshot(s=>{const d=s.exists?s.data():null;if(d){if(d.teamPwHash)cfg.teamPwHash=d.teamPwHash;if(d.basisChecked)cfg.basisChecked={...cfg.basisChecked,...d.basisChecked};}setAi("refresh");scheduleInsights();renderAdmin();},()=>{});
@@ -3575,6 +3609,45 @@ function sessRestoreOnLoad(){
  else if(!x){curSess=null;lsSet("kku-cur",null);}
  sessLast=JSON.stringify(sessSnap());renderSessBtn();
 }
+
+/* ================= Claude 계정 연결 카드 ================= */
+function renderAcct(){
+ try{
+  const box=$("acct"),act=$("acctAct");if(!box)return;
+  const L=(href,t,c)=>`<a class="btn ${c||""}" href="${href}" target="_blank" rel="noopener">${t}</a>`,B=(id,t,c)=>`<button class="btn ${c||""}" type="button" data-acct="${id}">${t}</button>`;
+  let st="idle",head="",sub="",acts="",note="",av="C";
+  const nm=meName?meName.split(" · ")[0]:"";
+  if(sample&&provider==="claude"){st="on";av=(nm||"C").slice(0,1);head="Claude 계정 연결됨";sub=meName||"claude.ai에 로그인한 본인 계정";acts=B("off","연결 끊기","sm ghost");note="AI 검토는 이 계정으로 이루어지고 사용량도 본인 Claude 한도에서 차감됩니다.";}
+  else if(sample){st="on";head=provider==="manual"?"Claude 채팅창 이용 중":"Claude API 키로 연결됨";sub=provider==="manual"?"요청문을 claude.ai 채팅에 붙여 넣는 방식":(lsGet("kku-model-anthropic")||DEF_MODEL.anthropic);
+   acts=IN_ARTIFACT?B("connect","본인 Claude 계정으로 바꾸기","pri"):L(OPEN_URL,"claude.ai에서 열기 ↗","pri");}
+  else if(IN_ARTIFACT){
+   st="off";head="Claude 계정이 연결되지 않았습니다";
+   sub={denied:"Claude 사용 권한이 꺼져 있습니다. 연결하기를 누르면 권한 허용 창이 뜹니다.",unavail:"로그인이 풀렸거나 연결이 끊겼습니다. claude.ai에 로그인한 뒤 다시 연결하세요.",none:"지금은 AI 없이 기본 규칙으로만 검토합니다.",wait:"연결 상태를 확인하고 있습니다."}[aiWhy]||"연결하면 본인 Claude 계정으로 문장 구조 검토·이미지 읽기까지 씁니다.";
+   acts=B("connect","Claude 계정 연결하기","pri")+(aiWhy==="unavail"||aiWhy==="off"?L("https://claude.ai/login","claude.ai 로그인 ↗","sm"):"");
+   note=aiWhy==="unavail"?"다른 탭에서 로그인하고 돌아오면 자동으로 다시 연결을 시도합니다.":"";
+  }else{
+   st="off";head="이 파일에서는 Claude 계정에 로그인할 수 없습니다";
+   sub="내려받은 HTML은 claude.ai 밖에서 열려 계정 연결이 막혀 있습니다.";
+   acts=L(OPEN_URL,"claude.ai에서 열기 ↗","pri")+B("chat","채팅창 이용","sm")+B("key","API 키","sm");
+   note="claude.ai에서 열면 로그인한 본인 계정으로 바로 검토합니다. 학교 조직 계정으로 로그인해야 열 수 있습니다.";
+  }
+  box.dataset.st=st;$("acctAv").textContent=av;$("acctHead").textContent=head;$("acctSub").textContent=sub;act.innerHTML=acts;$("acctNote").textContent=note;
+  const more=$("provMore");if(more&&!more.dataset.touched)more.open=provider==="manual"||provider==="anthropic";
+ }catch{}
+}
+const OPEN_URL="https://claude.ai/artifact/6m6wyQ3JLk84vFzx3Qysxw";
+$("acctAct").addEventListener("click",e=>{const b=e.target.closest("[data-acct]");if(!b)return;const k=b.dataset.acct;
+ if(k==="connect")connectClaude();
+ else if(k==="off"){provider="none";lsSet("kku-prov","none");applyProvider();}
+ else if(k==="chat"){provider="manual";lsSet("kku-prov","manual");applyProvider();}
+ else if(k==="key"){provider="anthropic";lsSet("kku-prov","anthropic");applyProvider(true);$("provMore").open=true;setTimeout(()=>$("keyIn").focus(),50);}});
+$("provMore").addEventListener("toggle",()=>{$("provMore").dataset.touched="1";});
+/* 로그인하고 돌아오면 조용히 다시 연결 */
+let acctRetry=0;
+window.addEventListener("focus",async()=>{
+ if(!IN_ARTIFACT||claudeSample||provider!=="claude"||Date.now()-acctRetry<4000)return;acctRetry=Date.now();
+ try{const s=await claude.use("sample");if(s){claudeSample=s;applyProvider(true);toast("Claude 계정에 다시 연결했습니다.");}}catch{}
+});
 (function init(){
  if(BETA)document.body.classList.add("is-beta");
  let draft=lsGet("kku-draft")||"",type=lsGet("kku-type")||"inner";
