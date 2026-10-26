@@ -720,7 +720,8 @@ main{padding-block:10px 24px!important}
 #inText{padding:18px 22px!important;color:var(--ink)}
 #out{padding:18px 22px!important}
 #out .mblk{margin-bottom:calc(var(--doc-fs) * .55)}
-#out .doc-t{font-size:calc(var(--doc-fs) * .94)!important;line-height:1.4!important}
+#out .doc-t,#out .doc-t th,#out .doc-t td{font-size:var(--doc-fs)!important;line-height:1.45!important}
+#out .doc-t td[rowspan],#out .doc-t th[rowspan]{vertical-align:middle}
 #out .doc-t td,#out .doc-t th{padding:4px 9px}
 #out .blk{padding:22px 12px 8px;margin-bottom:8px}
 .sgm,#out ins,#out del{-webkit-box-decoration-break:clone;box-decoration-break:clone;padding:0 1px}
@@ -1257,7 +1258,7 @@ body{word-break:keep-all;overflow-wrap:break-word}
           <button id="fsDown" title="글자 작게" aria-label="글자 작게">가<sup>−</sup></button><span id="fsVal">17</span><button id="fsUp" title="글자 크게" aria-label="글자 크게">가<sup>+</sup></button>
           <button id="lhBtn" title="줄 간격 바꾸기" aria-label="줄 간격 바꾸기">줄 <b id="lhVal">좁게</b></button>
         </span>
-        <span class="zlegend" id="zLegend" title="입력 칸에서 줄 종류를 색으로 구분합니다"><i class="zl zl-h"></i>두문 <i class="zl zl-t"></i>제목 <i class="zl zl-b"></i>본문 <i class="zl zl-tb"></i>표</span><span class="in-count" id="inCount">0자</span>
+        <span class="zlegend" id="zLegend" title="입력 칸에서 줄 종류를 색으로 구분합니다. 표의 ^ 는 위 칸과 병합, < 는 왼쪽 칸과 병합된 칸입니다."><i class="zl zl-h"></i>두문 <i class="zl zl-t"></i>제목 <i class="zl zl-b"></i>본문 <i class="zl zl-tb"></i>표</span><span class="in-count" id="inCount">0자</span>
       </div>
       <div class="stale" id="stale" hidden>원문이 바뀌었습니다. 제안은 이전 원문 기준입니다. <button class="link" id="staleRun">다시 검토</button></div>
       <div class="docbody">
@@ -1721,7 +1722,7 @@ function buildRules(scope,extra=""){
 어문 규범 일반(한글 맞춤법·표준어 규정·외래어 표기법)에만 근거한 수정은 src="norm".
 
 [표]
-- '| 칸 | 칸 |' 형식의 줄은 한글·워드에서 붙여 넣은 표입니다. 행·열 수와 순서, '|' 구분자를 그대로 유지하고 칸 안의 글자만 교정. 칸 안의 '<br>'은 칸 내부 줄바꿈이므로 그대로 둘 것. 빈 칸은 병합 셀이므로 채우지 말 것.
+- '| 칸 | 칸 |' 형식의 줄은 한글·워드에서 붙여 넣은 표입니다. 행·열 수와 순서, '|' 구분자를 그대로 유지하고 칸 안의 글자만 교정. 칸 안의 '<br>'은 칸 내부 줄바꿈이므로 그대로 둘 것. ‘^’(위 칸과 병합)·‘<’(왼쪽 칸과 병합)는 병합 칸 표시이므로 그대로 두고, 빈 칸은 채우지 말 것.
 - 표로 본문이 끝나면 표 다음 줄 왼쪽에서 '  끝.'(편람 p.61). 표 중간에서 기재가 끝났다면 '이하 빈칸'을 notes로 안내.
 
 [문단·줄바꿈 (편람 p.51~53)]
@@ -1931,7 +1932,7 @@ function htmlToText(html){
    for(const c of r.cells){while(grid[ri][ci]!==undefined)ci++;
     const txt=flat(c).replace(/\u00a0/g," ").split("\n").map(x=>x.trim()).filter(Boolean).join("<br>").replace(/\|/g,"｜");
     const cs=Math.max(1,c.colSpan||1),rs=Math.max(1,c.rowSpan||1);
-    for(let a=0;a<rs;a++){grid[ri+a]=grid[ri+a]||[];for(let k=0;k<cs;k++)grid[ri+a][ci+k]=(a===0&&k===0)?txt:"";}
+    for(let a=0;a<rs;a++){grid[ri+a]=grid[ri+a]||[];for(let k=0;k<cs;k++)grid[ri+a][ci+k]=(a===0&&k===0)?txt:(a===0?"<":"^");}
     ci+=cs;}
   });
   const w=Math.max(...grid.map(r=>r.length));
@@ -1983,6 +1984,7 @@ $("inText").addEventListener("paste",e=>{
   const r=htmlToText(html);t=r.text;
   if(r.layouts)parts.push(`공문 서식 틀(수신·제목·결재란·글상자 등 표) ${r.layouts}개를 일반 줄로 풀어 넣음`);
   if(r.tables)parts.push(`표 ${r.tables}개를 ‘| 칸 |’ 표로 넣음`);
+  if(/\|\s*[\^<]\s*(?=\|)/.test(r.text))parts.push("병합된 칸은 ‘^’(위 칸과 병합)·‘<’(왼쪽 칸과 병합)로 표시 — 보기·복사·Word 저장에서는 병합된 표로 나옵니다");
  }else if(plain&&/\t/.test(plain)&&/\n/.test(plain)){
   const r=tsvToPipe(plain);if(r.tables){t=r.text;parts.push(`표 ${r.tables}개를 ‘| 칸 |’ 표로 넣음`);}
  }
@@ -2001,7 +2003,8 @@ function docToHtml(text,forClip){
  for(let i=0;i<L.length;i++){
   if(isTable(L[i])){
    const rows=[];while(i<L.length&&isTable(L[i])){rows.push(L[i]);i++;}i--;
-   const body=rows.filter(r=>!/^\s*\|[\s:\-|]+\|\s*$/.test(r)).map(r=>"<tr>"+r.trim().slice(1,-1).split("|").map(c=>`<td${forClip?' style="border:1px solid #000;padding:2px 6px"':""}>${esc(c.trim()).replace(/&lt;br&gt;/g,"<br>")}</td>`).join("")+"</tr>").join("");
+   const grid=rows.filter(r=>!/^\s*\|[\s:\-|]+\|\s*$/.test(r)).map(r=>r.trim().slice(1,-1).split("|").map(c=>c.trim()));const SL=spanLayout(grid);
+   const body=grid.map((r,ri)=>"<tr>"+r.map((c,j)=>{const sp=SL[ri][j];if(sp.skip)return"";return`<td${spanAttr(sp)}${forClip?' style="border:1px solid #000;padding:2px 6px;vertical-align:middle"':""}>${esc(c).replace(/&lt;br&gt;/g,"<br>")}</td>`;}).join("")+"</tr>").join("");
    h+=`<table class="doc-t"${forClip?' style="border-collapse:collapse"':""}>${body}</table>`;
   }else{
    const line=esc(L[i]).replace(/^ +/,m=>"&nbsp;".repeat(m.length)).replace(/ {2}/g," &nbsp;");
@@ -2656,7 +2659,7 @@ async function docxToText(zip){
  const doc=new DOMParser().parseFromString(xml,"application/xml");const body=doc.getElementsByTagNameNS("*","body")[0];const out=[];
  const ptext=p=>{let s="";(function w(n){for(const c of n.childNodes){if(c.nodeType!==1)continue;const ln=lname(c);if(ln==="t")s+=c.textContent;else if(ln==="tab")s+="  ";else if(ln==="br"||ln==="cr")s+="\n";else if(ln!=="tbl")w(c);}})(p);return s;};
  const tbl=t=>{const grid=[];kids(t,"tr").forEach((tr,ri)=>{const row=[];kids(tr,"tc").forEach(tc=>{const pr=kids(tc,"tcPr")[0];const span=pr?.getElementsByTagNameNS("*","gridSpan")[0];const vm=pr?.getElementsByTagNameNS("*","vMerge")[0];
-   const cont=vm&&(vm.getAttributeNS?.(vm.namespaceURI,"val")??vm.getAttribute("w:val"))!=="restart";const txt=cont?"":kids(tc,"p").map(ptext).join("\n");row.push(txt);for(let k=1;k<(+(span?.getAttribute("w:val")||span?.getAttributeNS(span.namespaceURI,"val")||1));k++)row.push("");});grid.push(row);});return gridToPipe(grid);};
+   const cont=vm&&(vm.getAttributeNS?.(vm.namespaceURI,"val")??vm.getAttribute("w:val"))!=="restart";const txt=cont?"^":kids(tc,"p").map(ptext).join("\n");row.push(txt);for(let k=1;k<(+(span?.getAttribute("w:val")||span?.getAttributeNS(span.namespaceURI,"val")||1));k++)row.push(cont?"^":"<");});grid.push(row);});return gridToPipe(grid);};
  (function walk(n){for(const c of kids(n)){const ln=lname(c);if(ln==="p")out.push(ptext(c));else if(ln==="tbl")out.push(tbl(c));else if(ln==="sdt"||ln==="sdtContent")walk(c);}})(body);
  return out.join("\n");
 }
@@ -2671,7 +2674,7 @@ async function hwpxToText(zip){
  const tbl=t=>{const grid=[];kids(t,"tr").forEach((tr,ri)=>{kids(tr,"tc").forEach(tc=>{const addr=tc.getElementsByTagNameNS("*","cellAddr")[0],span=tc.getElementsByTagNameNS("*","cellSpan")[0];
    const r=+(addr?.getAttribute("rowAddr")??ri),c=+(addr?.getAttribute("colAddr")??(grid[ri]?.length||0)),cs=+(span?.getAttribute("colSpan")||1),rs=+(span?.getAttribute("rowSpan")||1);
    const sub=tc.getElementsByTagNameNS("*","subList")[0]||tc;const txt=kids(sub,"p").map(para).join("\n");
-   for(let a=0;a<rs;a++){grid[r+a]=grid[r+a]||[];for(let b=0;b<cs;b++)grid[r+a][c+b]=(a===0&&b===0)?txt:"";}});});
+   for(let a=0;a<rs;a++){grid[r+a]=grid[r+a]||[];for(let b=0;b<cs;b++)grid[r+a][c+b]=(a===0&&b===0)?txt:(a===0?"<":"^");}});});
   for(let i=0;i<grid.length;i++){grid[i]=grid[i]||[];for(let j=0;j<grid[i].length;j++)if(grid[i][j]===undefined)grid[i][j]="";}return gridToPipe(grid);};
  for(const n of names){const xml=await zip.file(n).async("string");const doc=new DOMParser().parseFromString(xml,"application/xml");kids(doc.documentElement,"p").forEach(p=>out.push(para(p)));}
  return out.join("\n");
@@ -2772,7 +2775,13 @@ async function buildDocx(text){
  const body=segs(text).map(s=>{
   if(s.t==="p")return s.v.split("\n").map(l=>P(l)).join("");
   const bd=["top","left","bottom","right","insideH","insideV"].map(b=>`<w:${b} w:val="single" w:sz="4" w:space="0" w:color="000000"/>`).join("");
-  return`<w:tbl><w:tblPr><w:tblW w:w="5000" w:type="pct"/><w:tblBorders>${bd}</w:tblBorders></w:tblPr>`+s.rows.map((r,i)=>`<w:tr>${r.map(c=>`<w:tc><w:tcPr>${i===0?'<w:shd w:val="clear" w:color="auto" w:fill="E8F2EC"/>':""}</w:tcPr>${cellPlain(c).split("\n").map(l=>P(l,i===0)).join("")}</w:tc>`).join("")}</w:tr>`).join("")+"</w:tbl>"+P("");
+  return`<w:tbl><w:tblPr><w:tblW w:w="5000" w:type="pct"/><w:tblBorders>${bd}</w:tblBorders></w:tblPr>`+(()=>{const SL=spanLayout(s.rows),W=Math.max(...s.rows.map(r=>r.length));const own=[];SL.forEach((row,i)=>row.forEach((x,j)=>{if(!x.skip&&(x.rs>1||x.cs>1))for(let a=0;a<x.rs;a++)own.push({i:i+a,j,cs:x.cs,start:a===0});}));
+  return s.rows.map((r,i)=>{let h="<w:tr>";for(let j=0;j<W;j++){const x=SL[i][j],sh=i===0?'<w:shd w:val="clear" w:color="auto" w:fill="E8F2EC"/>':"";
+   const o=own.find(v=>v.i===i&&v.j===j);
+   if(x.skip&&!(o&&!o.start))continue;
+   if(o&&!o.start){h+=`<w:tc><w:tcPr>${o.cs>1?`<w:gridSpan w:val="${o.cs}"/>`:""}<w:vMerge/>${sh}</w:tcPr>${P("")}</w:tc>`;continue;}
+   h+=`<w:tc><w:tcPr>${x.cs>1?`<w:gridSpan w:val="${x.cs}"/>`:""}${x.rs>1?'<w:vMerge w:val="restart"/>':""}${sh}</w:tcPr>${cellPlain(r[j]??"").split("\n").map(l=>P(l,i===0)).join("")}</w:tc>`;}
+   return h+"</w:tr>";}).join("");})()+"</w:tbl>"+P("");
  }).join(P(""));
  const W='xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"';
  const zip=new JSZip();
@@ -2878,7 +2887,7 @@ async function readImageTable(file){
 형식: {"title":"표 바로 위의 제목(없으면 빈 문자열)","rows":[["칸","칸"],["칸","칸"]]}
 규칙:
 - 행과 열 구조를 그대로 유지. 모든 행의 칸 수를 같게.
-- 병합된 칸은 맨 왼쪽 위 칸에만 글자를 넣고 나머지는 "".
+- 병합된 칸은 맨 왼쪽 위 칸에만 글자를 넣고, 위 칸과 합쳐진 칸은 "^", 왼쪽 칸과 합쳐진 칸은 "<"로 표시.
 - 칸 안의 줄바꿈은 \\n으로 표시하되, 단지 칸 너비 때문에 줄이 바뀐 것이면 한 줄로 이어 쓸 것.
 - 글자를 고치거나 다듬지 말 것(오탈자·띄어쓰기도 보이는 그대로). 교정은 나중에 따로 합니다.
 - 표 아래의 본문 글자는 넣지 말 것.`,{images:[file],modelTier:"default"});
@@ -2915,18 +2924,38 @@ function cellDiff(a,b,mode){
  if(mode==="clean")return cellHtml(b);
  return diff(a,b).map(o=>piece(o,mode)).join("").replace(/&lt;br&gt;/g,"<br>");
 }
+/* ===== 표 병합: '^' = 위 칸과 병합, '<' = 왼쪽 칸과 병합 ===== */
+const mClean=c=>String(c??"").replace(/[\uE000-\uE1FF]/g,"").replace(/<\/?[^>]+>/g,"").trim();
+function spanLayout(rows){
+ const H=rows.length,W=Math.max(1,...rows.map(r=>r.length)),c=(i,j)=>mClean(rows[i]?.[j]);
+ const L=rows.map(()=>Array.from({length:W},()=>({rs:1,cs:1,skip:false})));
+ for(let i=0;i<H;i++)for(let j=0;j<W;j++){
+  if(L[i][j].skip)continue;const v=c(i,j);
+  if((v==="^"&&i>0)||(v==="<"&&j>0)){L[i][j].skip=true;continue;} // 고아 표시(원점 없음)는 아래에서 처리
+  let cs=1;while(j+cs<W&&c(i,j+cs)==="<")cs++;
+  let rs=1;while(i+rs<H){let ok=true;for(let k=0;k<cs;k++){const x=c(i+rs,j+k);if(!(x==="^"||(k>0&&x==="<"))){ok=false;break;}}if(!ok)break;rs++;}
+  L[i][j].rs=rs;L[i][j].cs=cs;
+  for(let a=0;a<rs;a++)for(let b=0;b<cs;b++)if(a||b)L[i+a][j+b].skip=true;
+ }
+ return L;
+}
+const isMergeMark=c=>{const v=mClean(c);return v==="^"||v==="<";};
+const spanAttr=x=>(x.rs>1?` rowspan="${x.rs}"`:"")+(x.cs>1?` colspan="${x.cs}"`:"");
 function tableHtml(ra,rb,mode){
  const rows=mode==="old"?ra:rb,other=mode==="old"?rb:ra;
  const n=Math.max(ra.length,rb.length),w=Math.max(1,...ra.map(r=>r.length),...rb.map(r=>r.length));
  let h='<table class="doc-t">';
+ const same=ra.length===rb.length&&ra.every((x,i)=>x.length===rb[i].length&&x.every((c,j)=>isMergeMark(c)===isMergeMark(rb[i][j])));
+ const SL=mode==="old"?spanLayout(ra):(mode==="both"&&!same?[]:spanLayout(rb));
  for(let i=0;i<n;i++){
   const A=ra[i],B=rb[i];
   if(mode==="old"&&!A)continue;if((mode==="new"||mode==="clean")&&!B)continue;
   const rowCls=!A?' class="row-ins"':!B?' class="row-del"':"";
   h+=`<tr${rowCls}>`;
   for(let j=0;j<w;j++){const a=A?.[j]??"",b=B?.[j]??"";
+   const sp=SL[i]?.[j]||{rs:1,cs:1};if(sp.skip)continue;
    const tag=i===0?"th":"td";
-   h+=`<${tag}>${!A?(mode==="clean"?cellHtml(b):`<ins>${cellHtml(b)}</ins>`):!B?`<del>${cellHtml(a)}</del>`:cellDiff(a,b,mode==="both"?"both":mode)}</${tag}>`;}
+   h+=`<${tag}${spanAttr(sp)}>${!A?(mode==="clean"?cellHtml(b):`<ins>${cellHtml(b)}</ins>`):!B?`<del>${cellHtml(a)}</del>`:cellDiff(a,b,mode==="both"?"both":mode)}</${tag}>`;}
   h+="</tr>";
  }
  return h+"</table>";
@@ -2996,7 +3025,7 @@ async function readImageDoc(files){
 - 글자를 고치거나 다듬지 말 것. 오탈자·띄어쓰기·날짜 형식도 보이는 그대로. 교정은 나중에 따로 합니다.
 - 문단과 항목마다 줄을 바꾸고, 문단 사이 빈 줄은 이미지대로. 화면 너비 때문에 생긴 줄바꿈은 이어서 한 줄로.
 - 항목 기호(1. 가. (1) □ ○ - 등)와 들여쓰기는 공백으로 대략 유지.
-- 표는 한 행을 한 줄로 '| 칸 | 칸 |' 형식으로 쓰고, 병합된 칸은 첫 칸에만 글자를 넣고 나머지는 빈칸, 칸 안의 줄바꿈은 <br>. 칸 너비 때문에 생긴 줄바꿈은 이어 쓸 것.
+- 표는 한 행을 한 줄로 '| 칸 | 칸 |' 형식으로 쓰고, 병합된 칸은 첫 칸에만 글자를 넣고 위 칸과 합쳐진 칸은 ^, 왼쪽 칸과 합쳐진 칸은 < 로 표시, 칸 안의 줄바꿈은 <br>. 칸 너비 때문에 생긴 줄바꿈은 이어 쓸 것.
 - 그림·도장·로고는 [그림], [직인]처럼 짧게 표시.`,{images:files,modelTier:"default"});
   const t=String(res?.text||"").trim();if(!t)throw{code:"invalid_json"};
   const ta=$("inText"),v=ta.value,p=ta.selectionStart;
@@ -3145,7 +3174,8 @@ function renderMarked(){
  return segs(mk).map((s,i)=>{
   if(s.t==="p")return`<div class="mblk">${markHtml(s.v)}</div>`;
   const w=Math.max(...s.rows.map(x=>x.length));
-  return`<div class="mblk"><table class="doc-t">${s.rows.map((row,ri)=>`<tr>${Array.from({length:w},(_,j)=>`<${ri===0?"th":"td"}>${markHtml(row[j]??"")}</${ri===0?"th":"td"}>`).join("")}</tr>`).join("")}</table></div>`;
+  const SL=spanLayout(s.rows);
+  return`<div class="mblk"><table class="doc-t">${s.rows.map((row,ri)=>`<tr>${Array.from({length:w},(_,j)=>{const sp=SL[ri][j];if(sp.skip)return"";return`<${ri===0?"th":"td"}${spanAttr(sp)}>${markHtml(row[j]??"")}</${ri===0?"th":"td"}>`;}).join("")}</tr>`).join("")}</table></div>`;
  }).join("");
 }
 function counts(){const ch=state.result?.edits||[];const dec=ch.filter(e=>e.dec).length,acc=ch.filter(e=>e.dec&&e.ok).length;return{n:ch.length,dec,acc,rej:dec-acc,left:ch.length-dec};}
@@ -3352,11 +3382,12 @@ async function run(){
 /* ================= 복사: 전체 / 문단만 / 표만 / 영역별 ================= */
 const cellPlain=c=>String(c??"").replace(/<br>/g,"\n");
 const tsvCell=c=>{const v=cellPlain(c);return /[\t\n"]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;};
+let SLc=null;
 function tableClipHtml(rows){
  const w=Math.max(1,...rows.map(r=>r.length));
- return'<table border="1" cellspacing="0" cellpadding="4" style="border-collapse:collapse;border:1px solid #000">'+rows.map((r,i)=>"<tr>"+Array.from({length:w},(_,j)=>`<td style="border:1px solid #000;padding:2px 6px;vertical-align:middle${i===0?";font-weight:bold;background:#e8f2ec;text-align:center":""}">${esc(cellPlain(r[j]??"")).replace(/\n/g,"<br>")||"&nbsp;"}</td>`).join("")+"</tr>").join("")+"</table>";
+ return'<table border="1" cellspacing="0" cellpadding="4" style="border-collapse:collapse;border:1px solid #000">'+(SLc=spanLayout(rows),rows.map((r,i)=>"<tr>"+Array.from({length:w},(_,j)=>{const sp=SLc[i][j];if(sp.skip)return"";return`<td${spanAttr(sp)} style="border:1px solid #000;padding:2px 6px;vertical-align:middle${i===0?";font-weight:bold;background:#e8f2ec;text-align:center":""}">${esc(cellPlain(r[j]??"")).replace(/\n/g,"<br>")||"&nbsp;"}</td>`;}).join("")+"</tr>")).join("")+"</table>";
 }
-const tableTsv=rows=>rows.map(r=>r.map(tsvCell).join("\t")).join("\n");
+const tableTsv=rows=>rows.map(r=>r.map(c=>isMergeMark(c)?"":tsvCell(c)).join("\t")).join("\n");
 const parasHtml=t=>t.split("\n").map(l=>`<p style="margin:0">${esc(l).replace(/^ +/,m=>"&nbsp;".repeat(m.length)).replace(/ {2}/g," &nbsp;")||"&nbsp;"}</p>`).join("");
 async function copyRich(html,plain,what){
  try{
