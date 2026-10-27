@@ -1050,6 +1050,7 @@ body{word-break:keep-all;overflow-wrap:break-word}
 .dl-ba{font-size:13px;overflow-wrap:anywhere}
 .dl-ba del{font-size:12px}
 .sgm.acc{background:var(--ins-bg)!important;color:var(--ins-fg)!important;border-bottom:2px solid var(--green)!important;font-weight:700}
+.sgm:empty{display:none}
 .sgm-del{font-size:.8em;color:var(--del-fg);background:var(--del-bg);border-radius:3px;padding:0 3px}
 
 /* ===== 점검 위치 표시 ===== */
@@ -1082,6 +1083,44 @@ body{word-break:keep-all;overflow-wrap:break-word}
 .zl-h{background:var(--muted)}.zl-t{background:var(--green)}.zl-b{background:var(--green-mid)}.zl-tb{background:var(--src-man)}
 @media (max-width:1100px){.zlegend{display:none}}
 @media (max-width:720px){#inText{padding-right:44px!important}.zone-mirror [data-tag]::after{font-size:9.5px;padding:0 4px}}
+
+/* ===== 요청 한도 안내 ===== */
+.runbar{flex-wrap:wrap}
+.rb-limit{flex-basis:100%;border-top:1px dashed var(--warn);margin-top:6px;padding-top:8px;font-size:12.5px}
+.rb-limit b{color:var(--warn)}
+.rb-limit p{margin:4px 0 8px;color:var(--ink);line-height:1.55}
+.rl-a{display:flex;flex-wrap:wrap;gap:6px}
+
+/* ===== 채팅창 검토: 두 가지 열기 구분 ===== */
+.open2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.o2{display:flex;gap:10px;align-items:flex-start;text-decoration:none;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--paper)}
+.o2:hover{border-color:var(--green);background:var(--green-soft)}
+.o2:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+.o2 span:last-child{display:flex;flex-direction:column;gap:2px;min-width:0}
+.o2 b{font-size:13.5px}
+.o2 small{font-size:11.5px;color:var(--muted);line-height:1.45}
+.o2-ic{font-size:18px;line-height:1.2}
+.o2-chat{border-left:4px solid #d97757}
+.o2-app{border-left:4px solid var(--green)}
+@media (max-width:720px){.open2{grid-template-columns:1fr}}
+
+.rl-diag{margin:0 0 6px!important;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:6px 8px}
+.rl-more summary{cursor:pointer;font-size:12px;color:var(--muted)}
+.rl-more p{margin:4px 0 6px;font-size:12px;color:var(--muted);overflow-wrap:anywhere}
+
+/* ===== 2단 보기 ===== */
+#out.out-split{overflow:hidden!important;padding:0!important;display:flex}
+.split2{display:grid;grid-template-columns:1fr 1fr;flex:1;min-height:0;width:100%}
+.sp-col{display:flex;flex-direction:column;min-width:0;min-height:0}
+.sp-col+.sp-col{border-left:2px solid var(--line)}
+.sp-h{margin:0;padding:7px 14px;font-size:12.5px;font-weight:700;background:var(--bg);border-bottom:1px solid var(--line);display:flex;gap:8px;align-items:baseline;flex:none}
+.sp-h small{font-weight:400;color:var(--muted);font-size:11px}
+.sp-orig .sp-h{color:var(--muted)}.sp-new .sp-h{color:var(--green)}
+.sp-body{flex:1;min-height:0;overflow:auto;padding:14px 16px}
+.sgm-o.pend{border-bottom:2px solid var(--c,var(--diff));background:color-mix(in srgb,var(--diff) 8%,transparent)}
+.sgm-o.acc{text-decoration:line-through;text-decoration-color:var(--del-fg);color:var(--del-fg);background:var(--del-bg)!important;border-bottom:0!important;font-weight:400!important}
+.sgm-o.rej{border-bottom:1px dashed var(--muted)}
+@media (max-width:900px){.split2{grid-template-columns:1fr;grid-template-rows:1fr 1fr}.sp-col+.sp-col{border-left:0;border-top:2px solid var(--line)}}
 </style>
 
 <header class="hd gut">
@@ -1225,8 +1264,8 @@ body{word-break:keep-all;overflow-wrap:break-word}
     <div class="aibar-t"><b id="aiBarHead">AI가 연결되지 않았습니다</b><span id="aiBarMsg">지금은 기본 규칙(맞춤법·띄어쓰기·날짜·기호)으로만 검토합니다. Claude를 연결하면 문장 구조 검토와 캡처 이미지 읽기까지 쓸 수 있습니다.</span></div>
     <div class="aibar-a">
       <button class="btn pri" id="aiConnect" type="button">Claude 연결하기</button>
-      <a class="btn pri" id="aiBarOpen" href="https://claude.ai/artifact/6m6wyQ3JLk84vFzx3Qysxw" target="_blank" rel="noopener" hidden>claude.ai에서 열기</a>
-      <button class="btn" id="aiBarChat" type="button" hidden>Claude 채팅창으로 검토</button>
+      <a class="btn pri" id="aiBarOpen" href="https://claude.ai/artifact/6m6wyQ3JLk84vFzx3Qysxw" target="_blank" rel="noopener" hidden>공문김군 claude.ai에서 열기 ↗</a>
+      <button class="btn" id="aiBarChat" type="button" hidden>Claude 채팅창으로 검토(복사·붙여넣기)</button>
       <button class="btn" id="aiBarKey" type="button" hidden>Claude API 키 입력</button>
       <a class="btn ghost" id="aiBarLogin" href="https://claude.ai/login" target="_blank" rel="noopener" hidden>claude.ai 로그인</a>
       <button class="btn ghost" id="aiBarBasic" type="button" title="AI 없이 기본 규칙으로만 쓰고 이 안내를 숨깁니다">기본 규칙만 쓰기</button>
@@ -1248,6 +1287,7 @@ body{word-break:keep-all;overflow-wrap:break-word}
         <div class="seg" id="view" role="tablist" aria-label="문서 보기">
           <button data-v="edit" aria-pressed="true">편집</button>
           <button data-v="mark" aria-pressed="false">제안 표시</button>
+          <button data-v="split" aria-pressed="false" title="왼쪽 원문 · 오른쪽 제안 표시를 나란히 봅니다">2단</button>
           <button data-v="diff" aria-pressed="false">비교</button>
           <button data-v="clean" aria-pressed="false">수정본</button>
         </div>
@@ -1307,6 +1347,13 @@ body{word-break:keep-all;overflow-wrap:break-word}
     <span class="status" id="status"></span>
   </div>
   <div class="rb-a"><button class="btn" id="stopBtn" hidden>중지</button><button class="btn pri" id="runBtn">검토하기</button></div>
+  <div class="rb-limit" id="rbLimit" hidden role="alert">
+    <b id="rlHead">Claude 요청 한도에 걸렸습니다</b>
+    <p class="rl-why">다음 중 하나일 때 생깁니다. ① 본인 Claude 사용 한도에 도달함(claude.ai 채팅에서도 한도 안내가 보이면 이 경우) ② 짧은 시간에 검토를 여러 번 누름 ③ 이 페이지가 다른 탭·창에도 열려 있음. 정밀 검토는 한도를 더 많이 씁니다.</p>
+    <p class="rl-diag" id="rlDiag"></p>
+    <details class="rl-more"><summary>자세한 정보</summary><p id="rlMsg"></p></details>
+    <div class="rl-a"><button class="btn sm pri" id="rlRetry" type="button" disabled>다시 시도</button><button class="btn sm" id="rlNoDeep" type="button" hidden>정밀 검토 끄고 다시 시도</button><button class="btn sm" id="rlChat" type="button">Claude 채팅창으로 검토</button></div>
+  </div>
 </div>
       <div class="score">
         <div class="ring" id="ring" style="--v:0"><b id="ringV">–</b></div>
@@ -1499,8 +1546,13 @@ body{word-break:keep-all;overflow-wrap:break-word}
     </ol>
     <div class="pop-row">
       <button class="btn pri" id="mnCopy" type="button">① 요청문 복사</button>
-      <a class="btn" href="https://claude.ai/new" target="_blank" rel="noopener">Claude 열기</a>
       <span class="meta" id="mnLen"></span>
+    </div>
+    <div class="open2">
+      <a class="o2 o2-chat" href="https://claude.ai/new" target="_blank" rel="noopener">
+        <span class="o2-ic" aria-hidden="true">💬</span><span><b>Claude 새 채팅 열기 ↗</b><small>복사한 요청문을 붙여 넣을 claude.ai 채팅창(새 탭). 답을 받아 아래 ②에 붙여 넣습니다.</small></span></a>
+      <a class="o2 o2-app" href="https://claude.ai/artifact/6m6wyQ3JLk84vFzx3Qysxw" target="_blank" rel="noopener">
+        <span class="o2-ic" aria-hidden="true">▤</span><span><b>공문김군을 claude.ai에서 열기 ↗</b><small>이 검토기를 claude.ai 안에서 엽니다. 본인 Claude 계정에 바로 연결돼 복사·붙여넣기 없이 검토합니다(문서는 다시 붙여 넣기).</small></span></a>
     </div>
     <details class="mn-peek"><summary>요청문 보기</summary><textarea id="mnPrompt" readonly rows="6"></textarea></details>
     <label class="tm-f"><span>② Claude 답 붙여넣기</span><textarea id="mnAns" rows="7" placeholder='{"edits":[…]} 형태의 답을 그대로 붙여 넣으세요. 앞뒤 설명이나 ```json 표시가 있어도 됩니다.'></textarea></label>
@@ -1924,7 +1976,9 @@ function htmlToText(html){
    const t=n.tagName;
    if(t==="BR"){out+="\n";return;}
    if(t==="TABLE"){nl();if(isFormTable(n)){layouts++;for(const row of n.rows){const line=[...row.cells].map(c=>flat(c).replace(/\u00a0/g," ").replace(/\s*\n\s*/g," ").trim()).filter(Boolean).join("  ");if(line){nl();out+=line;nl();}}return;}if(isLayoutTable(n)){layouts++;for(const row of n.rows)for(const c of row.cells){const tx=flat(c).replace(/\u00a0/g," ");if(tx.trim()){nl();out+=tx;nl();}}return;}tables++;out+=tableText(n)+"\n";return;}
-   const b=BLOCK.test(t);if(b)nl();
+   const b=BLOCK.test(t);
+   if(b&&t!=="TR"&&!n.textContent.replace(/[\s\u00a0]/g,"")&&!n.querySelector("img,table,hr")){if(out&&!/\n\n$/.test(out))out+=out.endsWith("\n")?"\n":"\n\n";return;} // 빈 문단 = 빈 줄 하나
+   if(b)nl();
    for(const c of n.childNodes)walk(c);
    if(b)nl();
   })(root);
@@ -1989,14 +2043,23 @@ $("inText").addEventListener("paste",e=>{
   if(r.layouts)parts.push(`공문 서식 틀(수신·제목·결재란·글상자 등 표) ${r.layouts}개를 일반 줄로 풀어 넣음`);
   if(r.tables)parts.push(`표 ${r.tables}개를 ‘| 칸 |’ 표로 넣음`);
   if(/\|\s*[\^<]\s*(?=\|)/.test(r.text))parts.push("병합된 칸은 ‘^’(위 칸과 병합)·‘<’(왼쪽 칸과 병합)로 표시 — 보기·복사·Word 저장에서는 병합된 표로 나옵니다");
+ }else if(html&&/<(p|div|li|h[1-6]|br)[\s>\/]/i.test(html)&&!(plain&&/\t/.test(plain)&&/\n/.test(plain))){
+  // 한글·워드·웹 결재 화면에서 복사: 브라우저가 만든 글자판(문단마다 빈 줄)이 아니라 원래 문단 구조를 사용
+  const r=htmlToText(html);const pl=(plain.match(/\n/g)||[]).length,hl=(r.text.match(/\n/g)||[]).length;
+  if(r.text.trim()){t=r.text;if(pl-hl>=2)parts.push(`문단 사이에 겹쳐 들어간 빈 줄 ${pl-hl}개를 정리`);}
  }else if(plain&&/\t/.test(plain)&&/\n/.test(plain)){
   const r=tsvToPipe(plain);if(r.tables){t=r.text;parts.push(`표 ${r.tables}개를 ‘| 칸 |’ 표로 넣음`);}
  }
  if(t===null)t=plain||(html?htmlToText(html).text:"");
  if(!t)return;
+ // 글자판만 있을 때: 거의 모든 줄 사이에 빈 줄이 끼어 있으면(웹·메일 복사) 한 줄로 줄임
+ {const L=t.split("\n"),ne=L.filter(l=>l.trim()).length,bl=L.length-ne;let alt=0;for(let i=1;i+1<L.length;i++)if(!L[i].trim()&&L[i-1].trim()&&L[i+1].trim())alt++;
+  const adj=L.some((l,i)=>i>0&&l.trim()&&L[i-1].trim()&&!isTable(l));
+  if(ne>=4&&alt>=Math.max(3,(ne-1)*0.7)&&!adj){t=t.replace(/\n[ \t]*\n(?=[ \t]*\S)/g,"\n").replace(/\n{3,}/g,"\n\n");parts.push(`문단마다 들어간 빈 줄 ${alt}개를 정리`);}}
  const cf=cleanForeign(t);if(cf.count){t=cf.text;parts.push(`네모(□)로 보이는 특수·제어 문자 ${cf.count}개를 지움`);}
  const u=unwrapLines(t);if(u.count){t=u.text;parts.push(`화면 폭 때문에 끊긴 줄 ${u.count}곳을 이어 붙임`);}
  const tr=t.replace(/[ \t]+$/gm,"");if(tr!==t){t=tr;}
+ if(!parts.length)$("inMsg").textContent="";
  if(t===plain0&&!parts.length)return; // 바꿀 것이 없으면 기본 붙여넣기
  e.preventDefault();pasteInsert(ta,t);
  if(parts.length){pasteReport(parts,plain||t,start);if(pasteUndo)pasteUndo.len=t.length;toast("붙여넣기를 정리했습니다. 아래 안내에서 원래대로 되돌릴 수 있습니다.");}
@@ -3144,7 +3207,7 @@ function markHtml(text){
  return esc(text).replace(/([-])([\s\S]*?)/g,(m,c,inner)=>{
   const id=c.charCodeAt(0)-0xE100,e=state.result.edits.find(x=>x.id===id);if(!e)return inner;
   const s=e.src in SRC?e.src:"norm",cls=!e.dec?"pend":(e.ok?"acc":"rej"),cur=id===curId?" cur":"";
-  const body=inner||(cls==="acc"?'<span class="sgm-del">⌫</span>':"");
+  const body=inner;if(!body)return""; // 삭제를 수락한 곳 등 빈 표시는 그리지 않음
   return`<span class="sgm ${cls}${cur}" data-id="${id}" style="--c:var(--src-${s==="team"?"norm":s})" title="${esc((cls==="acc"?"수락됨 · 원문: "+e.find:(e.type||"수정")+": "+e.find+" → "+e.replace))}">${body}</span>`;
  }).replace(/&lt;br&gt;/g,"<br>").replace(/[\uE000-\uE1FF]/g,"");
 }
@@ -3236,8 +3299,8 @@ function render(){
  ta.hidden=!editing;out.hidden=editing;
  $("emptyStart").hidden=!(editing&&!ta.value.trim());
  if(!editing&&r){
-  out.className="out paper out-blocks";
-  out.innerHTML=state.view==="mark"?renderMarked():renderDoc(state.source,r.corrected,state.view==="diff"?"diff":"clean");
+  out.className="out paper out-blocks"+(state.view==="split"?" out-split":"");
+  out.innerHTML=state.view==="split"?renderSplit():state.view==="mark"?renderMarked():renderDoc(state.source,r.corrected,state.view==="diff"?"diff":"clean");
  }
  renderCards();
  const notes=(r&&Array.isArray(r.notes))?r.notes.filter(Boolean):[];
@@ -3259,9 +3322,9 @@ function renderStepper(){
 function selectEdit(id,scroll=true){
  curId=id;
  document.querySelectorAll(".card.cur,.sgm.cur").forEach(x=>x.classList.remove("cur"));
- const card=document.querySelector(`.card[data-id="${id}"]`),span=document.querySelector(`.sgm[data-id="${id}"]`);
- card?.classList.add("cur");span?.classList.add("cur");
- if(scroll){card?.scrollIntoView({block:"nearest",behavior:"smooth"});span?.scrollIntoView({block:"center",behavior:"smooth"});}
+ const card=document.querySelector(`.card[data-id="${id}"]`),spans=[...document.querySelectorAll(`.sgm[data-id="${id}"]`)],span=spans[0];
+ card?.classList.add("cur");spans.forEach(x=>x.classList.add("cur"));
+ if(scroll){card?.scrollIntoView({block:"nearest",behavior:"smooth"});spans.forEach(x=>x.scrollIntoView({block:"center",behavior:"smooth"}));}
 }
 function decide(id,acc){
  const r=state.result;if(!r)return;const e=r.edits.find(x=>x.id===id);if(!e)return;
@@ -3348,7 +3411,10 @@ $("summary").addEventListener("click",()=>$("summary").classList.toggle("open"))
 /* ================= 실행 ================= */
 function splitChunks(t,max){
  if(t.length<=max)return[t];
- const paras=t.split(/\n[ \t]*\n/),out=[];let cur="";
+ const paras0=t.split(/\n[ \t]*\n/),paras=[];
+ // 문단 하나가 너무 길면 줄 단위로 나눔(표 중간은 자르지 않음)
+ for(const p of paras0){if(p.length<=max){paras.push(p);continue;}const L=p.split("\n");let c="";for(let i=0;i<L.length;i++){const l=L[i];if(c&&c.length+l.length+1>max&&!(isTable(l)&&isTable(L[i-1]||""))){paras.push(c);c=l;}else c=c?c+"\n"+l:l;}if(c)paras.push(c);}
+ const out=[];let cur="";
  for(const p of paras){if(cur&&(cur.length+p.length+2)>max){out.push(cur);cur=p;}else cur=cur?cur+"\n\n"+p:p;}
  if(cur)out.push(cur);return out;
 }
@@ -3376,11 +3442,14 @@ async function run(){
  timer=setInterval(()=>{try{bzTick();}catch{}statusEl.textContent=`검토 중${part} ${Math.round((Date.now()-t0)/1000)}초${got?` · ${got.toLocaleString()}자 작성`:""}`;},500);
  try{
   const mask=$("piiMask").checked?maskPII(src):{text:src,map:[]};
-  const chunks=splitChunks(mask.text,4500),all=[],sums=[],notes=[];bzStart(chunks);
+  const chunks=splitChunks(mask.text,12000),all=[],sums=[],notes=[];bzStart(chunks);let partialAt=0;rlHide();
   for(let i=0;i<chunks.length;i++){
    part=chunks.length>1?` · 구간 ${i+1}/${chunks.length}`:"";got=0;bzChunk(i);
-   const res=await sample.json(buildRules(state.scope,extraRules())+`\n\n[검토할 문서${chunks.length>1?` — 전체 ${chunks.length}구간 중 ${i+1}구간(다른 구간은 따로 검토함)`:""}]\n<<<\n${chunks[i]}\n>>>`,
-    {signal:ctl.signal,modelTier:$("deep").checked?"complex":"default",onText:({text})=>{got=text.length;bz.got=got;}});
+   const tier=$("deep").checked?"complex":"default";callLog("start",tier,chunks[i].length);
+   let res;try{res=await sample.json(buildRules(state.scope,extraRules())+`\n\n[검토할 문서${chunks.length>1?` — 전체 ${chunks.length}구간 중 ${i+1}구간(다른 구간은 따로 검토함)`:""}]\n<<<\n${chunks[i]}\n>>>`,
+    {signal:ctl.signal,modelTier:$("deep").checked?"complex":"default",onText:({text})=>{got=text.length;bz.got=got;}});}
+   catch(err){callLog(err?.code||"error",tier,chunks[i].length,err?.message);if(err?.code==="rate_limited"&&i>0){partialAt=i;lastRl=err;break;}throw err;}
+   callLog("ok",tier,chunks[i].length);
    if(!res||(!Array.isArray(res.edits)&&typeof res.corrected!=="string"))throw{code:"invalid_json"};
    if(Array.isArray(res.edits)){for(const e of res.edits){if(!e||typeof e.find!=="string"||typeof e.replace!=="string")continue;
      all.push({src:e.src,type:e.type,where:e.where,reason:e.reason,basis:e.basis,find:unmask(e.find,mask.map),replace:unmask(e.replace,mask.map)});}}
@@ -3388,6 +3457,7 @@ async function run(){
    if(res.summary)sums.push(String(res.summary));if(Array.isArray(res.notes))notes.push(...res.notes.map(n=>unmask(n,mask.map)));
   }
   bzDone();
+  if(partialAt){notes.unshift(`Claude 요청 한도에 걸려 ${chunks.length}구간 중 ${partialAt}구간까지만 검토했습니다. 1~2분 뒤 ‘다시 검토하기’를 누르면 이미 검토한 구간은 5분 동안 저장된 답을 다시 쓰고 나머지만 검토합니다.`);rlShow(true);}
   const{kept,prot}=protectEdits(all);
   if(prot.length)notes.push(`팀 용어집의 공식 명칭(${prot.join(", ")})을 바꾸는 제안은 뺐습니다.`);
   if(mask.map.length)notes.unshift(`개인정보 ${mask.map.length}건을 가린 뒤 AI에 보냈고, 결과에는 원래 값으로 되돌렸습니다.`);
@@ -3400,6 +3470,11 @@ async function run(){
   const msg={cancelled:"검토를 중지했습니다.",rate_limited:"요청이 많습니다. 잠시 후 다시 시도하세요.",invalid_json:"결과 형식이 올바르지 않습니다. 다시 시도하세요.",refused:"이 내용은 검토할 수 없습니다.",session_expired:"다시 로그인한 뒤 시도하세요.",prompt_too_large:"문서가 너무 깁니다. 나누어 검토하세요.",bad_key:"API 키가 올바르지 않습니다. AI 연결에서 키를 확인하세요.",network:"AI 서버에 연결하지 못했습니다. claude.ai 페이지 안에서는 API 키 방식을 쓸 수 없으니 내려받은 HTML 파일에서 쓰거나 ‘Claude 채팅창 이용’을 고르세요.",bad_model:"모델 이름을 찾을 수 없습니다. ‘연결 확인’으로 목록을 불러와 고르세요.",quota:"API 사용 한도나 잔액이 부족합니다."}[e?.code]||(e?.detail?"AI 오류: "+e.detail:"");
   if(["not_granted","sampling_disabled","not_declared","capability_disabled","capability_removed"].includes(e?.code)){
    if(provider==="claude"){claudeSample=null;}sample=null;setAi(e.code==="not_granted"?"denied":"off");state={...state,result:basicEdits(src),source:src,isExample:false,finalized:false};applyScope();render();statusEl.textContent="Claude를 쓸 수 없어 기본 점검으로 대신했습니다.";done();
+  }else if(e?.code==="rate_limited"){lastRl=e;
+   // 진행이 멈추지 않도록 기본 규칙 결과를 먼저 보여 주고, 사용자가 나중에 다시 시도
+   state={...state,result:basicEdits(src),source:src,isExample:false,finalized:false};
+   (state.result.notes=state.result.notes||[]).unshift("Claude 요청 한도에 걸려 우선 기본 규칙으로 검토한 결과입니다. 잠시 뒤 다시 검토하면 AI 검토를 받을 수 있습니다.");
+   applyScope();render();statusEl.textContent="Claude 요청 한도 · 기본 규칙 결과를 표시했습니다.";rlShow(false);
   }else{render();statusEl.textContent=msg||"검토 중 오류가 났습니다. 다시 시도하세요.";}
  }finally{clearInterval(timer);$("busy").hidden=true;$("runBtn").disabled=false;$("mRun").disabled=false;$("stopBtn").hidden=true;renderRunBar();}
 }
@@ -3945,7 +4020,7 @@ function renderAcct(){
   const nm=meName?meName.split(" · ")[0]:"";
   if(sample&&provider==="claude"){st="on";av=(nm||"C").slice(0,1);head="Claude 계정 연결됨";sub=meName||"claude.ai에 로그인한 본인 계정";acts=B("off","연결 끊기","sm ghost");note="AI 검토는 이 계정으로 이루어지고 사용량도 본인 Claude 한도에서 차감됩니다.";}
   else if(sample){st="on";head=provider==="manual"?"Claude 채팅창 이용 중":"Claude API 키로 연결됨";sub=provider==="manual"?"요청문을 claude.ai 채팅에 붙여 넣는 방식":(lsGet("kku-model-anthropic")||DEF_MODEL.anthropic);
-   acts=IN_ARTIFACT?B("connect","본인 Claude 계정으로 바꾸기","pri"):L(OPEN_URL,"claude.ai에서 열기 ↗","pri");}
+   acts=IN_ARTIFACT?B("connect","본인 Claude 계정으로 바꾸기","pri"):L(OPEN_URL,"공문김군 claude.ai에서 열기 ↗","pri");}
   else if(IN_ARTIFACT){
    st="off";head="Claude 계정이 연결되지 않았습니다";
    sub={denied:"Claude 사용 권한이 꺼져 있습니다. 연결하기를 누르면 권한 허용 창이 뜹니다.",unavail:"로그인이 풀렸거나 연결이 끊겼습니다. claude.ai에 로그인한 뒤 다시 연결하세요.",none:"지금은 AI 없이 기본 규칙으로만 검토합니다.",wait:"연결 상태를 확인하고 있습니다."}[aiWhy]||"연결하면 본인 Claude 계정으로 문장 구조 검토·이미지 읽기까지 씁니다.";
@@ -3954,7 +4029,7 @@ function renderAcct(){
   }else{
    st="off";head="이 파일에서는 Claude 계정에 로그인할 수 없습니다";
    sub="내려받은 HTML은 claude.ai 밖에서 열려 계정 연결이 막혀 있습니다.";
-   acts=L(OPEN_URL,"claude.ai에서 열기 ↗","pri")+B("chat","채팅창 이용","sm")+B("key","API 키","sm");
+   acts=L(OPEN_URL,"공문김군 claude.ai에서 열기 ↗","pri")+B("chat","채팅창 이용","sm")+B("key","API 키","sm");
    note="claude.ai에서 열면 로그인한 본인 계정으로 바로 검토합니다. 학교 조직 계정으로 로그인해야 열 수 있습니다.";
   }
   box.dataset.st=st;$("acctAv").textContent=av;$("acctHead").textContent=head;$("acctSub").textContent=sub;act.innerHTML=acts;$("acctNote").textContent=note;
@@ -4169,6 +4244,52 @@ $("inText").addEventListener("input",renderZones);
 $("inText").addEventListener("scroll",()=>{const m=$("inZones");if(!m.hidden)m.scrollTop=$("inText").scrollTop;});
 window.addEventListener("resize",renderZones);
 try{new ResizeObserver(renderZones).observe($("inText"));}catch{}
+
+/* ================= Claude 요청 한도(rate_limited) 안내 ================= */
+let rlTimer=null;
+function rlHide(){clearInterval(rlTimer);const b=$("rbLimit");if(b)b.hidden=true;}
+function rlShow(partial){
+ const box=$("rbLimit");box.hidden=false;try{rlDiagnose();}catch{}
+ $("rlHead").textContent=partial?"Claude 요청 한도로 일부 구간만 검토했습니다":"Claude 요청 한도에 걸렸습니다 · 기본 규칙 결과를 표시 중";
+ $("rlNoDeep").hidden=!$("deep").checked;
+ let left=60;const btn=$("rlRetry");btn.disabled=true;btn.textContent=`다시 시도 (${left}초 뒤)`;
+ clearInterval(rlTimer);rlTimer=setInterval(()=>{left--;if(left<=0){clearInterval(rlTimer);btn.disabled=false;btn.textContent="다시 시도";}else btn.textContent=`다시 시도 (${left}초 뒤)`;},1000);
+}
+$("rlRetry").onclick=()=>{rlHide();run();};
+$("rlNoDeep").onclick=()=>{$("deep").checked=false;$("deep").dispatchEvent(new Event("change"));$("rlNoDeep").hidden=true;toast("정밀 검토를 껐습니다. 한도를 덜 씁니다. ‘다시 시도’가 켜지면 눌러 주세요.");};
+$("rlChat").onclick=()=>{rlHide();provider="manual";lsSet("kku-prov","manual");applyProvider();run();};
+
+/* 요청 기록(이 창): 한도 원인 추정용 — 문서 내용은 남기지 않음 */
+let lastRl=null;
+function callLog(kind,tier,chars,msg){try{const L=JSON.parse(ssGet("kku-calls")||"[]");L.push({t:Date.now(),k:kind,tier,chars,msg:msg?String(msg).slice(0,160):undefined});ssSet("kku-calls",JSON.stringify(L.slice(-60)));}catch{}}
+function rlDiagnose(){
+ let L=[];try{L=JSON.parse(ssGet("kku-calls")||"[]");}catch{}
+ const now=Date.now(),win=L.filter(x=>now-x.t<10*60e3),starts=win.filter(x=>x.k==="start"),deep=starts.filter(x=>x.tier==="complex").length,rls=win.filter(x=>x.k==="rate_limited").length,oks=win.filter(x=>x.k==="ok").length;
+ let guess;
+ if(starts.length<=2&&oks===0)guess="이 창에서는 요청을 거의 보내지 않았는데 막혔습니다. <b>본인 Claude 사용 한도</b>(claude.ai 채팅·Cowork·Claude Code와 함께 쓰는 한도)에 도달했거나, 이 페이지가 <b>다른 탭·창에도 열려</b> 요청 몫을 나눠 쓰고 있을 가능성이 큽니다.";
+ else if(starts.length>=4)guess=`최근 10분 동안 이 창에서 Claude 요청을 ${starts.length}회 보냈습니다. <b>짧은 시간에 요청이 몰려</b> 막혔을 가능성이 큽니다. 몇 분 쉬었다가 다시 시도하세요.`;
+ else guess="본인 Claude 사용 한도 또는 짧은 시간의 반복 요청 때문일 수 있습니다.";
+ $("rlDiag").innerHTML=`${guess}<br><span class="meta">이 창 최근 10분: 요청 ${starts.length}회(정밀 ${deep}회) · 성공 ${oks}회 · 한도 거절 ${rls}회</span>`;
+ $("rlMsg").textContent=lastRl?.message?`claude.ai 응답: ${lastRl.message}`:"claude.ai가 자세한 사유를 보내지 않았습니다. claude.ai 채팅 화면이나 설정의 사용량 안내에서 한도 상태를 확인할 수 있습니다.";
+}
+
+/* ================= 2단 보기: 왼쪽 원문 · 오른쪽 제안 표시 ================= */
+function renderOrig(){
+ const r=state.result,mk=fixMarks(markedSource(state.source,r.edits.filter(e=>!e.bulk)));
+ const mh=t=>esc(t).replace(/([])([-])([\s\S]*?)/g,(m,a,c,inner)=>{const id=c.charCodeAt(0)-0xE100,e=r.edits.find(x=>x.id===id);if(!e||!inner)return inner;
+  const cls=!e.dec?"pend":(e.ok?"acc":"rej");return`<span class="sgm sgm-o ${cls}" data-id="${id}" title="${esc((e.type||"수정")+": → "+e.replace)}">${inner}</span>`;}).replace(/&lt;br&gt;/g,"<br>").replace(/[-]/g,"");
+ return segs(mk).map(s=>{
+  if(s.t==="p")return`<div class="mblk">${mh(s.v)}</div>`;
+  const w=Math.max(...s.rows.map(x=>x.length)),SL=spanLayout(s.rows);
+  return`<div class="mblk"><table class="doc-t">${s.rows.map((row,ri)=>`<tr>${Array.from({length:w},(_,j)=>{const sp=SL[ri][j];if(sp.skip)return"";const tg=ri===0?"th":"td";return`<${tg}${spanAttr(sp)} style="text-align:${cellAlign(row[j],ri===0)}">${mh(row[j]??"")}</${tg}>`;}).join("")}</tr>`).join("")}</table></div>`;
+ }).join("");
+}
+function renderSplit(){
+ return`<div class="split2"><section class="sp-col sp-orig" aria-label="원문"><h4 class="sp-h">원문 <small>바꿀 곳에 밑줄</small></h4><div class="sp-body" id="spL">${renderOrig()}</div></section><section class="sp-col sp-new" aria-label="제안 표시"><h4 class="sp-h">제안 표시 <small>수락한 곳은 초록 글자</small></h4><div class="sp-body" id="spR">${renderMarked()}</div></section></div>`;
+}
+/* 두 단 스크롤 맞춤(비율) */
+let spLock=false;
+$("out").addEventListener("scroll",e=>{const t=e.target;if(!t.classList||!t.classList.contains("sp-body")||spLock)return;const o=t.id==="spL"?$("spR"):$("spL");if(!o)return;spLock=true;const k=t.scrollTop/Math.max(1,t.scrollHeight-t.clientHeight);o.scrollTop=k*(o.scrollHeight-o.clientHeight);requestAnimationFrame(()=>spLock=false);},true);
 (function init(){
  if(BETA)document.body.classList.add("is-beta");
  let draft=lsGet("kku-draft")||"",type=lsGet("kku-type")||"inner";
