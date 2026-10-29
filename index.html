@@ -1,3 +1,5 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}.acct-multi{margin-top:8px;font-size:12px;line-height:1.55}.acct-multi summary{cursor:pointer;font-weight:600;opacity:.85}.acct-mb{padding:6px 2px 0}.acct-mb p{margin:6px 0}.acct-mb ul{margin:2px 0 6px;padding-left:18px}.acct-mb li{margin:3px 0}.acct-src{opacity:.7}
+</style></head><body>
 <title>KU 공문김군 (Beta)</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1188,6 +1190,23 @@ body{word-break:keep-all;overflow-wrap:break-word}
           <div class="acct-h"><span class="acct-av" id="acctAv" aria-hidden="true">C</span><div class="acct-t"><b id="acctHead">Claude 연결 확인 중</b><small id="acctSub"></small></div></div>
           <div class="acct-a" id="acctAct"></div>
           <p class="acct-n" id="acctNote"></p>
+          <details class="acct-multi" id="acctMulti"><summary>Claude 계정이 여러 개일 때</summary>
+            <div class="acct-mb">
+              <p>AI 검토는 <b>이 브라우저·앱에 지금 로그인된 claude.ai 계정</b>으로 실행되고, 그 계정의 사용 한도에서 차감됩니다. 이 화면에서 계정을 고르는 기능은 없습니다. 위 계정 표시가 의도한 계정인지 먼저 확인하세요.</p>
+              <p><b>PC</b></p>
+              <ul>
+                <li>개인 계정과 팀·기관 계정이 <u>같은 이메일</u>이면 claude.ai 왼쪽 아래 이름(이니셜)을 눌러 계정을 고릅니다. 체크 표시가 현재 계정입니다.</li>
+                <li><u>이메일이 다르면</u> claude.ai에서 로그아웃한 뒤 원하는 계정으로 다시 로그인하고, 공문김군 탭을 새로고침하세요.</li>
+                <li>계정을 자주 바꾼다면 Chrome 프로필(계정별)이나 시크릿 창을 따로 쓰면 로그아웃 없이 동시에 쓸 수 있습니다.</li>
+              </ul>
+              <p><b>모바일</b></p>
+              <ul>
+                <li>Claude 앱에서 프로필 아이콘 → 로그아웃 후 원하는 계정으로 로그인합니다(기기별로 로그아웃).</li>
+                <li>공문김군은 모바일 브라우저(Chrome·Safari)에서 claude.ai 링크로 열 수 있습니다. 그 브라우저에 로그인된 계정이 사용됩니다.</li>
+              </ul>
+              <p class="acct-src">학교(조직) 계정으로 사용하려면 그 계정으로 로그인한 상태여야 합니다. 로그인은 Google 계정 또는 이메일 링크로 할 수 있습니다. 자세한 내용: Claude 도움말 ‘Switching between Claude accounts’.</p>
+            </div>
+          </details>
         </div>
         <details class="prov-more" id="provMore"><summary>다른 연결 방식</summary>
         <div class="prov" id="prov" role="radiogroup" aria-label="AI 연결 방식">
@@ -1856,6 +1875,8 @@ function buildRules(scope,extra=""){
 [항목 기호 · 가나다 점검]
 - 같은 수준의 기호가 순서대로 이어지는지 확인: 1. 2. 3. / 가. 나. 다. 라. 마. 바. 사. 아. 자. 차. 카. 타. 파. 하. 다음은 거. 너. 더. — 빠지거나(가.→다.) 겹친(나.→나.) 기호를 바로잡을 것.
 - 상위 기호 다음에는 바로 아래 단계 기호만 쓸 것(단계 건너뛰기 금지). 기호 뒤 1타(한 칸), 하위 항목은 상위보다 2타(두 칸) 들여쓰기.
+- 같은 번호가 여러 번 반복되거나(1. 2. 3. … 1. 2. 3.) 중간에 다시 1.로 돌아가는 경우도 오류다. 앞 항목에서 이어지는 번호로 바로잡을 것. 단, ‘붙임’·‘첨부’ 목록의 1. 2.는 본문과 별개로 새로 센다.
+- 같은 번호 기호가 문서에 여러 번 나오므로 find에는 기호만 쓰지 말고 항목 글 첫머리 몇 어절까지 포함해 원문에서 한 곳만 해당하도록 할 것(예: ‘2. 사업 추진 일정’).
 - 이런 수정은 type "항목 기호", where에 "본문 n행"처럼 위치를 적을 것.
 
 [표 안 내용 검토]
@@ -2200,18 +2221,26 @@ const LEVELS={in:["1.","가.","(1)","(가)","1)"],out:["1.","가.","1)","가)","
 const symOf=(cls,idx)=>({"1.":`${idx}.`,"가.":`${HSEQ[idx-1]||"?"}.`,"(1)":`(${idx})`,"(가)":`(${HSEQ[idx-1]||"?"})`,"1)":`${idx})`,"가)":`${HSEQ[idx-1]||"?"})`,"①":String.fromCharCode(0x2460+idx-1),"㉮":String.fromCharCode(0x326E+idx-1)}[cls]);
 function itemPlan(L,scope){
  // 각 항목 줄의 위계·기대 들여쓰기·순서 오류를 계산
- const order=LEVELS[scope==="out"?"out":"in"],plan=[];let base=null,root=0,cnt=[],lastLv=0;
+ const order=LEVELS[scope==="out"?"out":"in"],plan=[];let base=null,root=0,cnt=[],lastLv=0,attach=false;
  L.forEach((l,i)=>{
   if(isTable(l)||!l.trim())return;
-  const lead=l.match(/^\s*/)[0].replace(/\t/g,"  ").length,body=l.trimStart(),mk=mkInfo(body);if(!mk)return;
+  const lead=l.match(/^\s*/)[0].replace(/\t/g,"  ").length,body=l.trimStart();
+  /* 붙임·첨부 목록은 본문 항목과 별개 번호 체계: 이 줄부터 새 블록으로 센다 */
+  if(/^(붙\s*임|첨\s*부)(\s|:|$)/.test(body)){cnt=[];lastLv=0;attach=true;
+   const am=body.replace(/^(붙\s*임|첨\s*부)\s*:?\s*/,"").match(/^(\d{1,2})\./);if(am)cnt[0]=+am[1];return;}
+  const mk=mkInfo(body);if(!mk)return;
   const lv=order.indexOf(mk.cls)+1;
   const p={i,lead,mk,lv,issues:[]};
   if(!lv){p.issues.push(["위계",`‘${mk.k}’는 ${scope==="out"?"편람":"학교 규정"} 항목 기호 체계에 없는 기호입니다(${order.join(" → ")}).`]);plan.push(p);return;}
   if(base===null){base=lead;root=lv;}else if(lv<root){base=Math.max(0,base-2*(root-lv));root=lv;}
+  if(attach){ /* 붙임 목록: 1. 2. 3. 순서만 점검 */
+   cnt.length=lv;const ex=(cnt[lv-1]||0)+1;
+   if(lv===1&&mk.idx!==ex)p.issues.push(["순서",mk.idx<ex?(mk.idx===1?`붙임 목록이 ‘1.’로 다시 시작했습니다. ‘${ex}.’ 차례입니다.`:`‘${mk.k}’가 반복됩니다. ‘${ex}.’ 차례입니다.`):`‘${ex}.’ 차례인데 ‘${mk.k}’가 왔습니다(빠진 붙임 확인).`]);
+   cnt[lv-1]=mk.idx;lastLv=lv;p.expLead=lead;plan.push(p);return;}
   if(lv>lastLv+1&&lastLv>0)p.issues.push(["위계",`‘${order[lastLv-1]}’ 다음 하위 항목은 ‘${order[lastLv]}’입니다. ‘${mk.k}’는 ${lv}번째 항목 기호입니다(${scope==="out"?"편람 p.51":"규정 제21조"}).`]);
   else if(lastLv===0&&lv>1&&i>0)p.issues.push(["위계",`상위 항목 없이 ${lv}번째 항목 기호 ‘${mk.k}’로 시작합니다. 첫째 항목은 ‘${order[0]}’입니다.`]);
   cnt.length=lv;const exp=(cnt[lv-1]||0)+1;
-  if(mk.idx!==exp&&mk.idx!==1)p.issues.push(["순서",mk.idx<exp?`‘${mk.k}’가 반복됩니다. ‘${symOf(mk.cls,exp)}’ 차례입니다.`:`‘${symOf(mk.cls,exp)}’ 차례인데 ‘${mk.k}’가 왔습니다(빠진 항목 확인).`]);
+  if(mk.idx!==exp)p.issues.push(["순서",mk.idx<exp?(mk.idx===1?`‘${mk.k}’로 다시 시작했습니다(앞에서 이어진 번호가 있음). ‘${symOf(mk.cls,exp)}’ 차례입니다.`:`‘${mk.k}’가 반복됩니다. ‘${symOf(mk.cls,exp)}’ 차례입니다.`):`‘${symOf(mk.cls,exp)}’ 차례인데 ‘${mk.k}’가 왔습니다(빠진 항목 확인).`]);
   cnt[lv-1]=mk.idx;lastLv=lv;
   p.expLead=base+2*(lv-root);
   plan.push(p);
@@ -4507,3 +4536,5 @@ $("cardSave").onclick=async()=>{
  sync();
 })();
 </script>
+
+</body></html>
