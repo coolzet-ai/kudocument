@@ -1,3 +1,4 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>KU 공문김군 (Beta)</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -889,6 +890,7 @@ main{padding-block:10px 24px!important}
 /* ===== 베타 ===== */
 .beta-tag{font-style:normal;font-family:var(--f-mono);font-size:9.5px;font-weight:700;letter-spacing:.06em;color:#fff;background:var(--red);border-radius:3px;padding:1px 5px;vertical-align:3px;margin-left:2px}
 .beta-foot{color:var(--red);font-weight:700}
+.upd{white-space:nowrap}.upd b{font-family:var(--f-mono);color:var(--green)}
 .ai-pill.beta{background:var(--green);border-color:var(--green);color:#fff}
 [data-nobeta]{display:none}
 body.is-beta .nb{display:none}
@@ -1555,7 +1557,7 @@ body{word-break:keep-all;overflow-wrap:break-word}
     <p class="meta">이용·인용 문의: coolzet@konkuk.ac.kr</p>
   </div>
   <span>기준: 건국대학교 문서규정(2025. 10. 1. 개정) · 2025 행정업무운영 편람(행정안전부) · 쉬운 공문서 쓰기 길잡이(국립국어원, 2022)</span>
-  <span>앵커사업단 업무 지원용 비공식 도구 · <b class="beta-foot">베타 버전</b> · 문의 coolzet@konkuk.ac.kr · <a href="https://teams.microsoft.com/l/chat/0/0?users=coolzet@konkuk.ac.kr" target="_blank" rel="noopener" class="foot-tm" id="footTm">Teams 채팅</a> · <a href="#admin" data-tab="admin" class="foot-adm">관리자</a></span>
+  <span>앵커사업단 업무 지원용 비공식 도구 · <b class="beta-foot">베타 버전</b> · <span class="upd" id="appUpd" title="기능을 고칠 때마다 바뀝니다">업데이트 <b>2026. 11. 3.</b> · v57</span> · 문의 coolzet@konkuk.ac.kr · <a href="https://teams.microsoft.com/l/chat/0/0?users=coolzet@konkuk.ac.kr" target="_blank" rel="noopener" class="foot-tm" id="footTm">Teams 채팅</a> · <a href="#admin" data-tab="admin" class="foot-adm">관리자</a></span>
 </div></footer>
 <div class="te-wrap" id="cardWrap" hidden>
   <div class="te card-dlg" role="dialog" aria-modal="true" aria-labelledby="cardHead">
@@ -1836,6 +1838,8 @@ function buildRules(scope,extra=""){
 - '| 칸 | 칸 |' 형식의 줄은 한글·워드에서 붙여 넣은 표입니다. 행·열 수와 순서, '|' 구분자를 그대로 유지하고 칸 안의 글자만 교정. 칸 안의 '<br>'은 칸 내부 줄바꿈이므로 그대로 둘 것. ‘^’(위 칸과 병합)·‘<’(왼쪽 칸과 병합)는 병합 칸 표시이므로 그대로 두고, 빈 칸은 채우지 말 것.
 - 표로 본문이 끝나면 표 다음 줄 왼쪽에서 '  끝.'(편람 p.61). 표 중간에서 기재가 끝났다면 '이하 빈칸'을 notes로 안내.
 - 칸 안의 불필요한 공백(두 칸 이상 공백, '<br>' 앞뒤 공백, 괄호 안쪽 공백, 쉼표·% 앞 공백)은 지울 것. type은 '표'.
+
+[표 합계·단위] 표에 합계·소계 행이나 합계 열이 있으면 계산이 맞는지 확인해 틀리면 notes에 계산과 함께 적기. 숫자 열이나 본문 금액에 단위(원·천원·명·건·%)가 빠졌으면 머리행 ‘금액(천원)’ 또는 표 위 ‘(단위: 천원)’처럼 단위를 넣고 type은 '단위 표시'. 단, ‘참여교원·연구원·위원·직원’처럼 ‘원’으로 끝나는 사람 명사는 금액이 아니므로 ‘(원)’을 붙이지 말고 인원이면 ‘(명)’. 표 위에 ‘(단위: …)’가 있으면 단위를 다시 붙이지 말 것. 원문에 없는 ‘(단위: …)’ 줄을 새로 만들지 말고, 열마다 단위가 다르면 머리 칸에 ‘재료비(원)’·‘참여교원(명)’처럼 붙일 것(표 위 단위 줄과 머리 칸 단위를 함께 쓰면 중복).
 
 [항목 번호 순서] 같은 단계의 번호(1. 2. 3. / 가. 나. 다. / (1) (2) …)가 빠지거나 중복·뒤바뀐 곳이 있으면 고치고 type은 '항목 순서'. 상위 항목이 바뀌면 하위 번호는 다시 1·가부터.
 
@@ -2132,7 +2136,7 @@ function docToHtml(text,forClip){
   if(isTable(L[i])){
    const rows=[];while(i<L.length&&isTable(L[i])){rows.push(L[i]);i++;}i--;
    const grid=rows.filter(r=>!/^\s*\|[\s:\-|]+\|\s*$/.test(r)).map(r=>r.trim().slice(1,-1).split("|").map(c=>c.trim()));const SL=spanLayout(grid);
-   const body=grid.map((r,ri)=>"<tr>"+r.map((c,j)=>{const sp=SL[ri][j];if(sp.skip)return"";return`<td${spanAttr(sp)} style="text-align:${cellAlign(c,ri===0)};${forClip?"border:1px solid #000;padding:2px 6px;vertical-align:middle;":""}${ri===0&&forClip?"font-weight:bold;background:#e8f2ec":""}">${esc(c).replace(/&lt;br&gt;/g,"<br>")}</td>`;}).join("")+"</tr>").join("");
+   const body=grid.map((r,ri)=>"<tr>"+r.map((c,j)=>{const sp=SL[ri][j];if(sp.skip)return"";return`<td${spanAttr(sp)} style="text-align:${cellAlign(c,isHead(grid,ri))};${forClip?"border:1px solid #000;padding:2px 6px;vertical-align:middle;":""}${isHead(grid,ri)&&forClip?"font-weight:bold;background:#e8f2ec":""}">${esc(c).replace(/&lt;br&gt;/g,"<br>")}</td>`;}).join("")+"</tr>").join("");
    h+=`<table class="doc-t"${forClip?' style="border-collapse:collapse"':""}>${body}</table>`;
   }else{
    const line=esc(L[i]).replace(/^ +/,m=>"&nbsp;".repeat(m.length)).replace(/ {2}/g," &nbsp;");
@@ -2434,10 +2438,52 @@ function seqEdits(src,scope){
  });
  return out;
 }
+/* 표 단위 누락·합계 행 없음, 본문 금액 단위 누락 → 고칠 제안 */
+function tableEdits(src){
+ const out=[],L=src.split("\n");
+ tblBlocks(src).forEach((tb,ti)=>{
+  const rows=tb.rows;if(rows.length<3)return;const A=tableAnalyze(rows);
+  const once=t=>src.split(t).length===2;
+  // 표 위 ‘(단위: …)’ 줄: 단위가 하나면 그것으로 충분(머리 칸에 다시 붙이지 않음).
+  // ‘(단위: 원, 명, 건)’처럼 여러 개면 어느 열 단위인지 알 수 없으므로 머리 칸마다 붙이고 단위 줄은 지우도록 제안(중복 표기 방지)
+  const UL=src.split("\n").slice(Math.max(0,tb.start-2),tb.start).map(l=>l.trim()).reverse().find(l=>/^\(?\s*단\s*위\s*[:：]/.test(l))||"";
+  const ulUnits=UL?(UL.match(/단\s*위\s*[:：]\s*([^)]*)/)||[])[1].split(/[,，·\/]/).map(x=>x.trim().replace(/\s/g,"")).filter(Boolean):[];
+  const multiUL=ulUnits.length>1;let addedHead=0;
+  if(!UL||multiUL)for(const col of A.cols){
+   if(col.unit||/\(/.test(col.h))continue;let u=guessUnit(col.h,col.data,src);if(multiUL&&u&&!ulUnits.includes(u)){const alt=ulUnits.find(x=>u==="원"?/원$/.test(x):false);if(alt)u=alt;}if(!u)continue;
+   let hi=-1;for(let i=A.hr-1;i>=0;i--){const v=mClean(rows[i][col.c]);if(v&&!isMergeMark(v)){hi=i;break;}}if(hi<0)continue;
+   const cell=mClean(rows[hi][col.c]),find=`| ${cell} |`;if(!once(find))continue;
+   out.push({src:"man",type:"단위 표시",where:`표 ${ti+1} ‘${cell}’ 열`,find,replace:`| ${cell}(${u}) |`,reason:`‘${cell}’ 열의 숫자에 단위가 없습니다. ‘${cell}(${u})’처럼 단위를 밝히세요(열 이름으로 추정한 단위이니 확인).`,basis:"편람 p.37·49 숫자·단위 표기"});addedHead++;
+  }
+  if(multiUL&&addedHead&&once(UL))out.push({src:"man",type:"단위 표시",where:`표 ${ti+1} 위`,find:UL+"\n",replace:"",reason:`‘${UL}’처럼 여러 단위를 한 줄에 쓰면 어느 열의 단위인지 알 수 없고, 머리 칸에도 단위를 붙이면 중복 표기가 됩니다. 머리 칸 단위로 통일하고 이 줄은 지우세요.`,basis:"편람 p.37·49"});
+  // 이름 없는 합계 행 → 첫 칸에 ‘합계’
+  // 합계 행(이름 있음·없음)의 빈 숫자 칸 채우기, 이름 없는 합계 행에 ‘합계’
+  const DL=tb.lines.filter(l=>!/^\s*\|[\s:\-|]+\|\s*$/.test(l));
+  for(const i of A.totRows){const line=DL[i];if(!line||!once(line.trim()))continue;const cells=line.trim().slice(1,-1).split("|").map(c=>c.trim());const why=[];
+   if(A.unlabeled.includes(i)&&!mClean(cells[0])){cells[0]="합계";why.push("‘합계’ 표시가 없습니다");}
+   const isSub=/소\s*계/.test(rowLabel(rows[i])),prev=isSub?(A.totRows.filter(x=>x<i).pop()||A.hr-1):A.hr-1,fill=[];
+   for(const col of A.cols){if(mClean(cells[col.c]))continue;const vs=col.data.filter(d=>d.i>prev&&d.i<i);if(vs.length<2)continue;const sm=vs.reduce((a,b)=>a+b.v,0);cells[col.c]=sm.toLocaleString();fill.push(`${col.h} ${sm.toLocaleString()}`);}
+   if(fill.length)why.push(`빈 합계 칸을 계산해 채웠습니다(${fill.join(", ")})`);
+   if(!why.length)continue;
+   out.push({src:"norm",type:"표 합계",where:`표 ${ti+1} ${i+1}행`,find:line.trim(),replace:"| "+cells.join(" | ")+" |",reason:`합계 행 확인: ${why.join(" · ")}. 계산이 맞는지 원문과 확인하세요.`,basis:"작성 관례(권장)"});}
+  // 합계 행이 아예 없음 → 마지막 자료 행 모양(병합 포함)을 본떠 합계 행 추가 제안
+  if(!A.totRows.length){const qc=A.cols.filter(c=>c.qty&&c.data.length>=3);
+   if(qc.length){const dataLines=tb.lines.filter(l=>!/^\s*\|[\s:\-|]+\|\s*$/.test(l)),lastLine=dataLines[dataLines.length-1].trim(),lastCells=rows[rows.length-1];
+    const row=Array.from({length:A.W},(_,c)=>{const q=qc.find(x=>x.c===c);if(q){const sm=q.data.reduce((a,b)=>a+b.v,0);const u=q.data.every(d=>d.u&&d.u===q.data[0].u)?q.data[0].u:"";return sm.toLocaleString()+u;}
+     if(c===0)return"합계";const lc=mClean(lastCells[c]);return lc==="<"?"<":"";});
+    if(once(lastLine))out.push({src:"norm",type:"표 합계",where:`표 ${ti+1} 끝`,find:lastLine,replace:lastLine+"\n| "+row.join(" | ")+" |",reason:`합계 행이 없어 총계를 확인하기 어렵습니다. 자동 계산한 합계 행을 넣을지 검토하세요(${qc.map(c=>c.h).join(", ")}).`,basis:"작성 관례(권장)"});}}
+ });
+ // 본문 금액 단위 누락: 금액 낱말이 있는 줄의 세 자리 쉼표 숫자 뒤에 단위가 없음
+ L.forEach(l=>{if(isTable(l))return;if(!/(금액|예산|비용|사업비|참가비|단가|지원금|인건비|등록비|집행액|총액|잔액|수당|사례비)/.test(l))return;
+  const re=/(?<![\d.\-])(\d{1,3}(?:,\d{3})+)(?![\d,.]|\s*(?:원|천|만|백만|억|명|건|개|회|%|명|부|쪽|매|대|곳|시간|일|년|월))/g;let m;
+  while((m=re.exec(l))){const find=l.slice(Math.max(0,m.index-6),m.index+m[1].length);out.push({src:"man",type:"단위 표시",where:"본문",find,replace:find+"원",reason:`금액 ‘${m[1]}’ 뒤에 단위가 없습니다. ‘${m[1]}원’처럼 단위를 붙이세요(천 원 단위라면 ‘천 원’).`,basis:"편람 p.37·49"});}});
+ return out;
+}
 function basicEdits(src){
  const bf=basicFix(src);
  const list=bf.changes.map(c=>(c.type==="줄바꿈·문단"&&/^강제/.test(c.before))?{...c,bulk:"tidy",find:"",replace:""}:{...c,find:c.before,replace:c.after});
  try{list.push(...seqEdits(src,(typeof state!=="undefined"&&state.scope)||"in"));}catch{}
+ try{list.push(...tableEdits(src));}catch{}
  const{kept,prot}=protectEdits(list);const notes=bf.notes.slice();
  if(prot.length)notes.push(`팀 용어집의 공식 명칭(${prot.join(", ")})은 고치지 않았습니다.`);
  return{kind:"basic",edits:mergeEdits(kept),summary:bf.summary,notes};
@@ -2461,6 +2507,47 @@ const WD="일월화수목금토";
 const unitMul=u=>u==="억"?1e8:u==="천만"?1e7:u==="만"?1e4:u==="천"?1e3:1;
 function won(n){const e=Math.floor(n/1e8),m=Math.floor((n%1e8)/1e4),r=n%1e4;let s="";if(e)s+=e.toLocaleString()+"억 ";if(m)s+=m.toLocaleString()+"만 ";if(r)s+=r.toLocaleString();return(s.trim()||"0")+" 원";}
 function cellNum(s){const m=String(s??"").replace(/<br>/g," ").match(/^\s*([\d,]+(?:\.\d+)?)\s*(원|명|팀|개|건|%|천원|만원|회)?\s*$/);return m?+m[1].replace(/,/g,""):null;}
+/* ================= 표 분석: 합계 행·합계 열·숫자 열·단위 ================= */
+const TOT_RE=/^(합\s*계|총\s*계|총\s*합(\s*계)?|계|소\s*계|합|총|전\s*체|누\s*계|total|sum|subtotal)(\s*[(:：].*)?$/i;
+const NOSUM_HEAD=/(연번|번호|순번|^no\.?$|연도|년도|학번|전화|연락처|일자|날짜|기간|일시|코드|비고|시간표|차수|회차|기수|학년|우편)/i;
+const QTY_HEAD=/(금액|예산|비용|사업비|집행|단가|지원금|인건비|재료비|장비비|운영비|여비|수당|액$|비$|\((천|백만)?원\)|인원|교원|교수|학생|인력|참여|참석|명$|\(명\)|건$|건수|출원|논문|특허|횟수|회$|합계|계$|실적|목표|규모|면적|수량|KPI)/;
+function tblBlocks(text){const L=text.split("\n"),out=[];let st=-1;for(let i=0;i<=L.length;i++){const tb=i<L.length&&isTable(L[i]);if(tb&&st<0)st=i;if(!tb&&st>=0){const lines=L.slice(st,i).filter(l=>!/^\s*\|[\s:\-|]+\|\s*$/.test(l));out.push({start:st,end:i-1,lines:L.slice(st,i),rows:lines.map(l=>l.trim().slice(1,-1).split("|").map(c=>c.trim())),above:L.slice(Math.max(0,st-2),st).join(" "),below:L[i]||""});st=-1;}}return out;}
+const rowLabel=r=>{for(let k=0;k<Math.min(3,r.length);k++){const v=mClean(r[k]);if(v&&v!=="^"&&v!=="<")return v;}return"";};
+function cellUnit(s){const m=String(s??"").replace(/<br>/g," ").match(/^\s*[\d,]+(?:\.\d+)?\s*(원|천\s*원|만\s*원|백만\s*원|억\s*원|명|팀|개|건|%|%p|회|시간|일|곳|개소|㎡|대)\s*$/);return m?m[1].replace(/\s/g,""):"";}
+function tableAnalyze(rows){
+ const W=Math.max(...rows.map(r=>r.length)),H=rows.length;
+ const isNumRow=r=>r.some(c=>cellNum(c)!==null);
+ // 머리행 수: 앞쪽에서 숫자가 없는 행(최대 3행)
+ let hr=1;while(hr<Math.min(3,H-1)&&!isNumRow(rows[hr])&&rows[hr].some(c=>mClean(c)&&!isMergeMark(c)))hr++;
+ const colName=c=>{const parts=[];for(let i=0;i<hr;i++){let v=mClean(rows[i][c]);if(v==="<"){let k=c;while(k>0&&mClean(rows[i][k])==="<")k--;v=mClean(rows[i][k]);}if(v==="^")continue;if(v&&!parts.includes(v))parts.push(v);}return parts.join(" ");};
+ const totRows=[],unlabeled=[];for(let i=hr;i<H;i++)if(TOT_RE.test(rowLabel(rows[i])))totRows.push(i);
+ const cols=[];
+ for(let c=0;c<W;c++){
+  const h=colName(c);if(NOSUM_HEAD.test(h))continue;
+  const data=[];for(let i=hr;i<H;i++){if(totRows.includes(i))continue;const v=cellNum(rows[i][c]);if(v!==null)data.push({i,v,u:cellUnit(rows[i][c])});else if(/^[-–—－]$/.test(mClean(rows[i][c])))data.push({i,v:0,u:"",dash:true});}
+  const nonEmpty=rows.slice(hr).filter((r,k)=>!totRows.includes(k+hr)&&mClean(r[c])&&!isMergeMark(r[c])).length;
+  if(data.length<2||!data.some(d=>!d.dash)||data.length<nonEmpty*0.7)continue; // ‘-’(없음)은 0으로 셈
+  if(data.filter(d=>!d.dash).every(d=>Number.isInteger(d.v)&&d.v>=1900&&d.v<=2100))continue; // 연도
+  const hu=(h.match(/\(\s*(?:단위\s*[:：]?\s*)?([^)]+)\)/)||[])[1]||"";
+  cols.push({c,h,data,unit:hu||data.find(d=>d.u)?.u||"",qty:QTY_HEAD.test(h)||/^\d/.test(String(data[0]?.v))});
+ }
+ // 이름 없는 합계 행: 첫 칸(이름)이 비어 있고 숫자가 위 행들의 합과 같은 행
+ for(let i=hr+2;i<H;i++){if(totRows.includes(i)||rowLabel(rows[i]))continue;let hit=0,miss=0;
+  for(const col of cols){const v=cellNum(rows[i][col.c]);if(v===null)continue;const sm=col.data.filter(d=>d.i<i&&d.i>=hr).reduce((a,b)=>a+b.v,0);if(Math.abs(sm-v)<1e-6)hit++;else miss++;}
+  if(hit>=1&&hit>=miss){totRows.push(i);unlabeled.push(i);for(const col of cols)col.data=col.data.filter(d=>d.i!==i);}}
+ const totCols=[];(rows[hr-1]||[]).forEach((x,c)=>{if(c>0&&/^(합\s*계|계|총\s*계|소\s*계|총\s*액|총\s*금액|total)(\s*\(.*\))?$/i.test(mClean(x)))totCols.push(c);});
+ return{W,H,hr,totRows,unlabeled,cols,totCols,colName};
+}
+function guessUnit(h,vals,text){
+ if(/(인원|명$|교원|교수|직원|학생|연구원|인력|참여자|참석자|참가자|대상자|수강생|강사|위원)/.test(h))return"명";
+ if(/(건수|건$|출원|논문|특허|기술이전|실적\s*건)/.test(h))return"건";
+ if(/(횟수|회$|회수|개최)/.test(h))return"회";
+ if(/(율|률|비율|비중|%)/.test(h))return"%";
+ if(/(시간)/.test(h))return"시간";
+ if(/(금액|예산|비용|사업비|집행|단가|지원금|인건비|재료비|장비비|운영비|활동비|여비|수당|사례비|총액|잔액|액$|비$)/.test(h)){const big=vals.some(d=>d.v>=1e6),thou=(String(text).match(/천\s*원/g)||[]).length,mil=(String(text).match(/백만\s*원/g)||[]).length;return big?"원":mil>thou&&mil?"백만원":thou?"천원":"원";}
+ return"";
+}
+
 function verifyNumbers(t){
  const out=[],seen=new Set();
  const ym=t.match(/(20\d{2})\s*[.년]/);const defY=ym?+ym[1]:new Date().getFullYear();
@@ -2484,13 +2571,28 @@ function verifyNumbers(t){
    if(bud){const b=(+bud[2].replace(/,/g,""))*unitMul(bud[3]);out.push({ok:b===total,msg:b===total?`${bud[1]} ${won(b)} = 세부 합계 일치`:`${bud[1]} ${won(b)} ≠ 세부 합계 ${won(total)}`});}
   }
  }
- segs(t).filter(x=>x.t==="tb").forEach((tb,ti)=>{
-  const rows=tb.rows,ri=rows.findIndex((r,i)=>i>0&&/^(합\s*계|총\s*계|계|소\s*계)$/.test(String(r[0]||"").trim()));if(ri<0)return;
-  for(let c=1;c<rows[0].length;c++){
-   const vals=rows.slice(1).filter((_,i)=>i+1!==ri).map(r=>cellNum(r[c])).filter(v=>v!==null),tot=cellNum(rows[ri][c]);
-   if(tot===null||vals.length<2)continue;const sum=vals.reduce((a,b)=>a+b,0);
-   out.push({ok:Math.abs(sum-tot)<1e-6,msg:`표 ${ti+1} ‘${String(rows[0][c]).replace(/<br>/g," ")}’ 열 합계 ${tot.toLocaleString()} ${Math.abs(sum-tot)<1e-6?"맞음":`≠ 항목 합 ${sum.toLocaleString()}`}`});
+ tblBlocks(t).forEach((tb,ti)=>{
+  const rows=tb.rows;if(rows.length<2)return;const A=tableAnalyze(rows),name=`표 ${ti+1}`;
+  // 합계·소계 행 검산
+  for(const i of A.unlabeled)out.push({ok:null,msg:`${name} ${i+1}행은 합계로 보이지만 ‘합계’ 표시가 없습니다.`});
+  for(const ri of A.totRows)for(const col of A.cols){if(mClean(rows[ri][col.c]))continue;const vs=col.data.filter(d=>d.i<ri);if(vs.length<2)continue;out.push({ok:false,msg:`${name} 합계 행의 ‘${col.h}’ 칸이 비어 있습니다. 항목 합은 ${vs.reduce((a,b)=>a+b.v,0).toLocaleString()}입니다.`});}
+  for(const ri of A.totRows){
+   const isSub=/소\s*계/.test(rowLabel(rows[ri]));
+   for(const col of A.cols){
+    const tot=cellNum(rows[ri][col.c]);if(tot===null)continue;
+    let vals;
+    if(isSub){const prev=A.totRows.filter(x=>x<ri).pop()||0;vals=col.data.filter(d=>d.i>prev&&d.i<ri).map(d=>d.v);}
+    else{const subs=A.totRows.filter(x=>x<ri&&/소\s*계/.test(rowLabel(rows[x])));vals=subs.length?subs.map(x=>cellNum(rows[x][col.c])).filter(v=>v!==null):col.data.filter(d=>d.i<ri).map(d=>d.v);}
+    if(vals.length<1)continue;const sum=vals.reduce((a,b)=>a+b,0),ok=Math.abs(sum-tot)<1e-6;
+    out.push({ok,msg:`${name} ‘${rowLabel(rows[ri])||"합계(이름 없음)"}’ 행 · ‘${col.h||(col.c+1)+"열"}’ ${tot.toLocaleString()} ${ok?"맞음":`≠ 항목 합 ${sum.toLocaleString()}`}`});
+   }
   }
+  // 합계 열(가로 합) 검산
+  for(const tc of A.totCols){const others=A.cols.filter(x=>x.c!==tc&&x.c<tc&&!A.totCols.includes(x.c));if(!others.length)continue;let bad=0;
+   for(let i=1;i<rows.length;i++){const tot=cellNum(rows[i][tc]);if(tot===null)continue;const vs=others.map(o=>cellNum(rows[i][o.c])).filter(v=>v!==null);if(vs.length<2)continue;const sm=vs.reduce((a,b)=>a+b,0);if(Math.abs(sm-tot)>1e-6){bad++;out.push({ok:false,msg:`${name} ${i+1}행 ‘${mClean(rows[0][tc])}’ 열 ${tot.toLocaleString()} ≠ 같은 행 합 ${sm.toLocaleString()}`});}}
+   if(!bad)out.push({ok:true,msg:`${name} ‘${mClean(rows[0][tc])}’ 열(가로 합) 맞음`});}
+  // 합계 행이 없는 표: 열 합계를 계산해 보여 줌
+  if(!A.totRows.length){const qc=A.cols.filter(c=>c.qty&&c.data.length>=2);if(qc.length)out.push({ok:null,msg:`${name}에 합계 행이 없습니다. 열 합계(자동 계산): ${qc.map(c=>`${c.h||(c.c+1)+"열"} ${c.data.reduce((a,b)=>a+b.v,0).toLocaleString()}${c.unit&&!/[()]/.test(c.unit)?c.unit:""}`).join(" · ")} — 합계 행 추가를 검토하세요.`});}
  });
  return out;
 }
@@ -2946,11 +3048,11 @@ async function buildDocx(text){
   if(s.t==="p")return s.v.split("\n").map(l=>P(l)).join("");
   const bd=["top","left","bottom","right","insideH","insideV"].map(b=>`<w:${b} w:val="single" w:sz="4" w:space="0" w:color="000000"/>`).join("");
   return`<w:tbl><w:tblPr><w:tblW w:w="5000" w:type="pct"/><w:tblBorders>${bd}</w:tblBorders></w:tblPr>`+(()=>{const SL=spanLayout(s.rows),W=Math.max(...s.rows.map(r=>r.length));const own=[];SL.forEach((row,i)=>row.forEach((x,j)=>{if(!x.skip&&(x.rs>1||x.cs>1))for(let a=0;a<x.rs;a++)own.push({i:i+a,j,cs:x.cs,start:a===0});}));
-  return s.rows.map((r,i)=>{let h="<w:tr>";for(let j=0;j<W;j++){const x=SL[i][j],sh=i===0?'<w:shd w:val="clear" w:color="auto" w:fill="E8F2EC"/>':"";
+  return s.rows.map((r,i)=>{let h="<w:tr>";for(let j=0;j<W;j++){const x=SL[i][j],sh=isHead(s.rows,i)?'<w:shd w:val="clear" w:color="auto" w:fill="E8F2EC"/>':"";
    const o=own.find(v=>v.i===i&&v.j===j);
    if(x.skip&&!(o&&!o.start))continue;
    if(o&&!o.start){h+=`<w:tc><w:tcPr>${o.cs>1?`<w:gridSpan w:val="${o.cs}"/>`:""}<w:vMerge/>${sh}</w:tcPr>${P("")}</w:tc>`;continue;}
-   h+=`<w:tc><w:tcPr>${x.cs>1?`<w:gridSpan w:val="${x.cs}"/>`:""}${x.rs>1?'<w:vMerge w:val="restart"/>':""}${sh}</w:tcPr>${cellPlain(r[j]??"").split("\n").map(l=>P(l,i===0,cellAlign(r[j],i===0))).join("")}</w:tc>`;}
+   h+=`<w:tc><w:tcPr>${x.cs>1?`<w:gridSpan w:val="${x.cs}"/>`:""}${x.rs>1?'<w:vMerge w:val="restart"/>':""}${sh}</w:tcPr>${cellPlain(r[j]??"").split("\n").map(l=>P(l,isHead(s.rows,i),cellAlign(r[j],isHead(s.rows,i)))).join("")}</w:tc>`;}
    return h+"</w:tr>";}).join("");})()+"</w:tbl>"+P("");
  }).join(P(""));
  const W='xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"';
@@ -3110,6 +3212,13 @@ function spanLayout(rows){
 }
 /* 표 칸 정렬(작성 관례): 머리행 가운데, 숫자·금액 오른쪽, 글자 왼쪽 */
 const cellAlign=(c,head)=>{const v=mClean(c).replace(/<br>/g," ");if(head)return"center";if(/^[-+]?(\d{1,3}(,\d{3})+|\d+)(\.\d+)?\s*(%|%p|원|천\s*원|만\s*원|명|건|개|회|시간|일)?$/.test(v)||/^[-–]$/.test(v))return"right";return"left";};
+/* 머리행 수: 앞쪽에서 숫자가 없는 행(최대 3행, 마지막 행은 제외) — 여러 줄 머리행(KPI › 특허출원 등)도 머리행으로 */
+const _hrCache=new WeakMap();
+function headRows(rows){if(!rows||!rows.length)return 0;if(_hrCache.has(rows))return _hrCache.get(rows);
+ const num=r=>r.some(c=>{const v=mClean(c);return cellNum(v)!==null||/^[-–—－]$/.test(v);});
+ let hr=1;while(hr<Math.min(3,rows.length-1)&&!num(rows[hr])&&rows[hr].some(c=>{const v=mClean(c);return v&&v!=="^"&&v!=="<";}))hr++;
+ _hrCache.set(rows,hr);return hr;}
+const isHead=(rows,i)=>i<headRows(rows);
 const isMergeMark=c=>{const v=mClean(c);return v==="^"||v==="<";};
 const spanAttr=x=>(x.rs>1?` rowspan="${x.rs}"`:"")+(x.cs>1?` colspan="${x.cs}"`:"");
 function tableHtml(ra,rb,mode){
@@ -3125,8 +3234,8 @@ function tableHtml(ra,rb,mode){
   h+=`<tr${rowCls}>`;
   for(let j=0;j<w;j++){const a=A?.[j]??"",b=B?.[j]??"";
    const sp=SL[i]?.[j]||{rs:1,cs:1};if(sp.skip)continue;
-   const tag=i===0?"th":"td";
-   h+=`<${tag}${spanAttr(sp)} style="text-align:${cellAlign(B?.[j]??A?.[j],i===0)}">${!A?(mode==="clean"?cellHtml(b):`<ins>${cellHtml(b)}</ins>`):!B?`<del>${cellHtml(a)}</del>`:cellDiff(a,b,mode==="both"?"both":mode)}</${tag}>`;}
+   const tag=isHead(rows,i)?"th":"td";
+   h+=`<${tag}${spanAttr(sp)} style="text-align:${cellAlign(B?.[j]??A?.[j],isHead(rows,i))}">${!A?(mode==="clean"?cellHtml(b):`<ins>${cellHtml(b)}</ins>`):!B?`<del>${cellHtml(a)}</del>`:cellDiff(a,b,mode==="both"?"both":mode)}</${tag}>`;}
   h+="</tr>";
  }
  return h+"</table>";
@@ -3291,7 +3400,7 @@ function markHtml(text){
  return esc(text).replace(/([-])([\s\S]*?)/g,(m,c,inner)=>{
   const id=c.charCodeAt(0)-0xE100,e=state.result.edits.find(x=>x.id===id);if(!e)return inner;
   const s=e.src in SRC?e.src:"norm",cls=!e.dec?"pend":(e.ok?"acc":"rej"),cur=id===curId?" cur":"";
-  const body=inner;if(!body)return""; // 삭제를 수락한 곳 등 빈 표시는 그리지 않음
+  const body=inner;if(!body)return"";if(!body.replace(/&nbsp;|\s/g,""))return body; // 빈 칸·공백만 있는 표시는 그리지 않음
   return`<span class="sgm ${cls}${cur}" data-id="${id}" style="--c:var(--src-${s==="team"?"norm":s})" title="${esc((cls==="acc"?"수락됨 · 원문: "+e.find:(e.type||"수정")+": "+e.find+" → "+e.replace))}">${body}</span>`;
  }).replace(/&lt;br&gt;/g,"<br>").replace(/[\uE000-\uE1FF]/g,"");
 }
@@ -3327,7 +3436,7 @@ function fixMarks(t){
   for(;i<L.length;i++){const c=L[i];
    if(c===S){open=L[i+1];i++;close();reopen();continue;}
    if(c===E){close();open=null;continue;}
-   if(tbl&&c==="|"){close();res+="|";if(L.slice(i+1).replace(PU,"").trim())reopen();continue;}
+   if(tbl&&c==="|"){close();res+="|";const seg=L.slice(i+1).split("|")[0].replace(PU,"");if(seg.trim())reopen();continue;}
    res+=c;}
   close();out.push(res);
  }
@@ -3346,7 +3455,7 @@ function renderMarked(){
   if(s.t==="p")return`<div class="mblk">${markHtml(s.v)}</div>`;
   const w=Math.max(...s.rows.map(x=>x.length));
   const SL=spanLayout(s.rows);
-  return`<div class="mblk"><table class="doc-t">${s.rows.map((row,ri)=>`<tr>${Array.from({length:w},(_,j)=>{const sp=SL[ri][j];if(sp.skip)return"";return`<${ri===0?"th":"td"}${spanAttr(sp)} style="text-align:${cellAlign(row[j],ri===0)}">${markHtml(row[j]??"")}</${ri===0?"th":"td"}>`;}).join("")}</tr>`).join("")}</table></div>`;
+  return`<div class="mblk"><table class="doc-t">${s.rows.map((row,ri)=>`<tr>${Array.from({length:w},(_,j)=>{const sp=SL[ri][j];if(sp.skip)return"";return`<${isHead(s.rows,ri)?"th":"td"}${spanAttr(sp)} style="text-align:${cellAlign(row[j],isHead(s.rows,ri))}">${markHtml(row[j]??"")}</${isHead(s.rows,ri)?"th":"td"}>`;}).join("")}</tr>`).join("")}</table></div>`;
  }).join("");
 }
 function counts(){const ch=state.result?.edits||[];const dec=ch.filter(e=>e.dec).length,acc=ch.filter(e=>e.dec&&e.ok).length;return{n:ch.length,dec,acc,rej:dec-acc,left:ch.length-dec};}
@@ -3541,7 +3650,10 @@ async function run(){
    if(res.summary)sums.push(String(res.summary));if(Array.isArray(res.notes))notes.push(...res.notes.map(n=>unmask(n,mask.map)));
   }
   bzDone();
-  try{const se=seqEdits(src,state.scope);for(const e of se)if(!all.some(x=>x.find===e.find))all.push(e);}catch{}
+  try{const se=[...seqEdits(src,state.scope),...tableEdits(src)];
+   // 단위: 규칙이 머리 칸 단위를 제안하면 AI가 새로 만든 ‘(단위: …)’ 줄은 빼서 중복 표기를 막음
+   if(se.some(e=>e.type==="단위 표시"&&e.find.startsWith("| "))){for(let k=all.length-1;k>=0;k--){const x=all[k];if(/단\s*위\s*[:：]/.test(x.replace||"")&&!/단\s*위\s*[:：]/.test(x.find||""))all.splice(k,1);}}
+   for(const e of se){if(all.some(x=>x.find===e.find))continue;if(e.type==="단위 표시"&&all.some(x=>x.find.includes(e.find.replace(/^\| | \|$/g,""))&&x.replace.includes(e.replace.replace(/^\| | \|$/g,""))))continue;all.push(e);}}catch{}
   if(partialAt){notes.unshift(`Claude 요청 한도에 걸려 ${chunks.length}구간 중 ${partialAt}구간까지만 검토했습니다. 1~2분 뒤 ‘다시 검토하기’를 누르면 이미 검토한 구간은 5분 동안 저장된 답을 다시 쓰고 나머지만 검토합니다.`);rlShow(true);}
   const{kept,prot}=protectEdits(all);
   if(prot.length)notes.push(`팀 용어집의 공식 명칭(${prot.join(", ")})을 바꾸는 제안은 뺐습니다.`);
@@ -3569,7 +3681,7 @@ const tsvCell=c=>{const v=cellPlain(c);return /[\t\n"]/.test(v)?'"'+v.replace(/"
 let SLc=null;
 function tableClipHtml(rows){
  const w=Math.max(1,...rows.map(r=>r.length));
- return'<table border="1" cellspacing="0" cellpadding="4" style="border-collapse:collapse;border:1px solid #000">'+(SLc=spanLayout(rows),rows.map((r,i)=>"<tr>"+Array.from({length:w},(_,j)=>{const sp=SLc[i][j];if(sp.skip)return"";return`<td${spanAttr(sp)} style="border:1px solid #000;padding:2px 6px;vertical-align:middle;text-align:${cellAlign(r[j],i===0)}${i===0?";font-weight:bold;background:#e8f2ec":""}">${esc(cellPlain(r[j]??"")).replace(/\n/g,"<br>")||"&nbsp;"}</td>`;}).join("")+"</tr>")).join("")+"</table>";
+ return'<table border="1" cellspacing="0" cellpadding="4" style="border-collapse:collapse;border:1px solid #000">'+(SLc=spanLayout(rows),rows.map((r,i)=>"<tr>"+Array.from({length:w},(_,j)=>{const sp=SLc[i][j];if(sp.skip)return"";return`<td${spanAttr(sp)} style="border:1px solid #000;padding:2px 6px;vertical-align:middle;text-align:${cellAlign(r[j],isHead(rows,i))}${isHead(rows,i)?";font-weight:bold;background:#e8f2ec":""}">${esc(cellPlain(r[j]??"")).replace(/\n/g,"<br>")||"&nbsp;"}</td>`;}).join("")+"</tr>")).join("")+"</table>";
 }
 const tableTsv=rows=>rows.map(r=>r.map(c=>isMergeMark(c)?"":tsvCell(c)).join("\t")).join("\n");
 const parasHtml=t=>t.split("\n").map(l=>`<p style="margin:0">${esc(l).replace(/^ +/,m=>"&nbsp;".repeat(m.length)).replace(/ {2}/g," &nbsp;")||"&nbsp;"}</p>`).join("");
@@ -3644,6 +3756,7 @@ const XR=[
  {id:"ask",lv:1,name:"문의처 형식",tip:"담당 부서·담당자·02-450-○○○○"},
  {id:"title",lv:1,name:"제목 다듬기",tip:"‘~에 관한 건’, 너무 긴 제목"},
  {id:"offi",lv:1,name:"학교 공식 명칭",tip:"건대 → 건국대학교, Konkuk University"},
+ {id:"sp",lv:1,name:"복합 명사 띄어쓰기",tip:"‘참여교원’→‘참여 교원’(본문), 표 머리칸은 붙여 써도 됨"},
  {id:"a11y",lv:1,name:"접근성",tip:"색으로만 구분, 설명 없는 그림, 머리행 없는 표"}
 ];
 let xrOn=(()=>{try{const v=JSON.parse(lsGet("kku-xr")||"null");if(v&&typeof v==="object")return v;}catch{}const d={};XR.forEach(r=>d[r.id]=r.lv>=2);return d;})();
@@ -3792,6 +3905,17 @@ function docCheck(text){
    if((m=l.match(/(빨간|붉은|파란|푸른|초록|녹|노란|주황|보라|회)색\s*(글씨|글자|표시|부분|칸|으로|로)/)))add(i,"접근성","색으로만 구분하면 색각 이상자·흑백 출력에서 알아보기 어렵습니다. 기호나 글로도 표시하세요.",m[0]);
    if((m=l.match(/\[(그림|사진|이미지)\]/)))add(i,"접근성","그림에는 무엇을 보여 주는지 짧은 설명을 붙이세요. 예) [그림: 2026 성과보고회 현장]",m[0]);});
   segs(text).filter(x=>x.t==="tb").forEach((tb,ti)=>{const h=tb.rows[0]||[];if(h.length&&h.every(c=>/^[\s\d,.%원명-]*$/.test(String(c))))add(lineOf(text.indexOf("|")),"접근성",`표 ${ti+1}의 첫 행이 숫자뿐입니다. 각 열이 무엇인지 알 수 있는 머리행을 두세요.`,"");});
+ }
+
+ /* ★ 복합 명사 띄어쓰기 (한글 맞춤법 제2항·제50항) */
+ if(xrEnabled("sp")){
+  const SP=/(참여|참가)(교원|결과|학생|기업|기관|인원|인력|현황|실적|대학|업체|교수|연구원|성과)/g;
+  const seenJoin=new Set(),seenSep=new Set();
+  L.forEach((l,i)=>{let m;SP.lastIndex=0;const tb=isTable(l);
+   while((m=SP.exec(l))){seenJoin.add(m[0]);
+    if(!tb)add(i,"복합 명사 띄어쓰기",`‘${m[0]}’은 사전에 한 단어로 오르지 않아 본문에서는 ‘${m[1]} ${m[2]}’처럼 띄어 씁니다(맞춤법 제2항). 정해진 용어라면 붙여 써도 되지만 한 문서에서는 통일하세요.`,m[0]);}
+   const m2=l.match(/(참여|참가)\s(교원|결과|학생|기업|기관|인원|인력|현황|실적|대학|업체|교수|연구원|성과)/);if(m2)seenSep.add(m2[0]);});
+  if(seenJoin.size&&seenSep.size)add(0,"복합 명사 띄어쓰기",`같은 말을 붙여 쓴 곳(${[...seenJoin].slice(0,2).join("·")})과 띄어 쓴 곳(${[...seenSep].slice(0,2).join("·")})이 섞여 있습니다. 한 가지로 통일하세요.`,"");
  }
  return out;
 }
@@ -4366,7 +4490,7 @@ function renderOrig(){
  return segs(mk).map(s=>{
   if(s.t==="p")return`<div class="mblk">${mh(s.v)}</div>`;
   const w=Math.max(...s.rows.map(x=>x.length)),SL=spanLayout(s.rows);
-  return`<div class="mblk"><table class="doc-t">${s.rows.map((row,ri)=>`<tr>${Array.from({length:w},(_,j)=>{const sp=SL[ri][j];if(sp.skip)return"";const tg=ri===0?"th":"td";return`<${tg}${spanAttr(sp)} style="text-align:${cellAlign(row[j],ri===0)}">${mh(row[j]??"")}</${tg}>`;}).join("")}</tr>`).join("")}</table></div>`;
+  return`<div class="mblk"><table class="doc-t">${s.rows.map((row,ri)=>`<tr>${Array.from({length:w},(_,j)=>{const sp=SL[ri][j];if(sp.skip)return"";const tg=isHead(s.rows,ri)?"th":"td";return`<${tg}${spanAttr(sp)} style="text-align:${cellAlign(row[j],isHead(s.rows,ri))}">${mh(row[j]??"")}</${tg}>`;}).join("")}</tr>`).join("")}</table></div>`;
  }).join("");
 }
 function renderSplit(){
@@ -4395,9 +4519,9 @@ async function buildHwpx(text){
  const tbl=rows=>{
   const H=rows.length,W=Math.max(1,...rows.map(r=>r.length)),SL=spanLayout(rows),cw=Math.floor(TW/W);
   let h=`<hp:p id="${pid++}" paraPrIDRef="0" styleIDRef="0" pageBreak="0" columnBreak="0" merged="0"><hp:run charPrIDRef="0"><hp:tbl id="${pid++}" zOrder="0" numberingType="TABLE" textWrap="TOP_AND_BOTTOM" textFlow="BOTH_SIDES" lock="0" dropcapstyle="None" pageBreak="CELL" repeatHeader="1" rowCnt="${H}" colCnt="${W}" cellSpacing="0" borderFillIDRef="3" noAdjust="0"><hp:sz width="${cw*W}" widthRelTo="ABSOLUTE" height="${H*282}" heightRelTo="ABSOLUTE" protect="0"/><hp:pos treatAsChar="1" affectLSpacing="0" flowWithText="1" allowOverlap="0" holdAnchorAndSO="0" vertRelTo="PARA" horzRelTo="COLUMN" vertAlign="TOP" horzAlign="LEFT" vertOffset="0" horzOffset="0"/><hp:outMargin left="0" right="0" top="0" bottom="0"/><hp:inMargin left="510" right="510" top="141" bottom="141"/>`;
-  for(let i=0;i<H;i++){h+="<hp:tr>";for(let j=0;j<W;j++){const x=SL[i][j];if(x.skip)continue;const c=rows[i][j]??"",al=cellAlign(c,i===0),pp=al==="center"?I.pC:al==="right"?I.pR:I.pL;
+  for(let i=0;i<H;i++){h+="<hp:tr>";for(let j=0;j<W;j++){const x=SL[i][j];if(x.skip)continue;const c=rows[i][j]??"",al=cellAlign(c,isHead(rows,i)),pp=al==="center"?I.pC:al==="right"?I.pR:I.pL;
    const lines=cellPlain(isMergeMark(c)?"":c).split("\n");
-   h+=`<hp:tc name="" header="${i===0?1:0}" hasMargin="0" protect="0" editable="0" dirty="1" borderFillIDRef="3"><hp:subList id="" textDirection="HORIZONTAL" lineWrap="BREAK" vertAlign="CENTER" linkListIDRef="0" linkListNextIDRef="0" textWidth="0" textHeight="0" hasTextRef="0" hasNumRef="0">${lines.map(l=>P(l,i===0?I.hb:I.cell,pp)).join("")}</hp:subList><hp:cellAddr colAddr="${j}" rowAddr="${i}"/><hp:cellSpan colSpan="${x.cs}" rowSpan="${x.rs}"/><hp:cellSz width="${cw*x.cs}" height="${282*x.rs}"/>${M}</hp:tc>`;}
+   h+=`<hp:tc name="" header="${isHead(rows,i)?1:0}" hasMargin="0" protect="0" editable="0" dirty="1" borderFillIDRef="3"><hp:subList id="" textDirection="HORIZONTAL" lineWrap="BREAK" vertAlign="CENTER" linkListIDRef="0" linkListNextIDRef="0" textWidth="0" textHeight="0" hasTextRef="0" hasNumRef="0">${lines.map(l=>P(l,isHead(rows,i)?I.hb:I.cell,pp)).join("")}</hp:subList><hp:cellAddr colAddr="${j}" rowAddr="${i}"/><hp:cellSpan colSpan="${x.cs}" rowSpan="${x.rs}"/><hp:cellSz width="${cw*x.cs}" height="${282*x.rs}"/>${M}</hp:tc>`;}
    h+="</hp:tr>";}
   return h+"</hp:tbl></hp:run></hp:p>";
  };
@@ -4430,7 +4554,7 @@ async function nodeToPng(node,scale){
 function docSheet(text){
  const d=document.createElement("div");d.className="img-sheet";
  d.innerHTML=`<div class="is-body">${segs(text).map(s=>{if(s.t==="p")return`<div class="is-p">${cleanLines(s.v)}</div>`;const w=Math.max(...s.rows.map(x=>x.length)),SL=spanLayout(s.rows);
-  return`<table class="is-t">${s.rows.map((row,ri)=>`<tr>${Array.from({length:w},(_,j)=>{const sp=SL[ri][j];if(sp.skip)return"";const tg=ri===0?"th":"td";return`<${tg}${spanAttr(sp)} style="text-align:${cellAlign(row[j],ri===0)}">${esc(cellPlain(row[j]??"")).replace(/\n/g,"<br>")}</${tg}>`;}).join("")}</tr>`).join("")}</table>`;}).join("")}</div>`;
+  return`<table class="is-t">${s.rows.map((row,ri)=>`<tr>${Array.from({length:w},(_,j)=>{const sp=SL[ri][j];if(sp.skip)return"";const tg=isHead(s.rows,ri)?"th":"td";return`<${tg}${spanAttr(sp)} style="text-align:${cellAlign(row[j],isHead(s.rows,ri))}">${esc(cellPlain(row[j]??"")).replace(/\n/g,"<br>")}</${tg}>`;}).join("")}</tr>`).join("")}</table>`;}).join("")}</div>`;
  return d;
 }
 $("pngBtn").onclick=async()=>{
@@ -4460,7 +4584,7 @@ function extractDoc(text){
 function kuCard(text,fmt){
  const D=extractDoc(text),wm=document.querySelector("img.ku-w")?.src||"",gm=document.querySelector("img.ku-g")?.src||"";
  const el=document.createElement("div");el.className="kucard "+(fmt==="a4"?"kc-a4":"kc-sns");
- const tbl=D.tb?(()=>{const w=Math.max(...D.tb.map(r=>r.length)),SL=spanLayout(D.tb);return`<table class="kc-t">${D.tb.map((row,ri)=>`<tr>${Array.from({length:w},(_,j)=>{const sp=SL[ri][j];if(sp.skip)return"";const tg=ri===0?"th":"td";return`<${tg}${spanAttr(sp)} style="text-align:${cellAlign(row[j],ri===0)}">${esc(cellPlain(row[j]??"")).replace(/\n/g,"<br>")}</${tg}>`;}).join("")}</tr>`).join("")}</table>`;})():"";
+ const tbl=D.tb?(()=>{const w=Math.max(...D.tb.map(r=>r.length)),SL=spanLayout(D.tb);return`<table class="kc-t">${D.tb.map((row,ri)=>`<tr>${Array.from({length:w},(_,j)=>{const sp=SL[ri][j];if(sp.skip)return"";const tg=isHead(D.tb,ri)?"th":"td";return`<${tg}${spanAttr(sp)} style="text-align:${cellAlign(row[j],isHead(D.tb,ri))}">${esc(cellPlain(row[j]??"")).replace(/\n/g,"<br>")}</${tg}>`;}).join("")}</tr>`).join("")}</table>`;})():"";
  el.innerHTML=`
  <header class="kc-hd"><div class="kc-brand">${wm?`<img src="${wm}" alt="KU">`:""}<span><b>건국대학교</b><small>KONKUK UNIVERSITY${D.org?` · ${esc(D.org)}`:""}</small></span></div>${D.date?`<span class="kc-date">${esc(D.date)}</span>`:""}</header>
  <section class="kc-hero"><span class="kc-tag">${esc(DOC_TYPES[state.docType]?.label||"공문")}${D.recv?` · 수신 ${esc(D.recv)}`:""}</span><h1>${esc(D.title)}</h1></section>
@@ -4534,3 +4658,5 @@ $("cardSave").onclick=async()=>{
  sync();
 })();
 </script>
+
+</body></html>
