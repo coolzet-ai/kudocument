@@ -1557,7 +1557,7 @@ body{word-break:keep-all;overflow-wrap:break-word}
     <p class="meta">이용·인용 문의: coolzet@konkuk.ac.kr</p>
   </div>
   <span>기준: 건국대학교 문서규정(2025. 10. 1. 개정) · 2025 행정업무운영 편람(행정안전부) · 쉬운 공문서 쓰기 길잡이(국립국어원, 2022)</span>
-  <span>앵커사업단 업무 지원용 비공식 도구 · <b class="beta-foot">베타 버전</b> · <span class="upd" id="appUpd" title="기능을 고칠 때마다 바뀝니다">업데이트 <b>2026. 11. 3.</b> · v57</span> · 문의 coolzet@konkuk.ac.kr · <a href="https://teams.microsoft.com/l/chat/0/0?users=coolzet@konkuk.ac.kr" target="_blank" rel="noopener" class="foot-tm" id="footTm">Teams 채팅</a> · <a href="#admin" data-tab="admin" class="foot-adm">관리자</a></span>
+  <span>앵커사업단 업무 지원용 비공식 도구 · <b class="beta-foot">베타 버전</b> · <span class="upd" id="appUpd" title="기능을 고칠 때마다 바뀝니다">업데이트 <b>2026. 11. 3.</b> · v59</span> · 문의 coolzet@konkuk.ac.kr · <a href="https://teams.microsoft.com/l/chat/0/0?users=coolzet@konkuk.ac.kr" target="_blank" rel="noopener" class="foot-tm" id="footTm">Teams 채팅</a> · <a href="#admin" data-tab="admin" class="foot-adm">관리자</a></span>
 </div></footer>
 <div class="te-wrap" id="cardWrap" hidden>
   <div class="te card-dlg" role="dialog" aria-modal="true" aria-labelledby="cardHead">
@@ -2315,6 +2315,17 @@ function layoutCheck(text){
   if(p.expLead!==undefined&&!p.issues.some(x=>x[0]==="위계")&&p.lead!==p.expLead)
    add(p.i,"항목 기호","들여쓰기",`‘${p.mk.k}’는 ${p.lv}번째 항목이라 ${p.expLead}칸 들여씁니다(현재 ${p.lead}칸, 하위 항목마다 2타 · 편람 p.52).`,null,1);
  }
+ // 항목 사이·항목 뒤 표 앞 빈 줄이 섞여 있으면 한 가지로 통일(규정·편람에 빈 줄 수를 정한 곳은 없어 일관성만 점검)
+ try{const gaps={item:{b:[],n:[]},tbl:{b:[],n:[]}};
+  for(let i=0;i<L.length;i++){const cur=L[i];if(!cur.trim()||isTable(cur))continue;
+   let j=i+1,blank=0;while(j<L.length&&!L[j].trim()){blank++;j++;}if(j>=L.length)continue;
+   const nx=L[j],isIt=l=>!isTable(l)&&!!mkInfo(l.trimStart());
+   if(isIt(cur)&&isIt(nx)&&!/^\s*(붙\s*임|첨\s*부)/.test(nx))(blank?gaps.item.b:gaps.item.n).push(i+1);
+   else if(isIt(cur)&&isTable(nx))(blank?gaps.tbl.b:gaps.tbl.n).push(i+1);}
+  for(const[k,nm]of[["item","항목과 다음 항목 사이"],["tbl","항목과 그 다음 표 사이"]]){const g=gaps[k];
+   if(g.b.length&&g.n.length){const few=g.b.length<g.n.length?g.b:g.n,w=g.b.length<g.n.length?"빈 줄을 둔":"빈 줄 없이 붙인";
+    iss.push({line:few[0],g:"문단",kind:"빈 줄 일관성",msg:`${nm}에 빈 줄을 둔 곳(${g.b.length})과 없는 곳(${g.n.length})이 섞여 있습니다. ${w} 곳(${few.slice(0,5).join(", ")}행)을 나머지에 맞춰 한 가지로 통일하세요.`,ex:"",fix:false});}}
+ }catch{}
  if(ends.gae.length&&ends.seo.length){const few=ends.gae.length<ends.seo.length?ends.gae:ends.seo;
   iss.push({line:few[0],g:"문장 구조",kind:"끝맺음 혼용",msg:`개조식(-음/-함)과 서술식(-다/-니다) 끝맺음이 섞여 있습니다(${few.slice(0,5).join(", ")}행). 하나로 통일하세요.`,ex:"",fix:false});}
  try{iss.push(...docCheck(text));}catch(e){}
@@ -2383,6 +2394,23 @@ function locate(t,find){
  if(!find)return null;const i=t.indexOf(find);if(i>=0)return{i,str:find};
  const f=find.trim();if(!f)return null;
  try{const m=new RegExp(reEsc(f).replace(/\s+/g,"\\s+")).exec(t);return m?{i:m.index,str:m[0]}:null;}catch{return null;}
+}
+/* 항목 기호 단계가 바뀌는 제안(1. → 가. 등)에는 위계에 맞는 들여쓰기(하위 항목마다 2타)를 함께 넣음 */
+function levelIndent(src,e){
+ try{
+  if(e.bulk||typeof e.find!=="string"||typeof e.replace!=="string"||e.n>1)return e;
+  if(e.find.includes("\n")||e.replace.includes("\n")||isTable(e.find))return e;
+  const scope=(typeof state!=="undefined"&&state.scope)||"in",order=LEVELS[scope==="out"?"out":"in"];
+  const m1=mkInfo(e.find.trimStart()),m2=mkInfo(e.replace.trimStart());
+  if(!m1||!m2||m1.cls===m2.cls)return e;
+  const lv2=order.indexOf(m2.cls)+1;if(!lv2)return e;
+  const L=src.split("\n"),li=L.findIndex(l=>l.trimStart()===e.find.trimStart()||l.trimStart().startsWith(e.find.trimStart()));
+  if(li<0||L.filter(l=>l.includes(e.find.trim())).length!==1)return e;
+  const L2=L.slice();L2[li]=L[li].match(/^\s*/)[0]+e.replace.trimStart();
+  const p=itemPlan(L2,scope).find(x=>x.i===li);if(!p||p.expLead===undefined||p.issues.some(x=>x[0]==="위계")||p.lead===p.expLead)return e;
+  const lead=L[li].match(/^\s*/)[0];if(L[li].indexOf(e.find.trimStart())!==lead.length)return e;
+  return{...e,find:lead+e.find.trimStart(),replace:" ".repeat(p.expLead)+e.replace.trimStart(),reason:(e.reason||"")+` ‘${m2.k}’는 ${lv2}번째 항목이라 ${p.expLead}칸 들여씁니다(하위 항목마다 2타).`};
+ }catch{return e;}
 }
 function mergeEdits(list){
  const out=[],map=new Map();
@@ -2484,7 +2512,7 @@ function basicEdits(src){
  const list=bf.changes.map(c=>(c.type==="줄바꿈·문단"&&/^강제/.test(c.before))?{...c,bulk:"tidy",find:"",replace:""}:{...c,find:c.before,replace:c.after});
  try{list.push(...seqEdits(src,(typeof state!=="undefined"&&state.scope)||"in"));}catch{}
  try{list.push(...tableEdits(src));}catch{}
- const{kept,prot}=protectEdits(list);const notes=bf.notes.slice();
+ const{kept:kept0,prot}=protectEdits(list);const kept=kept0.map(e=>levelIndent(src,e));const notes=bf.notes.slice();
  if(prot.length)notes.push(`팀 용어집의 공식 명칭(${prot.join(", ")})은 고치지 않았습니다.`);
  return{kind:"basic",edits:mergeEdits(kept),summary:bf.summary,notes};
 }
@@ -3224,8 +3252,12 @@ const spanAttr=x=>(x.rs>1?` rowspan="${x.rs}"`:"")+(x.cs>1?` colspan="${x.cs}"`:
 function tableHtml(ra,rb,mode){
  const rows=mode==="old"?ra:rb,other=mode==="old"?rb:ra;
  const n=Math.max(ra.length,rb.length),w=Math.max(1,...ra.map(r=>r.length),...rb.map(r=>r.length));
- let h='<table class="doc-t">';
  const same=ra.length===rb.length&&ra.every((x,i)=>x.length===rb[i].length&&x.every((c,j)=>isMergeMark(c)===isMergeMark(rb[i][j])));
+ // 표 크기(행·열·병합)가 원문과 같으면 원문·수정본·2단 보기 모두 같은 열 너비로 그려 단위·공백을 고쳐도 표가 흔들리지 않게 함
+ let h='<table class="doc-t">';
+ if(same&&w>1){const vw=v=>[...String(v).replace(/<br>/g,"").replace(/[\uE000-\uE1FF]/g,"")].reduce((a,c)=>a+(/[\u1100-\u11ff\u3130-\u318f\uac00-\ud7af\u4e00-\u9fff]/.test(c)?2:1),0);
+  const wt=Array.from({length:w},(_,j)=>Math.min(34,Math.max(6,...ra.map((r,i)=>isMergeMark(r[j])?0:vw(mClean(r[j]??""))),...rb.map(r=>isMergeMark(r[j])?0:vw(mClean(r[j]??"")))))),sum=wt.reduce((a,b)=>a+b,0);
+  h='<table class="doc-t" style="table-layout:fixed;width:100%"><colgroup>'+wt.map(x=>`<col style="width:${(x/sum*100).toFixed(2)}%">`).join("")+'</colgroup>';}
  const SL=mode==="old"?spanLayout(ra):(mode==="both"&&!same?[]:spanLayout(rb));
  for(let i=0;i<n;i++){
   const A=ra[i],B=rb[i];
@@ -3655,7 +3687,7 @@ async function run(){
    if(se.some(e=>e.type==="단위 표시"&&e.find.startsWith("| "))){for(let k=all.length-1;k>=0;k--){const x=all[k];if(/단\s*위\s*[:：]/.test(x.replace||"")&&!/단\s*위\s*[:：]/.test(x.find||""))all.splice(k,1);}}
    for(const e of se){if(all.some(x=>x.find===e.find))continue;if(e.type==="단위 표시"&&all.some(x=>x.find.includes(e.find.replace(/^\| | \|$/g,""))&&x.replace.includes(e.replace.replace(/^\| | \|$/g,""))))continue;all.push(e);}}catch{}
   if(partialAt){notes.unshift(`Claude 요청 한도에 걸려 ${chunks.length}구간 중 ${partialAt}구간까지만 검토했습니다. 1~2분 뒤 ‘다시 검토하기’를 누르면 이미 검토한 구간은 5분 동안 저장된 답을 다시 쓰고 나머지만 검토합니다.`);rlShow(true);}
-  const{kept,prot}=protectEdits(all);
+  const{kept:kept0,prot}=protectEdits(all);const kept=kept0.map(e=>levelIndent(src,e));
   if(prot.length)notes.push(`팀 용어집의 공식 명칭(${prot.join(", ")})을 바꾸는 제안은 뺐습니다.`);
   if(mask.map.length)notes.unshift(`개인정보 ${mask.map.length}건을 가린 뒤 AI에 보냈고, 결과에는 원래 값으로 되돌렸습니다.`);
   state={...state,result:{kind:"ai",edits:mergeEdits(kept),summary:sums.join(" "),notes},source:src,isExample:false,finalized:false};applyScope();
